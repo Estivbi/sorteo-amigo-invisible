@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro'
+---
+
+<Layout title="Crear un Juego">
+  <div class="container mx-auto">
+    <h1 class="text-4xl font-bold text-center my-8">Crear un Juego</h1>
+    <p class="text-center mb-8">Aquí puedes iniciar un nuevo juego de Amigo Invisible.</p>
+    <form id="create-game-form" class="max-w-lg mx-auto bg-white p-8 shadow-md rounded-lg">
+      <div class="mb-4">
+        <label for="game-name" class="block text-gray-700 font-bold mb-2">Nombre del Juego:</label>
+        <input type="text" id="game-name" name="gameName" class="w-full p-2 border border-gray-300 rounded-md" required />
+      </div>
+      <div class="mb-4">
+        <label for="budget" class="block text-gray-700 font-bold mb-2">Presupuesto:</label>
+        <input type="number" id="budget" name="budget" class="w-full p-2 border border-gray-300 rounded-md" required />
+      </div>
+      <div class="mb-4">
+        <label for="participants" class="block text-gray-700 font-bold mb-2">Participantes (nombre y correo separados por comas):</label>
+        <textarea id="participants" name="participants" class="w-full p-2 border border-gray-300 rounded-md" rows="4" required></textarea>
+      </div>
+      <div class="mb-4">
+        <label for="exceptions" class="block text-gray-700 font-bold mb-2">Excepciones (nombre1 -> nombre2, separados por comas):</label>
+        <textarea id="exceptions" name="exceptions" class="w-full p-2 border border-gray-300 rounded-md" rows="2"></textarea>
+      </div>
+      <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700">Crear Juego</button>
+    </form>
+  </div>
+</Layout>
+
+<script type="module" src="/src/scripts/formHandler.js" defer></script>
