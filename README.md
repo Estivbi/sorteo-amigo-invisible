@@ -42,9 +42,9 @@ Este proyecto es una aplicación web para organizar juegos de Amigo Invisible. L
 	node server.js
 	npm run dev
 
-5. Contribuciones
+## Contribuciones
 Las contribuciones son bienvenidas. Por favor, abre un issue o envía un pull request para discutir cualquier cambio que te gustaría hacer.
 
-6. Licencia
+## Licencia
 Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE para obtener más detalles.
 
