@@ -22,6 +22,7 @@ export function setupFormHandler() {
         });
         await handleCreateGame(gameName, budget, participants, exceptions);
         alert('Juego creado exitosamente');
+        window.location.href = '/'; // Redirigir a la página de inicio
       });
     } else {
       console.error('El formulario con ID "create-game-form" no se encontró en el DOM.');

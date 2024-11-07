@@ -24,7 +24,7 @@ export async function handleCreateGame(
 	localStorage.setItem('games', JSON.stringify(games));
   
 	// Enviar correos electrónicos a los participantes
-	await sendEmails(assignments, budget);
+	await sendEmails(assignments, budget, gameName);
   }
   
   function assignGivers(participants, exceptions) {
@@ -65,18 +65,20 @@ export async function handleCreateGame(
 	return assignments;
   }
   
-  async function sendEmails(assignments, budget) {
+  async function sendEmails(assignments, budget, gameName) {
 	for (const assignment of assignments) {
 	  const { giver, receiver } = assignment;
 	  const subject = 'Tu asignación de Amigo Invisible';
 	  const body = `
 		Hola ${giver.name},
+
+		¡Has sido seleccionado para jugar al juego del amigo insivible "${gameName}"! 🎉
 		
 		Te ha tocado regalar a ${receiver.name}.
 		
 		Presupuesto: ${budget} euros.
 		
-		¡Feliz Amigo Invisible!
+		¡Feliz Amigo Invisible! 🎁
 	  `;
   
 	  try {
