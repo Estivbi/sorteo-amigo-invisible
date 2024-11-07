@@ -1,5 +1,7 @@
 # Proyecto de Amigo Invisible
 
+![Amigo Invisible!](https://github.com/user-attachments/assets/c930ede2-5132-42a3-89bd-2c5cee108ec2)
+
 Este proyecto es una aplicación web para organizar juegos de Amigo Invisible. Los usuarios pueden crear un nuevo juego, especificar un presupuesto, agregar participantes y definir excepciones. La aplicación asigna aleatoriamente a cada participante un destinatario y envía correos electrónicos con la información de la asignación.
 
 ## Características
