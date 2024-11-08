@@ -95,7 +95,7 @@ export async function handleCreateGame(
 		}
   
 		const result = await response.text();
-		console.log(`Correo enviado a ${giver.email}: ${result}`);
+		
 	  } catch (error) {
 		console.error(`Error al enviar correo a ${giver.email}:`, error);
 		throw error;

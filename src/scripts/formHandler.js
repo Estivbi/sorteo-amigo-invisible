@@ -8,7 +8,6 @@ export function setupFormHandler() {
     if (formElement) {
       formElement.addEventListener('submit', async (event) => {
         event.preventDefault();
-        console.log("Evento de envío detectado")
         const form = event.target;
         const gameName = form.elements.namedItem('gameName').value;
         const budget = parseFloat(form.elements.namedItem('budget').value);

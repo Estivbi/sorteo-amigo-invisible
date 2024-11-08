@@ -48,7 +48,7 @@ async function authorize() {
     access_type: 'offline',
     scope: SCOPES,
   });
-  console.log('Authorize this app by visiting this url:', authUrl);
+  
 
   const rl = readline.createInterface({
     input: process.stdin,
@@ -94,7 +94,7 @@ export async function sendEmail(to, subject, body) {
         raw: encodedMessage,
       },
     });
-    console.log('Message sent:', res.data);
+    
     return res.data;
   } catch (error) {
     console.error('Error sending email:', error);
