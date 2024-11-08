@@ -1,22 +1,21 @@
 ---
 interface Props {
-	title: string;
-	body: string;
-	href: string;
+  title: string
+  body: string
+  href: string
 }
 
-const { href, title, body } = Astro.props;
+const { href, title, body } = Astro.props
 ---
 
 <li class="link-card bg-white shadow-md rounded-lg overflow-hidden mt-6">
-	<a href={href} class="block p-4 hover:bg-gray-100">
-	  <h2 class="text-xl font-bold mb-2">
-		{title}
-		<span class="text-blue-600">&rarr;</span>
-	  </h2>
-	  <p class="text-gray-700">
-		{body}
-	  </p>
-	</a>
-  </li>
-
+  <a href={href} class="block p-4 hover:bg-gray-100">
+    <h2 class="text-xl font-bold mb-2">
+      {title}
+      <span class="text-blue-600">&rarr;</span>
+    </h2>
+    <p class="text-gray-700">
+      {body}
+    </p>
+  </a>
+</li>
