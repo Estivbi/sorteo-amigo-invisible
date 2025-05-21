@@ -5,7 +5,7 @@ import { sendEmail } from "./src/scripts/sendEmail.js"
 
 const port = process.env.PORT || 3000
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true)
   console.log(`Solicitud recibida: ${req.method} ${parsedUrl.pathname}`)
 
@@ -24,15 +24,21 @@ const server = http.createServer((req, res) => {
     const code = parsedUrl.query.code
     if (code) {
       console.log("Código de autorización recibido:", code)
-      res.writeHead(200, { "Content-Type": "text/html" })
-      res.end(`
-        <html>
-          <body>
-            <h1>Autorización completada</h1>
-            <p>Puedes cerrar esta ventana y volver a la aplicación.</p>
-          </body>
-        </html>
-      `)
+      try {
+        res.writeHead(200, { "Content-Type": "text/html" })
+        res.end(`
+          <html>
+            <body>
+              <h1>Autorización completada</h1>
+              <p>Puedes cerrar esta ventana y volver a la aplicación.</p>
+            </body>
+          </html>
+        `)
+      } catch (error) {
+        console.error("Error durante la autorización:", error)
+        res.writeHead(500, { "Content-Type": "text/plain" })
+        res.end("Error durante la autorización")
+      }
     } else {
       console.log("No se recibió código de autorización")
       res.writeHead(400, { "Content-Type": "text/plain" })

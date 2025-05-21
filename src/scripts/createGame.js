@@ -28,41 +28,33 @@ export async function handleCreateGame(
 }
 
 function assignGivers(participants, exceptions) {
-  const assignments = []
-  const receivers = [...participants]
-
-  // Mezclar la lista de receptores
-  for (let i = receivers.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[receivers[i], receivers[j]] = [receivers[j], receivers[i]]
-  }
-
-  for (const giver of participants) {
-    let receiverIndex = -1
-
-    // Encontrar un receptor válido
-    for (let i = 0; i < receivers.length; i++) {
-      const receiver = receivers[i]
-      if (
-        giver.email !== receiver.email &&
-        !exceptions.some((e) => e.from === giver.name && e.to === receiver.name)
-      ) {
-        receiverIndex = i
-        break
+  const maxTries = 2000;
+  function isValid(assignments) {
+    // Ningún participante puede regalarse a sí mismo
+    for (const a of assignments) {
+      if (a.giver.id === a.receiver.id) return false;
+    }
+    // Ninguna excepción puede cumplirse
+    for (const ex of exceptions) {
+      if (assignments.some(a => String(a.giver.id) === String(ex.from) && String(a.receiver.id) === String(ex.to))) {
+        return false;
       }
     }
-
-    if (receiverIndex === -1) {
-      throw new Error(
-        "No se pudo asignar un receptor válido para todos los participantes.",
-      )
-    }
-
-    const receiver = receivers.splice(receiverIndex, 1)[0]
-    assignments.push({ giver, receiver })
+    return true;
   }
-
-  return assignments
+  for (let attempt = 0; attempt < maxTries; attempt++) {
+    // Permutación aleatoria de receptores
+    const receivers = [...participants];
+    for (let i = receivers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [receivers[i], receivers[j]] = [receivers[j], receivers[i]];
+    }
+    const assignments = participants.map((giver, idx) => ({ giver, receiver: receivers[idx] }));
+    if (isValid(assignments)) {
+      return assignments;
+    }
+  }
+  throw new Error("No se pudo asignar un receptor válido para todos los participantes después de varios intentos. Revisa las excepciones.");
 }
 
 async function sendEmails(assignments, budget, gameName) {

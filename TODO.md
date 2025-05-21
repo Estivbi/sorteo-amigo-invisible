@@ -2,22 +2,13 @@
 
 ## Problemas Actuales
 
-1. **Cambio de URL al Rellenar el Formulario**
-   - **Descripción**: Cuando se rellena el formulario, la URL cambia y agrega los datos del formulario, por ejemplo: `http://localhost:4321/crear?gameName=Navidad&budget=30&participants=caro+carol%40carol.com%2C+carol+carol%40carol.com&exceptions=`.
-   - **Solución Propuesta**: Evitar que la URL cambie al enviar el formulario. Asegurarse de que el formulario se envíe mediante JavaScript sin modificar la URL.
+1. **El alert de juego creado tarda unos segundos poner un spinner para que el uusario no piense que no se esta mandando, el spinner este hasta que salga el modal**
 
-2. **Modificar el formulario para que el tema de las excepciones no sea tan complicado, y la forma de añadir participantes tambien**
+2. **Agregar una wishlist??**
 
-3. **Agregar una wishlist??**
+3. **Que el texto del mensaje darles uno por defecto y quitar lo de mensaje opcional yo creo**
 
-4. **Borrar los console log**
+4. **Cambiar la consola de google cloud o darle una vuelta a que en el correo venga algo mas profesional, para esto crear una cuenta de gmail de momento estoy con la mia**
 
-5. **Formatear el código y quitar ;**
-
-6. **Que el texto del mensaje lo puedan editar los usuarios y sino darles uno por defecto**
-
-7. **Cambiar el favicon**
-
-## Mejoras Necesarias
-
-### 1. Evitar Cambio de URL al Enviar el Formulario
+5. **https://www.amigoinvisibleonline.com/** 
+   - Fijarme en esta web

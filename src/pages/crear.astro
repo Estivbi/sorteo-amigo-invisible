@@ -37,25 +37,22 @@ import Layout from "../layouts/Layout.astro"
         />
       </div>
       <div class="mb-4">
-        <label for="participants" class="block text-gray-700 font-bold mb-2"
-          >Participantes (nombre y correo separados por comas):</label
-        >
-        <textarea
-          id="participants"
-          name="participants"
-          class="w-full p-2 border border-gray-300 rounded-md"
-          rows="4"
-          required></textarea>
+        <label class="block text-gray-700 font-bold mb-2">
+          Participantes:
+        </label>
+        <div id="participants-list"></div>
+        <button type="button" id="add-participant" class="mt-2 bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Añadir participante</button>
       </div>
       <div class="mb-4">
-        <label for="exceptions" class="block text-gray-700 font-bold mb-2"
-          >Excepciones (nombre1 -> nombre2, separados por comas):</label
-        >
-        <textarea
-          id="exceptions"
-          name="exceptions"
-          class="w-full p-2 border border-gray-300 rounded-md"
-          rows="2"></textarea>
+        <label class="block text-gray-700 font-bold mb-2">
+          Excepciones:
+        </label>
+        <div id="exceptions-list"></div>
+        <button type="button" id="add-exception" class="mt-2 bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Añadir excepción</button>
+      </div>
+      <div class="mb-4">
+        <label for="customMessage" class="block text-gray-700 font-bold mb-2">Mensaje Personalizado (opcional):</label>
+        <textarea id="customMessage" name="customMessage" class="w-full p-2 border border-gray-300 rounded-md" rows="4"></textarea>
       </div>
       <button
         type="submit"
@@ -63,6 +60,14 @@ import Layout from "../layouts/Layout.astro"
         >Crear Juego</button
       >
     </form>
+    <!-- Modal de éxito -->
+    <div id="success-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 hidden">
+      <div class="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
+        <h2 class="text-2xl font-bold mb-4 text-green-600">¡Juego creado con éxito!</h2>
+        <p class="mb-6">Los correos han sido enviados a todos los participantes.</p>
+        <button id="close-modal" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Cerrar</button>
+      </div>
+    </div>
   </div>
 </Layout>
 
