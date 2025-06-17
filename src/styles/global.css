@@ -6,3 +6,22 @@ body {
 	@apply font-sans;
 	font-family: 'Inter', sans-serif;
   }
+
+.remove-participant {
+  @apply bg-red-500 text-white px-2 rounded font-bold transition-colors duration-150;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+.remove-participant:hover {
+  @apply bg-red-700;
+}
+
+#participants-list input[type="text"],
+#participants-list input[type="email"] {
+  @apply border border-gray-300 rounded p-1 focus:outline-blue-400;
+}
+
+#participants-list > div {
+  @apply flex gap-2 mb-2 items-center;
+}

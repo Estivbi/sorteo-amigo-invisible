@@ -111,6 +111,8 @@ export function setupFormHandler() {
     if (formElement) {
       formElement.addEventListener("submit", async (event) => {
         event.preventDefault()
+        const spinner = document.getElementById("loading-spinner")
+        if (spinner) spinner.classList.remove("hidden")
         const gameName = formElement.elements.namedItem("gameName").value
         const budget = parseFloat(formElement.elements.namedItem("budget").value)
         // Filtrar participantes válidos
@@ -124,6 +126,8 @@ export function setupFormHandler() {
           if (modal) modal.classList.remove("hidden")
         } catch (err) {
           alert("Hubo un error al crear el juego o enviar los correos. Intenta de nuevo.")
+        } finally {
+          if (spinner) spinner.classList.add("hidden")
         }
       })
       // Cerrar el modal
