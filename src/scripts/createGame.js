@@ -62,19 +62,19 @@ async function sendEmails(assignments, budget, gameName) {
     const { giver, receiver } = assignment
     const subject = "Tu asignación de Amigo Invisible"
     const body = `
-		Hola ${giver.name},
+        Hola ${giver.name},
 
-		¡Has sido seleccionado para jugar al juego del amigo insivible "${gameName}"! 🎉
-		
-		Te ha tocado regalar a ${receiver.name}.
-		
-		Presupuesto: ${budget} euros.
-		
-		¡Feliz Amigo Invisible! 🎁
-	  `
+        ¡Has sido seleccionado para jugar al juego del amigo insivible "${gameName}"! 🎉
+        
+        Te ha tocado regalar a ${receiver.name}.
+        
+        Presupuesto: ${budget} euros.
+        
+        ¡Feliz Amigo Invisible! 🎁
+      `
 
     try {
-      const response = await fetch("http://localhost:3000/send-email", {
+      const response = await fetch("/api/send-email", { 
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,10 +83,12 @@ async function sendEmails(assignments, budget, gameName) {
       })
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        const error = await response.json();
+        throw new Error(error.error || `HTTP error! status: ${response.status}`)
       }
 
-      const result = await response.text()
+      // Puedes usar el resultado si lo necesitas
+      // const result = await response.json()
     } catch (error) {
       console.error(`Error al enviar correo a ${giver.email}:`, error)
       throw error
