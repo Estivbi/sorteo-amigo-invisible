@@ -2,83 +2,95 @@
 import Layout from "../layouts/Layout.astro"
 ---
 
-<Layout title="Crear un Juego">
-  <div class="container mx-auto">
-    <h1 class="text-4xl font-bold text-center my-8">Crear un Juego</h1>
-    <p class="text-center mb-8">
-      Aquí puedes iniciar un nuevo juego de Amigo Invisible.
-    </p>
-    <form
-      id="create-game-form"
-      class="max-w-lg mx-auto bg-white p-8 shadow-md rounded-lg"
-    >
-      <div class="mb-4">
-        <label for="gameName" class="block text-gray-700 font-bold mb-2"
-          >Nombre del Juego:</label
-        >
+<Layout title="Crear Sorteo - Amigo Invisible">
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">🎯 Crear Nuevo Sorteo</h1>
+      <p style="font-size: 1.1rem; color: rgba(255,255,255,0.8); max-width: 500px; margin: 0 auto;">
+        Configura tu sorteo de amigo invisible en pocos pasos
+      </p>
+    </div>
+
+    <form id="create-game-form" style="max-width: 700px; margin: 0 auto;">
+      <div style="margin-bottom: 2rem;">
+        <label for="gameName">🎮 Nombre del Sorteo:</label>
         <input
           type="text"
           id="gameName"
           name="gameName"
-          class="w-full p-2 border border-gray-300 rounded-md"
+          placeholder="Ej: Amigo Invisible de la Oficina 2025"
           required
         />
       </div>
-      <div class="mb-4">
-        <label for="budget" class="block text-gray-700 font-bold mb-2"
-          >Presupuesto:</label
-        >
+
+      <div style="margin-bottom: 2rem;">
+        <label for="budget">💰 Presupuesto (opcional):</label>
         <input
           type="number"
           id="budget"
           name="budget"
-          class="w-full p-2 border border-gray-300 rounded-md"
-          required
+          placeholder="Ej: 25"
+          min="0"
         />
+        <small style="color: rgba(255,255,255,0.7); font-size: 0.9rem; display: block; margin-top: 8px;">
+          💡 Deja vacío si no hay límite de presupuesto
+        </small>
       </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 font-bold mb-2">
-          Participantes:
-        </label>
-        <div id="participants-list"></div>
-        <button type="button" id="add-participant" class="mt-2 bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Añadir participante</button>
+
+      <div style="margin-bottom: 2rem;">
+        <label>👥 Participantes:</label>
+        <div id="participants-list" style="margin-top: 1rem;"></div>
+        <button type="button" id="add-participant" class="btn-secondary" style="margin-top: 1rem;">
+          ➕ Añadir Participante
+        </button>
       </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 font-bold mb-2">
-          Excepciones:
-        </label>
-        <div id="exceptions-list"></div>
-        <button type="button" id="add-exception" class="mt-2 bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Añadir excepción</button>
+
+      <div style="margin-bottom: 2rem;">
+        <label>🚫 Excepciones:</label>
+        <small style="color: rgba(255,255,255,0.7); font-size: 0.9rem; display: block; margin-bottom: 1rem;">
+          Configura quién NO puede regalar a quién (opcional)
+        </small>
+        <div id="exceptions-list" style="margin-top: 1rem;"></div>
+        <button type="button" id="add-exception" class="btn-secondary" style="margin-top: 1rem; background: linear-gradient(45deg, #ed8936, #dd6b20);">
+          🚫 Añadir Excepción
+        </button>
       </div>
-      <div class="mb-4">
-        <label for="customMessage" class="block text-gray-700 font-bold mb-2">Mensaje Personalizado (opcional):</label>
-        <textarea id="customMessage" name="customMessage" class="w-full p-2 border border-gray-300 rounded-md" rows="4"></textarea>
-      </div>
-      <button
-        type="submit"
-        class="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
-        >Crear Juego</button
-      >
+
+      <button type="submit" style="margin-top: 2rem; font-size: 1.1rem;">
+        🚀 Crear Sorteo y Enviar Correos
+      </button>
     </form>
+
     <!-- Modal de éxito -->
-    <div id="success-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 hidden">
-      <div class="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
-        <h2 class="text-2xl font-bold mb-4 text-green-600">¡Juego creado con éxito!</h2>
-        <p class="mb-6">Los correos han sido enviados a todos los participantes.</p>
-        <button id="close-modal" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Cerrar</button>
+    <div id="success-modal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 hidden">
+      <div class="modal-content bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+        <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; color: #22c55e;">¡Sorteo Creado!</h2>
+        <p style="margin-bottom: 2rem; color: #6b7280; line-height: 1.6;">Los correos han sido enviados a todos los participantes con sus asignaciones secretas.</p>
+        <button id="close-modal" class="btn-primary" style="width: auto; display: inline-block;">
+          ✨ ¡Perfecto!
+        </button>
       </div>
     </div>
+
     <!-- Spinner de carga -->
-    <div id="loading-spinner" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 hidden">
-      <div class="flex flex-col items-center">
-        <svg class="animate-spin h-12 w-12 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-        </svg>
-        <span class="text-white text-lg">Enviando correos...</span>
+    <div id="loading-spinner" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+      <div class="modal-content text-center" style="background: rgba(255,255,255,0.95); padding: 3rem;">
+        <div style="margin-bottom: 2rem;">
+          <div style="width: 60px; height: 60px; border: 4px solid #e2e8f0; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+        </div>
+        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: #4a5568;">Creando tu sorteo...</h3>
+        <p style="color: #6b7280;">Enviando correos a todos los participantes</p>
       </div>
     </div>
   </div>
 </Layout>
 
-<script type="module" src="scripts/formHandler.js" defer></script>
+<style>
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
+<script type="module" src="/scripts/formHandler.js" defer></script>

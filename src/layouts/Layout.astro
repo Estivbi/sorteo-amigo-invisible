@@ -9,24 +9,41 @@ const { title } = Astro.props
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Amigo Invisible" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Organiza tu sorteo de Amigo Invisible de forma fácil y divertida" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.webp" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
-    <header class="bg-blue-400 text-gray-800 p-4">
-      <h1 class="text-2xl font-bold">Amigo Invisible</h1>
+  <body>
+    <header>
+      <div class="container">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(45deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">🎁</div>
+            <h1 style="margin: 0; font-size: 1.5rem; color: white;">Amigo Invisible</h1>
+          </div>
+          <nav style="display: flex; gap: 20px;">
+            <a href="/" style="color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Inicio</a>
+            <a href="/crear" style="color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Crear Sorteo</a>
+            <a href="/reglas" style="color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Reglas</a>
+          </nav>
+        </div>
+      </div>
     </header>
-    <main class="flex-grow p-4">
+    <main style="flex: 1; padding: 2rem 0;">
       <slot />
     </main>
-    <footer class="bg-blue-400 text-gray-800 p-4 text-left">
-      <p>&copy; 2024 Amigo Invisible. Todos los derechos reservados</p>
+    <footer>
+      <div class="container">
+        <div style="text-align: center; padding: 2rem 0; color: rgba(255,255,255,0.8);">
+          <p style="margin: 0;">&copy; 2025 Amigo Invisible. Hecho con ❤️ para crear momentos especiales</p>
+        </div>
+      </div>
     </footer>
   </body>
 </html>

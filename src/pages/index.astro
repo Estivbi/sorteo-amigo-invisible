@@ -4,24 +4,60 @@ import Card from "../components/Card.astro"
 ---
 
 <Layout title="Bienvenido a Amigo Invisible">
-  <div class="container mx-auto">
-    <h1 class="text-4xl font-bold text-center my-8">
-      Bienvenido a Amigo Invisible
-    </h1>
-    <p class="text-center mb-8">
-      Organiza y participa en un Amigo Invisible de manera fácil y divertida.
-    </p>
-    <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <Card
-        href="/crear"
-        title="Crear un Juego"
-        body="Inicia un nuevo juego de Amigo Invisible."
-      />
-      <Card
-        href="/reglas"
-        title="Reglas del Juego"
-        body="Aprende cómo funciona el Amigo Invisible."
-      />
-    </ul>
+  <div class="container">
+    <!-- Hero Section -->
+    <div style="text-align: center; margin: 3rem 0;">
+      <h1 style="font-size: 3.5rem; margin-bottom: 1rem; font-weight: 800;">
+        🎭 Amigo Invisible
+      </h1>
+      <p style="font-size: 1.25rem; color: rgba(255,255,255,0.9); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+        Organiza sorteos de manera fácil, divertida y completamente gratuita. 
+        <strong>¡Sorprende a tus amigos, familia o compañeros de trabajo!</strong>
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="/crear" style="text-decoration: none;">
+          <button class="btn-primary" style="width: auto; display: inline-block;">
+            🎁 Crear Sorteo Ahora
+          </button>
+        </a>
+        <a href="/reglas" style="text-decoration: none;">
+          <button style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 16px 32px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: auto; display: inline-block;">
+            📖 Ver Reglas
+          </button>
+        </a>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 4rem 0;">
+      <div class="card" style="text-align: center; padding: 2.5rem;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: #4a5568;">Súper Rápido</h3>
+        <p style="color: #6b7280; line-height: 1.6;">Crea tu sorteo en menos de 2 minutos. Solo añade participantes y ¡listo!</p>
+      </div>
+
+      <div class="card" style="text-align: center; padding: 2.5rem;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">📧</div>
+        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: #4a5568;">Envío Automático</h3>
+        <p style="color: #6b7280; line-height: 1.6;">Los emails se envían automáticamente a cada participante con su asignación secreta.</p>
+      </div>
+
+      <div class="card" style="text-align: center; padding: 2.5rem;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🔒</div>
+        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: #4a5568;">100% Secreto</h3>
+        <p style="color: #6b7280; line-height: 1.6;">Nadie sabrá quién le toca hasta el momento del intercambio de regalos.</p>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="card" style="text-align: center; margin: 3rem 0; background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));">
+      <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: #4a5568;">¿Listo para empezar?</h2>
+      <p style="color: #6b7280; margin-bottom: 2rem; font-size: 1.1rem;">Es gratis, fácil y divertido. ¡Tu próximo amigo invisible te está esperando!</p>
+      <a href="/crear" style="text-decoration: none;">
+        <button class="btn-primary" style="width: auto; display: inline-block; font-size: 1.1rem;">
+          🚀 Comenzar Sorteo
+        </button>
+      </a>
+    </div>
   </div>
 </Layout>

@@ -2,26 +2,218 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-	@apply font-sans;
-	font-family: 'Inter', sans-serif;
-  }
-
-.remove-participant {
-  @apply bg-red-500 text-white px-2 rounded font-bold transition-colors duration-150;
-  cursor: pointer;
-  border: none;
-  outline: none;
+/* Reset y base */
+* {
+  box-sizing: border-box;
 }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  margin: 0;
+  color: #2d3748;
+}
+
+/* Container principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Headers y títulos */
+h1 {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  font-weight: 800;
+  font-size: 2.5rem;
+  margin: 2rem 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Cards y formularios */
+form, .card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2rem;
+  margin: 2rem auto;
+  transition: all 0.3s ease;
+}
+
+form:hover, .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+}
+
+/* Inputs y controles */
+input, textarea, select {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  transform: scale(1.02);
+}
+
+/* Labels */
+label {
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Botones principales */
+button[type="submit"], .btn-primary {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+button[type="submit"]:hover, .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+  background: linear-gradient(45deg, #5a67d8, #6b46c1);
+}
+
+/* Botones secundarios */
+.btn-secondary {
+  background: linear-gradient(45deg, #48bb78, #38a169);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+}
+
+/* Botón eliminar participante */
+.remove-participant {
+  background: linear-gradient(45deg, #f56565, #e53e3e);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .remove-participant:hover {
-  @apply bg-red-700;
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+}
+
+/* Lista de participantes */
+#participants-list > div {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+#participants-list > div:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateX(5px);
 }
 
 #participants-list input[type="text"],
 #participants-list input[type="email"] {
-  @apply border border-gray-300 rounded p-1 focus:outline-blue-400;
+  margin: 0;
+  flex: 1;
 }
 
-#participants-list > div {
-  @apply flex gap-2 mb-2 items-center;
+/* Excepciones */
+#exceptions-list > div {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+#exceptions-list > div:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Modales */
+.modal {
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header y navegación */
+header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Footer */
+footer {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
