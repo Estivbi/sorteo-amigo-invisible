@@ -28,24 +28,29 @@ import Card from "../components/Card.astro"
       </div>
     </div>
 
-    <!-- Features Section -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 4rem 0;">
-      <div class="card" style="text-align: center; padding: 2.5rem;">
-        <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
-        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: #4a5568;">Súper Rápido</h3>
-        <p style="color: #6b7280; line-height: 1.6;">Crea tu sorteo en menos de 2 minutos. Solo añade participantes y ¡listo!</p>
-      </div>
-
-      <div class="card" style="text-align: center; padding: 2.5rem;">
-        <div style="font-size: 3rem; margin-bottom: 1rem;">📧</div>
-        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: #4a5568;">Envío Automático</h3>
-        <p style="color: #6b7280; line-height: 1.6;">Los emails se envían automáticamente a cada participante con su asignación secreta.</p>
-      </div>
-
-      <div class="card" style="text-align: center; padding: 2.5rem;">
-        <div style="font-size: 3rem; margin-bottom: 1rem;">🔒</div>
-        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: #4a5568;">100% Secreto</h3>
-        <p style="color: #6b7280; line-height: 1.6;">Nadie sabrá quién le toca hasta el momento del intercambio de regalos.</p>
+    <!-- Support Section -->
+    <div style="text-align: center; margin: 4rem 0; padding: 0 1rem;">
+      <div style="background: rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);">
+        <div style="font-size: 2.5rem; margin-bottom: 1rem;">☕</div>
+        <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; color: rgba(255,255,255,0.95);">
+          ¿Te gusta esta web?
+        </h2>
+        <p style="color: rgba(255,255,255,0.8); margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+          Esta web es <strong>completamente gratuita</strong>, pero mantenerla funcional requiere tiempo y recursos. 
+          ¡Cualquier ayuda es súper apreciada!
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="/apoyo" style="text-decoration: none;">
+            <button style="background: linear-gradient(45deg, #ffb347, #ff6b35); color: white; border: none; border-radius: 12px; padding: 16px 24px; font-weight: 600; transition: all 0.3s ease; cursor: pointer;">
+              💖 Apoyar con €1
+            </button>
+          </a>
+          <a href="/apoyo" style="text-decoration: none;">
+            <button style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 16px 24px; font-weight: 600; transition: all 0.3s ease; cursor: pointer;">
+              💡 Ver Más Opciones
+            </button>
+          </a>
+        </div>
       </div>
     </div>
 

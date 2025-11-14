@@ -63,10 +63,33 @@ import Layout from "../layouts/Layout.astro"
 
     <!-- Modal de éxito -->
     <div id="success-modal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 hidden">
-      <div class="modal-content bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
+      <div class="modal-content bg-white rounded-lg shadow-lg p-8 max-w-lg text-center">
         <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
         <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; color: #22c55e;">¡Sorteo Creado!</h2>
         <p style="margin-bottom: 2rem; color: #6b7280; line-height: 1.6;">Los correos han sido enviados a todos los participantes con sus asignaciones secretas.</p>
+        
+        <!-- Sección de donación -->
+        <div style="background: linear-gradient(45deg, #f0f9ff, #e0f2fe); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; border: 1px solid #e0f2fe;">
+          <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.8rem; color: #0369a1;">
+            ☕ ¿Te ha sido útil?
+          </h3>
+          <p style="font-size: 0.9rem; color: #0369a1; margin-bottom: 1rem; line-height: 1.4;">
+            Mantener esta web gratis cuesta tiempo y dinero. ¡Un café ayuda muchísimo!
+          </p>
+          <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/apoyo" style="text-decoration: none;">
+              <button style="background: linear-gradient(45deg, #ffb347, #ff6b35); color: white; border: none; border-radius: 8px; padding: 10px 16px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                💖 Donar €1
+              </button>
+            </a>
+            <a href="/apoyo" style="text-decoration: none;">
+              <button style="background: linear-gradient(45d, #48bb78, #38a169); color: white; border: none; border-radius: 8px; padding: 10px 16px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                ☕ Ver Opciones
+              </button>
+            </a>
+          </div>
+        </div>
+        
         <button id="close-modal" class="btn-primary" style="width: auto; display: inline-block;">
           ✨ ¡Perfecto!
         </button>

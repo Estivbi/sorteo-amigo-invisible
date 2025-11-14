@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Reset y base */
 * {
   box-sizing: border-box;
@@ -216,4 +212,25 @@ footer {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Botones de donación */
+.donate-btn {
+  transition: all 0.3s ease;
+}
+
+.donate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+/* Estilos para enlaces de navegación */
+nav a:hover {
+  color: white !important;
+}
+
+/* Mejoras de accesibilidad */
+button:focus, a:focus {
+  outline: 2px solid rgba(255,255,255,0.6);
+  outline-offset: 2px;
 }
