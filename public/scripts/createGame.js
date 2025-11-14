@@ -57,41 +57,36 @@ function assignGivers(participants, exceptions) {
   throw new Error("No se pudo asignar un receptor válido para todos los participantes después de varios intentos. Revisa las excepciones.");
 }
 
+// Envío en paralelo
 async function sendEmails(assignments, budget, gameName) {
-  for (const assignment of assignments) {
-    const { giver, receiver } = assignment
-    const subject = "Tu asignación de Amigo Invisible"
+  const emailPromises = assignments.map(({ giver, receiver }) => {
+    const subject = "Tu asignación de Amigo Invisible";
     const body = `
-        Hola ${giver.name},
+Hola ${giver.name},
 
-        ¡Has sido seleccionado para jugar al juego del amigo insivible "${gameName}"! 🎉
-        
-        Te ha tocado regalar a ${receiver.name}.
-        
-        Presupuesto: ${budget} euros.
-        
-        ¡Feliz Amigo Invisible! 🎁
-      `
+¡Has sido seleccionado para el juego "${gameName}"! 🎉
 
-    try {
-      const response = await fetch("/api/send-email", { 
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ to: giver.email, subject, body }),
-      })
+Te ha tocado regalar a ${receiver.name}.
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || `HTTP error! status: ${response.status}`)
-      }
+Presupuesto: ${budget} euros.
 
-      // Puedes usar el resultado si lo necesitas
-      // const result = await response.json()
-    } catch (error) {
-      console.error(`Error al enviar correo a ${giver.email}:`, error)
-      throw error
-    }
+¡Feliz Amigo Invisible! 🎁
+    `;
+
+    return fetch("/api/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ to: giver.email, subject, body }),
+    }).catch(error => {
+      console.error(`Error al enviar correo a ${giver.email}:`, error);
+      return { error: true, email: giver.email };
+    });
+  });
+
+  const results = await Promise.all(emailPromises);
+  const errors = results.filter(r => r.error);
+  
+  if (errors.length > 0) {
+    throw new Error(`No se pudieron enviar ${errors.length} correos`);
   }
 }

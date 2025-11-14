@@ -1,14 +1,28 @@
 /* Reset y base */
-* {
-  box-sizing: border-box;
+:root {
+  /* Azul oscuro profesional */
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+  --primary-light: #3b82f6;
+  
+  /* Acento verde */
+  --accent: #10b981;
+  --accent-dark: #059669;
+  
+  /* Grises neutros */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-700: #374151;
+  --gray-900: #111827;
+  
+  /* Sombras suaves */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  margin: 0;
-  color: #2d3748;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
 }
 
 /* Container principal */

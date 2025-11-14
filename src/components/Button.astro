@@ -1,0 +1,32 @@
+---
+interface Props {
+	variant?: 'primary' | 'secondary' | 'danger';
+	type?: 'button' | 'submit';
+}
+const { variant = 'primary', type = 'button' } = Astro.props as Props;
+---
+
+<button class={`btn btn-${variant}`} type={type}>
+  <slot />
+</button>
+
+<style>
+  .btn {
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+</style>
