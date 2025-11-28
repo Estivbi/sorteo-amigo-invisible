@@ -1,0 +1,13 @@
+---
+const props = Astro.props as Record<string, any>
+const { for: htmlFor, class: extraClass, ...rest } = props
+const finalClass = `label ${extraClass ?? (props.class ?? '')}`.trim()
+---
+
+<label for={htmlFor} class={finalClass} {...rest}>
+  <slot />
+</label>
+
+<style is:global>
+  .label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #4a5568 }
+</style>

@@ -1,0 +1,13 @@
+---
+const props = Astro.props as Record<string, any>
+const { type = 'text', id, class: extraClass, ...rest } = props
+const finalClass = `input ${extraClass ?? (props.class ?? '')}`.trim()
+---
+
+<input id={id} type={type} class={finalClass} {...rest} />
+
+<style is:global>
+  /* small input helper to match project look */
+  .input { padding: 0.6rem 0.75rem; border-radius: 0.75rem; border: 1px solid rgba(0,0,0,0.08); }
+  .input:focus { outline: none; box-shadow: 0 0 0 4px rgba(243,115,53,0.08); border-color: var(--text-primary-dark); }
+</style>

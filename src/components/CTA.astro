@@ -1,0 +1,9 @@
+---
+import Button from './Button.astro'
+const props = Astro.props as Record<string, any>
+const { variant = 'primary', size = 'md', ...rest } = props
+---
+
+<Button variant={variant} size={size} {...rest}>
+  <slot />
+</Button>

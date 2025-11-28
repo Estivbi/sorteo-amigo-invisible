@@ -1,24 +1,26 @@
 ---
 import Layout from "../layouts/Layout.astro"
+import Card from "../components/Card.astro"
+import Button from "../components/Button.astro"
 ---
 
 <Layout title="Reglas del Amigo Invisible">
   <div class="container">
     <div style="text-align: center; margin-bottom: 3rem;">
-      <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">📖 Reglas del Amigo Invisible</h1>
-      <p style="font-size: 1.1rem; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto;">
+      <h1 style="font-size: 2rem; margin-bottom: 1rem;">📖 Reglas del Amigo Invisible</h1>
+      <p style="font-size: 1rem; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto;">
         Todo lo que necesitas saber para organizar el sorteo perfecto
       </p>
     </div>
 
-    <div class="card" style="margin: 2rem auto; max-width: 800px;">
-      <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 2rem; color: #4a5568; text-align: center;">🎯 Cómo Funciona</h2>
+    <Card style="margin: 2rem auto; max-width: 800px;">
+      <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 2rem; color: #4a5568; text-align: center;">🎯 Cómo Funciona</h2>
       
       <div style="display: grid; gap: 2rem;">
         <div style="display: flex; gap: 1rem; align-items: flex-start;">
           <div style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">1</div>
           <div>
-            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">🎮 Preparación Digital</h3>
+            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">🎮 Preparación Digital</h3>
             <p style="color: #6b7280; line-height: 1.6;">Añade a todos los participantes con sus emails. Nuestra plataforma se encarga del sorteo automáticamente, sin papelitos ni recipientes.</p>
           </div>
         </div>
@@ -26,7 +28,7 @@ import Layout from "../layouts/Layout.astro"
         <div style="display: flex; gap: 1rem; align-items: flex-start;">
           <div style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">2</div>
           <div>
-            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">🎲 Sorteo Inteligente</h3>
+            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">🎲 Sorteo Inteligente</h3>
             <p style="color: #6b7280; line-height: 1.6;">El sistema asigna automáticamente a cada participante una persona a quien regalar, garantizando que nadie se toque a sí mismo y respetando las excepciones que configures.</p>
           </div>
         </div>
@@ -34,7 +36,7 @@ import Layout from "../layouts/Layout.astro"
         <div style="display: flex; gap: 1rem; align-items: flex-start;">
           <div style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">3</div>
           <div>
-            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">📧 Notificación Secreta</h3>
+            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">📧 Notificación Secreta</h3>
             <p style="color: #6b7280; line-height: 1.6;">Cada participante recibe un email privado con el nombre de la persona a quien debe regalar. Solo ellos conocen esta información.</p>
           </div>
         </div>
@@ -42,17 +44,17 @@ import Layout from "../layouts/Layout.astro"
         <div style="display: flex; gap: 1rem; align-items: flex-start;">
           <div style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">4</div>
           <div>
-            <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">🎁 ¡A Regalar!</h3>
+            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">🎁 ¡A Regalar!</h3>
             <p style="color: #6b7280; line-height: 1.6;">Los participantes compran sus regalos respetando el presupuesto acordado y mantienen el secreto hasta el día del intercambio.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="card" style="margin: 2rem auto; max-width: 800px;">
-      <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 2rem; color: #4a5568; text-align: center;">✨ Consejos Pro</h2>
+    <Card style="margin: 2rem auto; max-width: 800px;">
+      <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 2rem; color: #4a5568; text-align: center;">✨ Consejos Pro</h2>
       
-      <div style="display: grid; gap: 1.5rem;">
+      <div style="display: grid; gap: 1rem;">
         <div style="padding: 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 12px; border-left: 4px solid #667eea;">
           <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">💰 Presupuesto Justo</h4>
           <p style="color: #6b7280; margin: 0;">Establece un rango de precio que sea cómodo para todos los participantes (ej: 15-25€).</p>
@@ -76,11 +78,7 @@ import Layout from "../layouts/Layout.astro"
     </div>
 
     <div style="text-align: center; margin: 3rem 0;">
-      <a href="/crear" style="text-decoration: none;">
-        <button class="btn-primary" style="width: auto; display: inline-block; font-size: 1.1rem;">
-          🚀 ¡Crear Mi Sorteo Ahora!
-        </button>
-      </a>
+      <Button href="/crear" variant="primary">🚀 ¡Crear Mi Sorteo Ahora!</Button>
     </div>
   </div>
 

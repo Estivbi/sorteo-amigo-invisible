@@ -1,20 +1,23 @@
 ---
 import Layout from "../layouts/Layout.astro"
+import Button from "../components/Button.astro"
+import Input from "../components/Input.astro"
+import Label from "../components/Label.astro"
 ---
 
 <Layout title="Crear Sorteo - Amigo Invisible">
   <div class="container">
     <div style="text-align: center; margin-bottom: 3rem;">
-      <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">🎯 Crear Nuevo Sorteo</h1>
-      <p style="font-size: 1.1rem; color: rgba(255,255,255,0.8); max-width: 500px; margin: 0 auto;">
+      <h1 style="font-size: 2rem; margin-bottom: 1rem;">Crear Nuevo Sorteo</h1>
+      <p style="font-size: 1rem; color: rgba(255,255,255,0.8); max-width: 500px; margin: 0 auto;">
         Configura tu sorteo de amigo invisible en pocos pasos
       </p>
     </div>
 
     <form id="create-game-form" style="max-width: 700px; margin: 0 auto;">
       <div style="margin-bottom: 2rem;">
-        <label for="gameName">🎮 Nombre del Sorteo:</label>
-        <input
+        <Label for="gameName">Nombre del Sorteo:</Label>
+        <Input
           type="text"
           id="gameName"
           name="gameName"
@@ -24,8 +27,8 @@ import Layout from "../layouts/Layout.astro"
       </div>
 
       <div style="margin-bottom: 2rem;">
-        <label for="budget">💰 Presupuesto (opcional):</label>
-        <input
+        <Label for="budget">Presupuesto (opcional):</Label>
+        <Input
           type="number"
           id="budget"
           name="budget"
@@ -33,16 +36,16 @@ import Layout from "../layouts/Layout.astro"
           min="0"
         />
         <small style="color: rgba(255,255,255,0.7); font-size: 0.9rem; display: block; margin-top: 8px;">
-          💡 Deja vacío si no hay límite de presupuesto
+          Deja vacío si no hay límite de presupuesto
         </small>
       </div>
 
       <div style="margin-bottom: 2rem;">
-        <label>👥 Participantes:</label>
+        <label>Participantes:</label>
         <div id="participants-list" style="margin-top: 1rem;"></div>
-        <button type="button" id="add-participant" class="btn-secondary" style="margin-top: 1rem;">
-          ➕ Añadir Participante
-        </button>
+        <Button type="button" id="add-participant" variant="secondary" style="margin-top: 1rem;">
+          Añadir Participante
+        </Button>
       </div>
 
       <div style="margin-bottom: 2rem;">
@@ -51,14 +54,14 @@ import Layout from "../layouts/Layout.astro"
           Configura quién NO puede regalar a quién (opcional)
         </small>
         <div id="exceptions-list" style="margin-top: 1rem;"></div>
-        <button type="button" id="add-exception" class="btn-secondary" style="margin-top: 1rem; background: linear-gradient(45deg, #ed8936, #dd6b20);">
-          🚫 Añadir Excepción
-        </button>
+        <Button type="button" id="add-exception" variant="secondary" style="margin-top: 1rem; background: linear-gradient(45deg, #ed8936, #dd6b20);">
+          Añadir Excepción
+        </Button>
       </div>
 
-      <button type="submit" style="margin-top: 2rem; font-size: 1.1rem;">
-        🚀 Crear Sorteo y Enviar Correos
-      </button>
+      <Button type="submit" variant="primary" size="md" style="margin-top: 2rem; font-size: 1.1rem;">
+        Crear Sorteo y Enviar Correos
+      </Button>
     </form>
 
     <!-- Modal de éxito -->
@@ -77,22 +80,15 @@ import Layout from "../layouts/Layout.astro"
             Mantener esta web gratis cuesta tiempo y dinero. ¡Un café ayuda muchísimo!
           </p>
           <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
-            <a href="/apoyo" style="text-decoration: none;">
-              <button style="background: linear-gradient(45deg, #ffb347, #ff6b35); color: white; border: none; border-radius: 8px; padding: 10px 16px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
-                💖 Donar €1
-              </button>
-            </a>
-            <a href="/apoyo" style="text-decoration: none;">
-              <button style="background: linear-gradient(45d, #48bb78, #38a169); color: white; border: none; border-radius: 8px; padding: 10px 16px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
-                ☕ Ver Opciones
-              </button>
-            </a>
+            <!-- Enlaces a /apoyo eliminados -->
+            <Button variant="primary" size="sm">Donar</Button>
+            <Button variant="secondary" size="sm">Opciones</Button>
           </div>
         </div>
         
-        <button id="close-modal" class="btn-primary" style="width: auto; display: inline-block;">
-          ✨ ¡Perfecto!
-        </button>
+        <Button id="close-modal" variant="primary" size="md" style="width: auto; display: inline-block;">
+          ¡Perfecto!
+        </Button>
       </div>
     </div>
 

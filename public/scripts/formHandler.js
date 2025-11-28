@@ -1,5 +1,5 @@
-// src/scripts/formHandler.js
-import { handleCreateGame } from "./createGame.js"
+// Compatibility wrapper: import and run setup from CamelCase file
+import { handleCreateGame } from './createGame.js'
 
 export function setupFormHandler() {
   document.addEventListener("DOMContentLoaded", () => {
@@ -120,12 +120,22 @@ export function setupFormHandler() {
         // Filtrar excepciones válidas
         const validExceptions = exceptions.filter(ex => ex.from !== "" && ex.to !== "" && ex.from !== ex.to)
         try {
+          // Log payload for debugging (no emails content)
+          console.log('submit payload participants=', validParticipants.length, 'exceptions=', validExceptions.length)
           await handleCreateGame(gameName, budget, validParticipants, validExceptions)
           // Mostrar modal de éxito
           const modal = document.getElementById("success-modal")
           if (modal) modal.classList.remove("hidden")
         } catch (err) {
-          alert("Hubo un error al crear el juego o enviar los correos. Intenta de nuevo.")
+          console.error('create-game error', err)
+          // If server attached structured data, show it
+          if (err && err.serverData && err.serverData.error) {
+            alert(`Error: ${err.serverData.error}`)
+          } else if (err && err.message) {
+            alert(`Error: ${err.message}`)
+          } else {
+            alert("Hubo un error al crear el juego o enviar los correos. Intenta de nuevo.")
+          }
         } finally {
           if (spinner) spinner.classList.add("hidden")
         }

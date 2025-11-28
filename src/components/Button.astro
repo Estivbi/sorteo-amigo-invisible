@@ -1,32 +1,66 @@
 ---
-interface Props {
-	variant?: 'primary' | 'secondary' | 'danger';
-	type?: 'button' | 'submit';
-}
-const { variant = 'primary', type = 'button' } = Astro.props as Props;
+const props = Astro.props as Record<string, any>
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  class: extraClass,
+  ...rest
+} = props
+const finalClass = `btn variant-${variant} size-${size} ${extraClass ?? (props.class ?? '')}`.trim()
 ---
 
-<button class={`btn btn-${variant}`} type={type}>
-  <slot />
-</button>
+{/** Accessible, small button component with variants */}
+{href ? (
+  <a class={finalClass} href={href} {...rest}>
+    <slot />
+  </a>
+ ) : rest.for ? (
+  <label class={finalClass} {...rest}>
+    <slot />
+  </label>
+ ) : (
+  <button class={finalClass} {...rest}>
+    <slot />
+  </button>
+)}
 
-<style>
+<style is:global>
   .btn {
-    border: none;
-    border-radius: 0.75rem;
-    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
     font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1;
+    padding: 0.6rem 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+    text-decoration: none;
   }
-  
-  .btn-primary {
-    background: var(--primary);
-    color: white;
+
+  .btn:disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
-  
-  .btn-primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-  }
+
+  /* sizes */
+  .btn.size-sm { padding: 0.4rem 0.6rem; font-size: 0.85rem }
+  .btn.size-md { padding: 0.6rem 1rem; font-size: 0.95rem }
+  .btn.size-lg { padding: 0.85rem 1.25rem; font-size: 1rem }
+
+  /* variants — rely on CSS variables from global.css */
+  .btn.variant-primary { background: var(--btn-bg); color: var(--btn-text); }
+  .btn.variant-primary:hover { background: var(--btn-bg-hover); }
+
+  .btn.variant-secondary { background: var(--btn-secondary-bg); color: var(--btn-text); }
+  .btn.variant-secondary:hover { background: var(--btn-secondary-hover); }
+
+  .btn.variant-outline { background: transparent; border: 1px solid var(--btn-secondary-bg); color: var(--btn-text); }
+  .btn.variant-outline:hover { background: rgba(255,255,255,0.06); }
+
+  .btn.variant-ghost { background: transparent; color: var(--btn-text); }
+  .btn.variant-ghost:hover { background: rgba(255,255,255,0.04); }
 </style>

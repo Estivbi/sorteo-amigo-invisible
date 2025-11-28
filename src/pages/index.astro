@@ -1,37 +1,30 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import Card from "../components/Card.astro"
+import Button from "../components/Button.astro"
 ---
 
 <Layout title="Bienvenido a Amigo Invisible">
   <div class="container">
     <!-- Hero Section -->
     <div style="text-align: center; margin: 3rem 0;">
-      <h1 style="font-size: 3.5rem; margin-bottom: 1rem; font-weight: 800;">
-        🎭 Amigo Invisible
+      <h1 style="font-size: 2rem; margin-bottom: 1rem; font-weight: 600;">
+        Amigo Invisible
       </h1>
-      <p style="font-size: 1.25rem; color: rgba(255,255,255,0.9); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+      <p style="font-size: 1rem; color: rgba(255,255,255,0.9); margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">
         Organiza sorteos de manera fácil, divertida y completamente gratuita. 
         <strong>¡Sorprende a tus amigos, familia o compañeros de trabajo!</strong>
       </p>
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <a href="/crear" style="text-decoration: none;">
-          <button class="btn-primary" style="width: auto; display: inline-block;">
-            🎁 Crear Sorteo Ahora
-          </button>
-        </a>
-        <a href="/reglas" style="text-decoration: none;">
-          <button style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 16px 32px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: auto; display: inline-block;">
-            📖 Ver Reglas
-          </button>
-        </a>
+        <Button href="/crear" variant="primary" size="md">Crear Sorteo Ahora</Button>
+        <Button href="/reglas" variant="secondary" size="md">Ver Reglas</Button>
       </div>
     </div>
 
     <!-- Support Section -->
     <div style="text-align: center; margin: 4rem 0; padding: 0 1rem;">
       <div style="background: rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);">
-        <div style="font-size: 2.5rem; margin-bottom: 1rem;">☕</div>
+        <div style="font-size: 2.5rem; margin-bottom: 1rem;"></div>
         <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; color: rgba(255,255,255,0.95);">
           ¿Te gusta esta web?
         </h2>
@@ -40,29 +33,15 @@ import Card from "../components/Card.astro"
           ¡Cualquier ayuda es súper apreciada!
         </p>
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a href="/apoyo" style="text-decoration: none;">
-            <button style="background: linear-gradient(45deg, #ffb347, #ff6b35); color: white; border: none; border-radius: 12px; padding: 16px 24px; font-weight: 600; transition: all 0.3s ease; cursor: pointer;">
-              💖 Apoyar con €1
-            </button>
-          </a>
-          <a href="/apoyo" style="text-decoration: none;">
-            <button style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 16px 24px; font-weight: 600; transition: all 0.3s ease; cursor: pointer;">
-              💡 Ver Más Opciones
-            </button>
-          </a>
         </div>
       </div>
     </div>
 
     <!-- CTA Section -->
-    <div class="card" style="text-align: center; margin: 3rem 0; background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));">
+    <Card style="text-align: center; margin: 3rem 0; background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));">
       <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: #4a5568;">¿Listo para empezar?</h2>
       <p style="color: #6b7280; margin-bottom: 2rem; font-size: 1.1rem;">Es gratis, fácil y divertido. ¡Tu próximo amigo invisible te está esperando!</p>
-      <a href="/crear" style="text-decoration: none;">
-        <button class="btn-primary" style="width: auto; display: inline-block; font-size: 1.1rem;">
-          🚀 Comenzar Sorteo
-        </button>
-      </a>
-    </div>
+      <Button href="/crear" variant="primary" size="md">Comenzar Sorteo</Button>
+    </Card>
   </div>
 </Layout>

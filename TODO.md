@@ -11,7 +11,7 @@
 
 6. **✅ Añadir sistema de donaciones PayPal**
    - ✅ Integrar botón de donación de PayPal en el footer
-   - ✅ Añadir página dedicada de "Apoya el proyecto" (/apoyo)
+   - ✅ Página de apoyo eliminada (referencias removidas)
    - ✅ Mostrar mensaje de agradecimiento después de crear sorteo
    - ✅ Añadir opción de donación opcional en el flujo de creación
    - ✅ Crear sección "¿Te gusta esta web?" con enlace a donaciones
@@ -56,3 +56,6 @@
     - Efectos de glassmorphism más pulidos
     - Sombras dinámicas que cambien según la interacción
     - Transiciones de estado más fluidas en formularios
+
+
+he agregado clase button para reutlizar de ahi, he instalado icons de astro para usar esos, falta agregarlos en las clases y tambien mejorar la paleta de colores

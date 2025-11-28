@@ -1,9 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 /* Reset y base */
 :root {
-  /* Azul oscuro profesional */
-  --primary: #2563eb;
-  --primary-dark: #1e40af;
-  --primary-light: #3b82f6;
+  /* Tokens semánticos (mapeos a la nueva paleta naranja / grises) */
+  --primary: var(--text-primary);
+  --primary-dark: var(--text-primary-dark);
+  --primary-light: var(--text-primary-light);
+
+  /* Paleta adicional (alias para componentes) */
+  --color-primary: var(--text-primary);
+  --color-primary-dark: var(--text-primary-dark);
+  --color-secondary: #48bb78;
+  --color-danger: #f56565;
+  --color-accent: var(--text-primary-light);
   
   /* Acento verde */
   --accent: #10b981;
@@ -19,10 +28,34 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  --btn-bg: #111111;  
+  --btn-bg-hover: #222222; 
+  --btn-text: #ffffff;
+  --btn-secondary-bg: #333333;
+  --btn-secondary-hover: #444444;
+
+  --text-primary: #F37335; 
+  --text-primary-dark: #c2572b; /* darker for focus/accents */
+  --text-primary-light: #FDC830; /* light gold */
 }
 
 body {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background-color: #071226;
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(135deg, #08152b 0%, #071226 60%);
+  background-size: 8px 8px, 8px 8px, cover;
+  background-position: 0 0, 0 0, 0 0;
+  color: #E6F8FF;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Press Start 2P', 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  image-rendering: pixelated;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.6);
 }
 
 /* Container principal */
@@ -34,27 +67,37 @@ body {
 
 /* Headers y títulos */
 h1 {
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffffff;
   text-align: center;
-  font-weight: 800;
-  font-size: 2.5rem;
-  margin: 2rem 0;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-weight: 600;
+  font-size: 2rem;
+  margin: 1.2rem 0;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.6);
+}
+
+/* Párrafos globales: tamaño legible */
+p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #E6F8FF;
+}
+
+/* Subheadings and important text */
+h2, h3 {
+  color: #ffffff;
+  font-size: 0.9rem;
 }
 
 /* Cards y formularios */
 form, .card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 2rem;
-  margin: 2rem auto;
-  transition: all 0.3s ease;
+  background: rgba(10, 16, 28, 0.85);
+  border-radius: 4px; /* sharper corners for pixel style */
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.5);
+  border: 2px solid rgba(255,255,255,0.06);
+  padding: 1rem;
+  margin: 1.2rem auto;
+  transition: transform 0.08s linear;
+  font-size: 11px;
 }
 
 form:hover, .card:hover {
@@ -64,20 +107,20 @@ form:hover, .card:hover {
 
 /* Inputs y controles */
 input, textarea, select {
-  background: rgba(255, 255, 255, 0.9);
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 12px 16px;
-  font-size: 16px;
-  transition: all 0.3s ease;
+  background: rgba(255,255,255,0.04);
+  border: 2px solid rgba(255,255,255,0.06);
+  border-radius: 0px;
+  padding: 8px 10px;
+  font-size: 11px;
+  transition: box-shadow 0.08s linear, transform 0.08s linear;
   width: 100%;
 }
 
 input:focus, textarea:focus, select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  transform: scale(1.02);
+  border-color: rgba(243,115,53,0.9);
+  box-shadow: 6px 6px 0 rgba(243,115,53,0.08);
+  transform: translate(-1px,-1px);
 }
 
 /* Labels */
@@ -88,44 +131,46 @@ label {
   display: block;
 }
 
-/* Botones principales */
+/* Botones principales (usar escala de grises definida) */
 button[type="submit"], .btn-primary {
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 16px 32px;
-  font-size: 16px;
-  font-weight: 600;
+  /* Pixel button */
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 3px solid var(--btn-text);
+  border-radius: 0; /* sharp corners */
+  padding: 12px 20px;
+  font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.08s linear, box-shadow 0.08s linear;
   width: 100%;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.35);
 }
 
 button[type="submit"]:hover, .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-  background: linear-gradient(45deg, #5a67d8, #6b46c1);
+  transform: translateY(-2px) translateX(-1px);
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.45);
+  background: var(--btn-bg-hover);
 }
 
 /* Botones secundarios */
 .btn-secondary {
-  background: linear-gradient(45deg, #48bb78, #38a169);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 500;
+  background: transparent;
+  color: var(--btn-text);
+  border: 2px solid var(--btn-text);
+  border-radius: 0;
+  padding: 8px 12px;
+  font-size: 10px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.08s linear;
 }
 
 .btn-secondary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+  transform: translateY(-1px) translateX(-1px);
+  background: rgba(255,255,255,0.03);
 }
 
 /* Botón eliminar participante */

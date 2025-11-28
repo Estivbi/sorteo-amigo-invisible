@@ -16,6 +16,7 @@ const { title } = Astro.props
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.webp" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="recaptcha-sitekey" content={import.meta.env.RECAPTCHA_SITEKEY || ''} />
     <title>{title}</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   </head>
@@ -24,14 +25,12 @@ const { title } = Astro.props
       <div class="container">
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 0;">
           <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 40px; height: 40px; background: linear-gradient(45deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">🎁</div>
             <h1 style="margin: 0; font-size: 1.5rem; color: white;">Amigo Invisible</h1>
           </div>
           <nav style="display: flex; gap: 20px;">
             <a href="/" style="color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Inicio</a>
             <a href="/crear" style="color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Crear Sorteo</a>
             <a href="/reglas" style="color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Reglas</a>
-            <a href="/apoyo" style="color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">☕ Apoya</a>
           </nav>
         </div>
       </div>
@@ -43,10 +42,10 @@ const { title } = Astro.props
       <div class="container">
         <div style="text-align: center; padding: 2rem 0; color: rgba(255,255,255,0.8);">
           <div style="margin-bottom: 1rem;">
-            <p style="margin: 0 0 1rem 0;">¿Te gusta esta web? ¡Ayúdame a mantenerla gratis! ☕</p>
-            <a href="/apoyo" style="display: inline-block; background: linear-gradient(45deg, #ffb347, #ff6b35); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; transition: all 0.3s ease; border: 2px solid rgba(255,255,255,0.2);">
-              💖 Donar un Café
-            </a>
+            <p style="margin: 0 0 1rem 0;">¿Te gusta esta web? ¡Ayúdame a mantenerla gratis!</p>
+            <span style="display: inline-block; background: linear-gradient(45deg, #ffb347, #ff6b35); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 600; transition: all 0.3s ease; border: 2px solid rgba(255,255,255,0.2);">
+              Donar un Café
+            </span>
           </div>
           <p style="margin: 0; font-size: 0.9rem;">&copy; 2025 Amigo Invisible. Hecho con ❤️ para crear momentos especiales</p>
         </div>

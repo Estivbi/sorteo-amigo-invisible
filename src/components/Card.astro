@@ -1,21 +1,14 @@
 ---
-interface Props {
-  title: string
-  body: string
-  href: string
-}
-
-const { href, title, body } = Astro.props
+const props = Astro.props as Record<string, any>
+const { as = 'div', class: extraClass, ...rest } = props
+const Tag = as
+const finalClass = `card ${extraClass ?? (props.class ?? '')}`.trim()
 ---
 
-<li class="link-card bg-white shadow-md rounded-lg overflow-hidden mt-6">
-  <a href={href} class="block p-4 hover:bg-gray-100">
-    <h2 class="text-xl font-bold mb-2">
-      {title}
-      <span class="text-blue-600">&rarr;</span>
-    </h2>
-    <p class="text-gray-700">
-      {body}
-    </p>
-  </a>
-</li>
+{Tag === 'section' ? (
+  <section class={finalClass} {...rest}><slot /></section>
+) : Tag === 'article' ? (
+  <article class={finalClass} {...rest}><slot /></article>
+) : (
+  <div class={finalClass} {...rest}><slot /></div>
+)}
