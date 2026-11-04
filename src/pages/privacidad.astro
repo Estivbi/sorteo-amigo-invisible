@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = true;
+---
+
+<Layout title="Política de privacidad | Amigo Invisible" description="Qué datos usamos para hacer tu sorteo de amigo invisible y por qué no los guardamos." path="/privacidad">
+  <section class="py-12 sm:py-16">
+    <div class="prose-navidad mx-auto max-w-3xl px-4">
+      <h1 class="mb-6 text-4xl sm:text-5xl">Política de privacidad</h1>
+      <p>Esta web existe para hacer sorteos de amigo invisible. Te contamos con claridad qué ocurre con tus datos.</p>
+      <h2 class="text-2xl">Qué datos usamos</h2>
+      <p>El nombre, el correo y, si se indican, las ideas de regalo de cada participante, además del nombre del sorteo, el presupuesto y la fecha.</p>
+      <h2 class="text-2xl">Para qué</h2>
+      <p>Únicamente para realizar el sorteo, enviar a cada participante su correo y permitirle consultar y editar su lista de deseos. No los usamos para publicidad ni los cedemos a terceros.</p>
+      <h2 class="text-2xl">Qué guardamos y cuánto tiempo</h2>
+      <p><strong>Los correos electrónicos no se guardan nunca</strong>: se usan para enviar los emails y se descartan.</p>
+      <p>Para que cada participante pueda ver la lista de deseos de su amigo invisible y editar la suya, guardamos de forma temporal el nombre de cada participante, su lista de deseos, el nombre de la persona a quien regala, el nombre del sorteo, el presupuesto y la fecha. Se asocian a un enlace privado y aleatorio que solo recibe cada participante.</p>
+      <p>Estos datos se borran automáticamente 7 días después de la fecha del intercambio (o a los 45 días si no indicaste fecha).</p>
+      <h2 class="text-2xl">Proveedores</h2>
+      <p>Para enviar los correos usamos un proveedor de email transaccional, para guardar temporalmente las listas un servicio de base de datos en la nube (Upstash Redis) y, para evitar abusos, Google reCAPTCHA.</p>
+      <h2 class="text-2xl">Importante</h2>
+      <p>Introduce solo los datos de personas que saben que participan en el sorteo.</p>
+    </div>
+  </section>
+</Layout>

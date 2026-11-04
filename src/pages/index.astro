@@ -1,47 +1,143 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import Card from "../components/Card.astro"
-import Button from "../components/Button.astro"
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Faq from '../components/Faq.astro';
+import { Icon } from 'astro-icon/components';
+import { landings } from '../data/landings';
+
+export const prerender = true;
+
+const faq = [
+  { q: '¿El sorteo de amigo invisible es gratis?', a: 'Sí. Crear el sorteo y enviar los correos es gratis y no necesitas registrarte ni dar una tarjeta.' },
+  { q: '¿Cuántas personas pueden participar?', a: 'Entre 3 y 40 personas por sorteo. Con menos de 3 no habría secreto.' },
+  { q: '¿Puedo evitar que dos personas se toquen entre sí?', a: 'Sí. Añade excepciones para parejas, hermanos o para quien ya se regaló el año pasado.' },
+  { q: '¿Quién puede ver quién regala a quién?', a: 'Solo cada participante ve a quién le toca. El organizador tampoco ve el resultado, así que puede participar con total sorpresa.' },
+  { q: '¿Guardáis mis datos o los correos?', a: 'Los correos no se guardan nunca: solo se usan para enviar los emails. Para que cada persona pueda editar su lista de deseos guardamos temporalmente su nombre y su lista, y se borran solos unos días después del intercambio.' },
+  { q: '¿Qué pasa si no llega el correo?', a: 'Revisa la carpeta de spam o correo no deseado. Si tampoco está allí, repite el sorteo comprobando que la dirección es correcta.' },
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+const appLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Amigo Invisible',
+  applicationCategory: 'LifestyleApplication',
+  operatingSystem: 'Web',
+  inLanguage: 'es-ES',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+};
 ---
 
-<Layout title="Bienvenido a Amigo Invisible">
-  <div class="container">
-    <!-- Hero Section -->
-    <div style="text-align: center; margin: 3rem 0;">
-      <h1 style="font-size: 2rem; margin-bottom: 1rem; font-weight: 600;">
-        Amigo Invisible
-      </h1>
-      <p style="font-size: 1rem; color: rgba(255,255,255,0.9); margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-        Organiza sorteos de manera fácil, divertida y completamente gratuita. 
-        <strong>¡Sorprende a tus amigos, familia o compañeros de trabajo!</strong>
-      </p>
-      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <Button href="/crear" variant="primary" size="md">Crear Sorteo Ahora</Button>
-        <Button href="/reglas" variant="secondary" size="md">Ver Reglas</Button>
+<Layout
+  title="Amigo invisible online gratis: sorteo en 2 minutos | Amigo Invisible"
+  description="Organiza tu amigo invisible online, gratis y sin registro. Añade participantes, excepciones, presupuesto y lista de deseos; cada uno recibe su asignación por email."
+  path="/"
+  jsonLd={[faqLd, appLd]}
+>
+  <Hero trineo>
+    <span class="mb-3 inline-block text-sm font-extrabold uppercase tracking-wider text-accent">Navidad 2026 · Gratis · Sin registro</span>
+    <h1 class="mb-4 text-4xl text-white sm:text-5xl lg:text-6xl">Tu amigo invisible,<br />listo en 2 minutos</h1>
+    <p class="mb-7 max-w-2xl text-lg text-[#ffe9d2] sm:text-xl">
+      Escribe quién participa, añade las excepciones que quieras y nosotros hacemos el sorteo. Cada persona recibe en su correo a quién le toca regalar, con presupuesto, fecha y lista de deseos.
+    </p>
+    <div class="flex flex-col gap-3 sm:flex-row">
+      <a class="btn btn-accent btn-lg w-full sm:w-auto" href="/crear"><Icon name="lucide:gift" aria-hidden="true" /> Crear mi sorteo gratis</a>
+      <a class="btn btn-lg w-full border-0 bg-white text-primary hover:bg-oro-suave sm:w-auto" href="/reglas">Cómo funciona</a>
+    </div>
+    <p class="mt-5 text-sm text-[#ffd9bd]">✔ Sin cuentas ni contraseñas &nbsp; ✔ Nunca guardamos tus correos &nbsp; ✔ Funciona desde el móvil</p>
+  </Hero>
+
+  <section class="py-12 sm:py-16">
+    <div class="mx-auto max-w-5xl px-4">
+      <div class="mb-8 text-center">
+        <span class="mb-2 inline-block text-sm font-extrabold uppercase tracking-wider text-secondary">Cómo funciona</span>
+        <h2 class="text-3xl sm:text-4xl">Tres pasos y a regalar</h2>
+      </div>
+      <div class="grid gap-4 md:grid-cols-3">
+        <div class="card border border-base-300 bg-base-100"><div class="card-body"><span class="badge badge-secondary badge-lg size-10 rounded-full font-extrabold">1</span><h3 class="card-title">Añade a los participantes</h3><p>Nombre y correo de cada persona. Si quieres, deja que cada uno indique ideas de regalo.</p></div></div>
+        <div class="card border border-base-300 bg-base-100"><div class="card-body"><span class="badge badge-secondary badge-lg size-10 rounded-full font-extrabold">2</span><h3 class="card-title">Configura las reglas</h3><p>Presupuesto, fecha del intercambio y excepciones: quién no puede regalar a quién.</p></div></div>
+        <div class="card border border-base-300 bg-base-100"><div class="card-body"><span class="badge badge-secondary badge-lg size-10 rounded-full font-extrabold">3</span><h3 class="card-title">Sortea y listo</h3><p>Cada participante recibe un email privado con su amigo invisible. Tú no ves el resultado.</p></div></div>
       </div>
     </div>
+  </section>
 
-    <!-- Support Section -->
-    <div style="text-align: center; margin: 4rem 0; padding: 0 1rem;">
-      <div style="background: rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);">
-        <div style="font-size: 2.5rem; margin-bottom: 1rem;"></div>
-        <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; color: rgba(255,255,255,0.95);">
-          ¿Te gusta esta web?
-        </h2>
-        <p style="color: rgba(255,255,255,0.8); margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-          Esta web es <strong>completamente gratuita</strong>, pero mantenerla funcional requiere tiempo y recursos. 
-          ¡Cualquier ayuda es súper apreciada!
-        </p>
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        </div>
+  <section class="border-y border-base-300 bg-crema py-12 sm:py-16">
+    <div class="mx-auto max-w-5xl px-4">
+      <div class="mb-8 text-center">
+        <span class="mb-2 inline-block text-sm font-extrabold uppercase tracking-wider text-secondary">Por qué nos eligen</span>
+        <h2 class="text-3xl sm:text-4xl">Pensado para que nada salga mal</h2>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {[
+          ['target', 'Sorteo justo', 'Nadie se toca a sí mismo y se respetan todas las excepciones.'],
+          ['notebook-pen', 'Lista de deseos editable', 'Cada participante añade o cambia sus ideas desde su correo y su amigo invisible ve siempre la versión actual.'],
+          ['calendar-days', 'Fecha y calendario', 'El correo incluye un enlace para guardar el día del intercambio.'],
+          ['lock', 'Privado de verdad', 'Nunca guardamos correos. Cada email lleva solo su asignación y tú no ves el resultado.'],
+          ['smartphone', 'Desde el móvil', 'Crea el sorteo en el sofá y lo tienes hecho en un par de minutos.'],
+          ['piggy-bank', 'Gratis', 'Sin cuotas ni anuncios. Si te gusta, invítanos a un café.'],
+        ].map(([icono, titulo, texto]) => (
+          <div class="card border border-base-300 bg-base-100"><div class="card-body"><Icon name={`lucide:${icono}`} class="size-8 text-primary" aria-hidden="true" /><h3 class="card-title">{titulo}</h3><p>{texto}</p></div></div>
+        ))}
       </div>
     </div>
+  </section>
 
-    <!-- CTA Section -->
-    <Card style="text-align: center; margin: 3rem 0; background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));">
-      <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: #4a5568;">¿Listo para empezar?</h2>
-      <p style="color: #6b7280; margin-bottom: 2rem; font-size: 1.1rem;">Es gratis, fácil y divertido. ¡Tu próximo amigo invisible te está esperando!</p>
-      <Button href="/crear" variant="primary" size="md">Comenzar Sorteo</Button>
-    </Card>
-  </div>
+  <section class="py-12 sm:py-16">
+    <div class="mx-auto max-w-5xl px-4">
+      <div class="mb-8 text-center">
+        <span class="mb-2 inline-block text-sm font-extrabold uppercase tracking-wider text-secondary">Para cada ocasión</span>
+        <h2 class="text-3xl sm:text-4xl">¿Con quién haces el amigo invisible?</h2>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {landings.map((l) => (
+          <a class="card border border-base-300 bg-base-100 text-inherit no-underline transition hover:-translate-y-1 hover:shadow-lg motion-reduce:transition-none" href={`/amigo-invisible/${l.slug}`}>
+            <div class="card-body">
+              <Icon name={l.icon} class="size-8 text-primary" aria-hidden="true" />
+              <h3 class="card-title">{l.nav}</h3>
+              <p class="text-sm text-tinta-suave">{l.intro.split('. ')[0]}.</p>
+            </div>
+          </a>
+        ))}
+      </div>
+      <p class="mt-6 text-center"><a class="link link-primary inline-block py-2 font-bold" href="/ideas-regalo">¿Sin ideas? Mira regalos para 5, 10, 20 y 30 €</a></p>
+    </div>
+  </section>
+
+  <section class="bg-secondary py-12 text-secondary-content sm:py-16">
+    <div class="mx-auto grid max-w-5xl items-center gap-8 px-4 md:grid-cols-[1.4fr_1fr]">
+      <div>
+        <span class="mb-2 inline-block text-sm font-extrabold uppercase tracking-wider text-accent">Para soñar un poco</span>
+        <h2 class="mb-3 text-3xl text-white sm:text-4xl">¿Y si el regalo es un viaje a Laponia?</h2>
+        <p class="mb-5">En Rovaniemi, justo en el Círculo Polar Ártico, está la Aldea de Papá Noel: renos, huskies, aurora boreal y el buzón de las cartas a Santa. Un plan de Navidad que se recuerda toda la vida.</p>
+        <a class="btn btn-accent w-full sm:w-auto" href="https://santaclausvillage.info/" target="_blank" rel="noopener noreferrer"><Icon name="lucide:plane" aria-hidden="true" /> Descubrir la Aldea de Papá Noel</a>
+      </div>
+      <div class="rounded-box border border-white/25 bg-white/10 p-6">
+        <h3 class="mb-3 text-xl text-white">Lo que no te puedes perder</h3>
+        <ul class="list-disc space-y-1 ps-5">
+          <li>Cruzar la línea del Círculo Polar Ártico</li>
+          <li>Conocer a Papá Noel en su oficina</li>
+          <li>Paseo en trineo de renos o de huskies</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-base-300 bg-crema py-12 sm:py-16">
+    <div class="mx-auto max-w-3xl px-4">
+      <h2 class="mb-6 text-center text-3xl sm:text-4xl">Preguntas frecuentes</h2>
+      <Faq items={faq} />
+    </div>
+  </section>
+
+  <section class="py-12 sm:py-16">
+    <div class="mx-auto max-w-3xl px-4 text-center">
+      <h2 class="mb-3 text-3xl sm:text-4xl">¿Listo para repartir sorpresas?</h2>
+      <p class="mb-6 text-lg text-tinta-suave">Crear el sorteo lleva menos que escribir el mensaje en el grupo de WhatsApp.</p>
+      <a class="btn btn-primary btn-lg w-full sm:w-auto" href="/crear">Crear sorteo gratis</a>
+    </div>
+  </section>
 </Layout>

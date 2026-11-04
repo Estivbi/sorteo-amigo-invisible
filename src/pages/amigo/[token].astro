@@ -1,0 +1,93 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+import { leerRegistro } from '../../lib/almacen';
+
+export const prerender = false;
+
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+let yo = null;
+let amigo = null;
+try {
+  yo = await leerRegistro(Astro.params.token ?? '');
+  amigo = yo ? await leerRegistro(yo.r) : null;
+} catch {
+  yo = null;
+}
+if (!yo) Astro.response.status = 404;
+const eur = (n: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(n);
+const fecha = (d: string) => new Intl.DateTimeFormat('es-ES', { dateStyle: 'full', timeZone: 'UTC' }).format(new Date(`${d}T00:00:00Z`));
+---
+
+<Layout title="Tu amigo invisible | Amigo Invisible" description="Tu página privada del amigo invisible." noindex privado>
+  <section class="py-10 sm:py-14">
+    <div class="mx-auto max-w-2xl px-4">
+      {!yo ? (
+        <div class="text-center">
+          <Icon name="lucide:snowflake" class="mx-auto mb-3 size-16 text-primary" aria-hidden="true" />
+          <h1 class="mb-3 text-3xl sm:text-4xl">Este enlace ya no está activo</h1>
+          <p class="mb-6 text-lg text-tinta-suave">Los datos del sorteo se borran solos unos días después del intercambio. Si todavía lo necesitas, pide a quien lo organizó que repita el sorteo.</p>
+          <a class="btn btn-primary btn-lg w-full sm:w-auto" href="/crear">Crear un sorteo nuevo</a>
+        </div>
+      ) : (
+        <>
+          <div class="text-center">
+            <p class="mb-1 font-bold text-secondary">{yo.g}</p>
+            <h1 class="text-3xl sm:text-4xl">Hola, {yo.n}</h1>
+          </div>
+
+          <div class="card my-6 border border-base-300 bg-base-100"><div class="card-body">
+            <p class="font-bold">Te toca regalar a</p>
+            <p class="font-display text-4xl font-extrabold text-primary">{amigo?.n ?? '…'}</p>
+            <p><strong>Sus ideas:</strong> {amigo?.w ? amigo.w : 'todavía no ha añadido ideas. Vuelve a mirar más adelante.'}</p>
+            {yo.b && <p><strong>Presupuesto:</strong> {eur(yo.b)}</p>}
+            {yo.d && <p><strong>Intercambio:</strong> {fecha(yo.d)}</p>}
+          </div></div>
+
+          <div class="card border border-base-300 bg-base-100"><div class="card-body">
+            <h2 class="card-title text-2xl">Tu lista de deseos</h2>
+            <p class="text-tinta-suave">Escribe ideas para que tu amigo invisible acierte. Puedes cambiarla cuando quieras y la verá siempre actualizada.</p>
+            <form id="lista-form" novalidate class="space-y-4">
+              <div class="flex flex-col gap-1">
+                <label class="font-bold" for="wishlist">Mis ideas de regalo</label>
+                <textarea class="textarea w-full" id="wishlist" name="wishlist" rows="3" maxlength="200" placeholder="Ej: libros de misterio, café, calcetines">{yo.w}</textarea>
+                <small class="text-sm text-tinta-suave"><span id="contador">{yo.w.length}</span>/200</small>
+              </div>
+              <button type="submit" class="btn btn-primary w-full sm:w-auto" id="guardar">
+                <Icon name="lucide:save" aria-hidden="true" /> Guardar mi lista
+              </button>
+              <p id="estado" role="status" class="text-sm text-tinta-suave"></p>
+            </form>
+          </div></div>
+          <p class="mt-5 text-center text-sm text-tinta-suave">Es tu enlace privado: no lo compartas. Se borra solo unos días después del intercambio.</p>
+        </>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const form = document.getElementById('lista-form') as HTMLFormElement | null;
+  if (form) {
+    const area = document.getElementById('wishlist') as HTMLTextAreaElement;
+    const contador = document.getElementById('contador')!;
+    const estado = document.getElementById('estado')!;
+    const boton = document.getElementById('guardar') as HTMLButtonElement;
+    const token = location.pathname.split('/').pop() ?? '';
+    area.addEventListener('input', () => { contador.textContent = String(area.value.length); estado.textContent = ''; });
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      boton.disabled = true;
+      estado.textContent = 'Guardando…';
+      try {
+        const res = await fetch('/api/lista', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, wishlist: area.value }) });
+        const data = (await res.json().catch(() => ({}))) as { mensaje?: string };
+        estado.textContent = res.ok ? '✔ Guardado. Tu amigo invisible ya verá la versión nueva.' : data.mensaje || 'No se ha podido guardar.';
+      } catch {
+        estado.textContent = 'No se ha podido guardar. Comprueba la conexión.';
+      } finally {
+        boton.disabled = false;
+      }
+    });
+  }
+</script>

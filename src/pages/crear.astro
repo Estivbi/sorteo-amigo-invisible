@@ -1,115 +1,97 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import Button from "../components/Button.astro"
-import Input from "../components/Input.astro"
-import Label from "../components/Label.astro"
+import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+
+export const prerender = true;
+const donateUrl = import.meta.env.PUBLIC_DONATE_URL || '';
 ---
 
-<Layout title="Crear Sorteo - Amigo Invisible">
-  <div class="container">
-    <div style="text-align: center; margin-bottom: 3rem;">
-      <h1 style="font-size: 2rem; margin-bottom: 1rem;">Crear Nuevo Sorteo</h1>
-      <p style="font-size: 1rem; color: rgba(255,255,255,0.8); max-width: 500px; margin: 0 auto;">
-        Configura tu sorteo de amigo invisible en pocos pasos
-      </p>
-    </div>
-
-    <form id="create-game-form" style="max-width: 700px; margin: 0 auto;">
-      <div style="margin-bottom: 2rem;">
-        <Label for="gameName">Nombre del Sorteo:</Label>
-        <Input
-          type="text"
-          id="gameName"
-          name="gameName"
-          placeholder="Ej: Amigo Invisible de la Oficina 2025"
-          required
-        />
+<Layout
+  title="Crear sorteo de amigo invisible gratis | Amigo Invisible"
+  description="Crea tu sorteo de amigo invisible online: añade participantes, presupuesto, fecha y excepciones. Cada uno recibe su asignación por email. Gratis y sin registro."
+  path="/crear"
+>
+  <section class="py-10 sm:py-14">
+    <div class="mx-auto max-w-3xl px-4">
+      <div class="mb-6 text-center">
+        <h1 class="mb-3 text-3xl sm:text-5xl">Crea tu sorteo</h1>
+        <p class="mx-auto max-w-xl text-lg text-tinta-suave">Los correos no se guardan nunca. Solo guardamos nombres y listas de deseos unos días, para que cada uno pueda editar la suya.</p>
       </div>
 
-      <div style="margin-bottom: 2rem;">
-        <Label for="budget">Presupuesto (opcional):</Label>
-        <Input
-          type="number"
-          id="budget"
-          name="budget"
-          placeholder="Ej: 25"
-          min="0"
-        />
-        <small style="color: rgba(255,255,255,0.7); font-size: 0.9rem; display: block; margin-top: 8px;">
-          Deja vacío si no hay límite de presupuesto
-        </small>
-      </div>
+      <div class="card border border-base-300 bg-base-100 shadow-lg">
+        <div class="card-body p-4 sm:p-8">
+          <form id="create-game-form" novalidate class="space-y-8">
+            <div id="form-error" class="alert alert-error alert-soft" role="alert" tabindex="-1" hidden></div>
 
-      <div style="margin-bottom: 2rem;">
-        <label>Participantes:</label>
-        <div id="participants-list" style="margin-top: 1rem;"></div>
-        <Button type="button" id="add-participant" variant="secondary" style="margin-top: 1rem;">
-          Añadir Participante
-        </Button>
-      </div>
+            <fieldset class="space-y-4">
+              <legend class="mb-1 font-display text-2xl font-bold">1. Datos del sorteo</legend>
+              <div class="flex flex-col gap-1">
+                <label class="font-bold" for="gameName">Nombre del sorteo</label>
+                <input class="input w-full" type="text" id="gameName" name="gameName" maxlength="80" placeholder="Ej: Amigo invisible de la oficina" required />
+              </div>
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div class="flex flex-col gap-1">
+                  <label class="font-bold" for="budget">Presupuesto en € (opcional)</label>
+                  <input class="input w-full" type="number" id="budget" name="budget" min="0" max="10000" step="1" inputmode="decimal" placeholder="Ej: 20" />
+                </div>
+                <div class="flex flex-col gap-1">
+                  <label class="font-bold" for="eventDate">Fecha del intercambio (opcional)</label>
+                  <input class="input w-full" type="date" id="eventDate" name="eventDate" />
+                </div>
+              </div>
+            </fieldset>
 
-      <div style="margin-bottom: 2rem;">
-        <label>🚫 Excepciones:</label>
-        <small style="color: rgba(255,255,255,0.7); font-size: 0.9rem; display: block; margin-bottom: 1rem;">
-          Configura quién NO puede regalar a quién (opcional)
-        </small>
-        <div id="exceptions-list" style="margin-top: 1rem;"></div>
-        <Button type="button" id="add-exception" variant="secondary" style="margin-top: 1rem; background: linear-gradient(45deg, #ed8936, #dd6b20);">
-          Añadir Excepción
-        </Button>
-      </div>
+            <fieldset>
+              <legend class="mb-1 font-display text-2xl font-bold">2. Participantes</legend>
+              <p class="mb-4 text-tinta-suave">Mínimo 3 y máximo 40. Cada uno puede indicar ideas de regalo ahora, y podrá cambiarlas después desde su correo.</p>
+              <div id="participants-list"></div>
+              <button type="button" id="add-participant" class="btn btn-outline btn-primary w-full sm:w-auto"><Icon name="lucide:plus" aria-hidden="true" /> Añadir participante</button>
+            </fieldset>
 
-      <Button type="submit" variant="primary" size="md" style="margin-top: 2rem; font-size: 1.1rem;">
-        Crear Sorteo y Enviar Correos
-      </Button>
-    </form>
+            <fieldset>
+              <legend class="mb-1 font-display text-2xl font-bold">3. Excepciones (opcional)</legend>
+              <p class="mb-4 text-tinta-suave">Útil para parejas, hermanos o quien ya se regaló el año pasado.</p>
+              <div id="exceptions-list"></div>
+              <button type="button" id="add-exception" class="btn btn-ghost w-full border-base-300 sm:w-auto"><Icon name="lucide:plus" aria-hidden="true" /> Añadir excepción</button>
+            </fieldset>
 
-    <!-- Modal de éxito -->
-    <div id="success-modal" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 hidden">
-      <div class="modal-content bg-white rounded-lg shadow-lg p-8 max-w-lg text-center">
-        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
-        <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; color: #22c55e;">¡Sorteo Creado!</h2>
-        <p style="margin-bottom: 2rem; color: #6b7280; line-height: 1.6;">Los correos han sido enviados a todos los participantes con sus asignaciones secretas.</p>
-        
-        <!-- Sección de donación -->
-        <div style="background: linear-gradient(45deg, #f0f9ff, #e0f2fe); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; border: 1px solid #e0f2fe;">
-          <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.8rem; color: #0369a1;">
-            ☕ ¿Te ha sido útil?
-          </h3>
-          <p style="font-size: 0.9rem; color: #0369a1; margin-bottom: 1rem; line-height: 1.4;">
-            Mantener esta web gratis cuesta tiempo y dinero. ¡Un café ayuda muchísimo!
-          </p>
-          <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
-            <!-- Enlaces a /apoyo eliminados -->
-            <Button variant="primary" size="sm">Donar</Button>
-            <Button variant="secondary" size="sm">Opciones</Button>
+            <div class="honeypot" aria-hidden="true">
+              <label for="website">No rellenar</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <div>
+              <button type="submit" id="submit-btn" class="btn btn-primary btn-lg w-full">
+                <span class="loading loading-spinner" aria-hidden="true" hidden></span>
+                <span id="submit-label">Sortear y enviar correos</span>
+              </button>
+              <p class="mt-3 text-center text-sm text-tinta-suave">Protegido por reCAPTCHA de Google.</p>
+            </div>
+          </form>
+
+          <div id="success" class="py-4 text-center" tabindex="-1" role="status" hidden>
+            <Icon name="lucide:party-popper" class="mx-auto mb-3 size-16 text-primary" aria-hidden="true" />
+            <h2 class="mb-2 text-3xl">¡Sorteo hecho!</h2>
+            <p id="success-msg" class="mb-6 text-tinta-suave">Hemos enviado a cada participante su amigo invisible. Si alguien no lo ve, que revise el spam.</p>
+            <div class="flex flex-col justify-center gap-3 sm:flex-row">
+              <a id="share-wa" class="btn btn-primary" target="_blank" rel="noopener">Avisar al grupo por WhatsApp</a>
+              <a class="btn btn-outline btn-primary" href="/crear">Hacer otro sorteo</a>
+            </div>
+            {donateUrl && (
+              <div class="mt-8 rounded-box border border-accent bg-oro-suave p-5">
+                <h3 class="mb-1 text-xl"><Icon name="lucide:coffee" aria-hidden="true" /> ¿Te ha sido útil?</h3>
+                <p class="mb-3">Mantener esta web gratis cuesta tiempo y dinero. Un café ayuda mucho.</p>
+                <a class="btn btn-accent" href={donateUrl} target="_blank" rel="noopener">Invitar a un café</a>
+              </div>
+            )}
           </div>
         </div>
-        
-        <Button id="close-modal" variant="primary" size="md" style="width: auto; display: inline-block;">
-          ¡Perfecto!
-        </Button>
       </div>
     </div>
-
-    <!-- Spinner de carga -->
-    <div id="loading-spinner" class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
-      <div class="modal-content text-center" style="background: rgba(255,255,255,0.95); padding: 3rem;">
-        <div style="margin-bottom: 2rem;">
-          <div style="width: 60px; height: 60px; border: 4px solid #e2e8f0; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-        </div>
-        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: #4a5568;">Creando tu sorteo...</h3>
-        <p style="color: #6b7280;">Enviando correos a todos los participantes</p>
-      </div>
-    </div>
-  </div>
+  </section>
 </Layout>
 
-<style>
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-</style>
-
-<script type="module" src="/scripts/formHandler.js" defer></script>
+<script>
+  import { iniciarFormulario } from '../scripts/crear';
+  iniciarFormulario();
+</script>
