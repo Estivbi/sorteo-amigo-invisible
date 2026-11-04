@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { Icon } from 'astro-icon/components';
 import { landings } from '../data/landings';
+import { AVISO_AMAZON } from '../lib/afiliados';
 
 interface Props {
   title: string;
@@ -33,6 +34,7 @@ const canonical = new URL(path === '/' ? '/' : path.replace(/\/$/, ''), site).to
 const ogImageUrl = new URL(ogImage, site).toString();
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 const donateUrl = import.meta.env.PUBLIC_DONATE_URL || '';
+const hayAfiliados = Boolean(import.meta.env.PUBLIC_AMAZON_TAG);
 
 const base = [
   {
@@ -148,11 +150,11 @@ const links = [
           <p>El sorteo de amigo invisible online más sencillo: gratis, sin registro y sin guardar tus correos.</p>
         </aside>
         <nav aria-label="Sorteos para cada ocasión">
-          <h2 class="footer-title text-accent opacity-100">Sorteos para cada ocasión</h2>
+          <h2 class="footer-title text-accent normal-case tracking-normal">Sorteos para cada ocasión</h2>
           {landings.map((l) => <a class="link link-hover" href={`/amigo-invisible/${l.slug}`}>{l.nav}</a>)}
         </nav>
         <nav aria-label="Más enlaces">
-          <h2 class="footer-title text-accent opacity-100">Más</h2>
+          <h2 class="footer-title text-accent normal-case tracking-normal">Más</h2>
           <a class="link link-hover" href="/crear">Crear sorteo</a>
           <a class="link link-hover" href="/ideas-regalo">Ideas de regalo</a>
           <a class="link link-hover" href="/reglas">Reglas y consejos</a>
@@ -160,7 +162,10 @@ const links = [
           {donateUrl && <a class="link link-hover" href={donateUrl} rel="noopener" target="_blank"><Icon name="lucide:coffee" aria-hidden="true" /> Invítanos a un café</a>}
         </nav>
       </div>
-      <p class="mx-auto max-w-5xl border-t border-white/20 px-4 py-4 text-sm">&copy; {new Date().getFullYear()} Amigo Invisible. Hecho con cariño para que la Navidad se parezca más a una fiesta.</p>
+      <div class="mx-auto max-w-5xl border-t border-white/20 px-4 py-4 text-sm">
+        {hayAfiliados && <p class="mb-2">{AVISO_AMAZON}</p>}
+        <p>&copy; {new Date().getFullYear()} Amigo Invisible. Hecho con cariño para que la Navidad se parezca más a una fiesta.</p>
+      </div>
     </footer>
     <script>
       import '../scripts/nieve';

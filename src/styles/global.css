@@ -81,6 +81,7 @@
   .prose-navidad p { margin-bottom: 1em; }
 
   .honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .footer-title { text-transform: none; letter-spacing: 0; font-size: 1rem; font-weight: 800; opacity: 1; }
   .footer a.link { padding-block: 0.75rem; }
   @media (min-width: 640px) { .footer a.link { padding-block: 0.3rem; } }
   svg[data-icon] { width: 1.25em; height: 1.25em; flex-shrink: 0; vertical-align: -0.2em; }

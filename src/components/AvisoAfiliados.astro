@@ -1,0 +1,13 @@
+---
+import { AVISO_AMAZON } from '../lib/afiliados';
+
+interface Props { class?: string }
+const { class: clase = '' } = Astro.props;
+const activo = Boolean(import.meta.env.PUBLIC_AMAZON_TAG);
+---
+
+{activo && (
+  <p class:list={['text-sm text-tinta-suave', clase]}>
+    <strong>Enlaces de afiliado:</strong> si compras desde ellos, la web recibe una pequeña comisión y a ti no te cuesta nada más. {AVISO_AMAZON}
+  </p>
+)}

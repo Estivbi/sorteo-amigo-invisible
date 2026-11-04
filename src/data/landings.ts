@@ -4,6 +4,8 @@ export interface Landing {
   icon: string;
   title: string;
   description: string;
+  /** Frase corta para las tarjetas de la portada. */
+  resumen: string;
   h1: string;
   intro: string;
   tips: { titulo: string; texto: string }[];
@@ -19,6 +21,7 @@ export const landings: Landing[] = [
     title: 'Amigo invisible para la oficina y el trabajo: sorteo online gratis',
     description:
       'Organiza el amigo invisible de la oficina en 2 minutos: sorteo online gratis, excepciones entre compañeros, presupuesto y aviso por email. Sin registro.',
+    resumen: 'Presupuesto cerrado y excepciones entre compañeros.',
     h1: 'Amigo invisible de la oficina, sin líos',
     intro:
       'Reunir a todo el equipo, fijar un presupuesto y que nadie se toque a sí mismo es más difícil de lo que parece. Aquí lo haces en dos minutos y cada compañero recibe su asignación por email.',
@@ -42,6 +45,7 @@ export const landings: Landing[] = [
     title: 'Amigo invisible en familia: sorteo online gratis con excepciones',
     description:
       'Sorteo de amigo invisible para la familia: evita que parejas o hermanos se toquen entre sí, añade lista de deseos y envía las asignaciones por email. Gratis.',
+    resumen: 'Sin que se toquen las parejas y con lista de deseos.',
     h1: 'Amigo invisible en familia, sin que se toquen las parejas',
     intro:
       'En Navidad, regalar a todos sale caro. Con un amigo invisible cada uno compra un solo regalo, y mejor pensado. Configura quién no puede regalar a quién y deja que la suerte haga el resto.',
@@ -65,6 +69,7 @@ export const landings: Landing[] = [
     title: 'Amigo invisible entre amigos: crea el sorteo online en 2 minutos',
     description:
       'Haz el amigo invisible con tu grupo de amigos: sorteo online gratis, sin registro, con presupuesto, lista de deseos y fecha del intercambio por email.',
+    resumen: 'Sin papelitos ni quedadas: cada uno lo recibe en el móvil.',
     h1: 'Amigo invisible con tu grupo de amigos',
     intro:
       'Quedar todos a la vez ya es un reto. Con el sorteo online nadie tiene que estar presente: cada amigo recibe su asignación en el móvil y el secreto queda a salvo hasta el día del intercambio.',
@@ -88,6 +93,7 @@ export const landings: Landing[] = [
     title: 'Sorteo de amigo invisible online gratis, sin registro',
     description:
       'Sorteo de amigo invisible online gratis y sin registro. Añade participantes, excepciones y presupuesto, y cada uno recibe su amigo invisible por email.',
+    resumen: 'Gratis, sin registro y listo en dos minutos.',
     h1: 'Sorteo de amigo invisible online, gratis y sin registro',
     intro:
       'Escribe los participantes, añade las excepciones que quieras y pulsa un botón. Cada persona recibe en su correo a quién le toca regalar, con el presupuesto y, si quiere, su lista de deseos.',
