@@ -121,8 +121,13 @@ const links = [
           </nav>
           <a class="btn btn-primary" href="/crear">Crear sorteo</a>
           <details class="dropdown dropdown-end md:hidden" id="menu-movil">
-            <summary class="btn btn-ghost btn-square" aria-label="Abrir el menú"><Icon name="lucide:menu" class="size-6" aria-hidden="true" /></summary>
-            <ul class="menu dropdown-content z-40 mt-3 w-64 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
+            <summary class="btn btn-ghost btn-square" aria-label="Menú">
+              <span class="relative block size-6" aria-hidden="true">
+                <Icon name="lucide:menu" class="icono-menu absolute inset-0 !size-6" />
+                <Icon name="lucide:x" class="icono-x absolute inset-0 !size-6" />
+              </span>
+            </summary>
+            <ul class="menu menu-panel dropdown-content z-40 mt-3 w-64 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
               {links.map((l) => <li><a class="py-3 font-bold" href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a></li>)}
               <li class="menu-title mt-2">Sorteos para cada ocasión</li>
               {landings.map((l) => <li><a class="py-3" href={`/amigo-invisible/${l.slug}`}><Icon name={l.icon} aria-hidden="true" /> {l.nav}</a></li>)}
