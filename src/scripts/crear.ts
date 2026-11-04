@@ -43,7 +43,7 @@ export function iniciarFormulario() {
   const listaE = document.getElementById('exceptions-list')!;
   const errorBox = document.getElementById('form-error')!;
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
-  const spinner = submitBtn.querySelector('.spinner')!;
+  const spinner = submitBtn.querySelector<HTMLElement>('.loading')!;
   const submitLabel = document.getElementById('submit-label')!;
 
   let contador = 0;
@@ -53,23 +53,23 @@ export function iniciarFormulario() {
 
   const mostrarError = (msg: string) => {
     errorBox.textContent = msg;
-    errorBox.classList.remove('hidden');
+    errorBox.hidden = false;
     errorBox.focus();
     errorBox.scrollIntoView({ block: 'center', behavior: 'smooth' });
   };
 
   function campo(id: string, etiqueta: string, tipo: string, valor: string, extra: Record<string, unknown>, alCambiar: (v: string) => void) {
-    const input = el('input', { id, type: tipo, value: valor, ...extra });
+    const input = el('input', { id, type: tipo, value: valor, class: 'input w-full', ...extra });
     input.addEventListener('input', () => { alCambiar(input.value); input.removeAttribute('aria-invalid'); });
-    return el('div', { class: 'field' }, el('label', { for: id, text: etiqueta }), input);
+    return el('div', { class: 'mb-0 flex flex-col gap-1' }, el('label', { for: id, class: 'font-bold', text: etiqueta }), input);
   }
 
   function pintarParticipantes() {
     listaP.replaceChildren(
       ...participantes.map((p, i) => {
-        const cabecera = el('div', { class: 'participant-head' }, el('span', { text: `Participante ${i + 1}` }));
+        const cabecera = el('div', { class: 'mb-3 flex items-center justify-between font-bold text-secondary' }, el('span', { text: `Participante ${i + 1}` }));
         if (participantes.length > MIN) {
-          const quitar = el('button', { type: 'button', class: 'btn btn-ghost btn-sm', 'aria-label': `Quitar al participante ${i + 1}`, text: 'Quitar' });
+          const quitar = el('button', { type: 'button', class: 'btn btn-ghost btn-sm min-h-11 sm:min-h-0', 'aria-label': `Quitar al participante ${i + 1}`, text: 'Quitar' });
           quitar.addEventListener('click', () => {
             participantes.splice(i, 1);
             for (let k = excepciones.length - 1; k >= 0; k--) if (excepciones[k].from === p.id || excepciones[k].to === p.id) excepciones.splice(k, 1);
@@ -79,9 +79,9 @@ export function iniciarFormulario() {
           cabecera.append(quitar);
         }
         return el(
-          'div', { class: 'participant' },
+          'div', { class: 'mb-3 rounded-box border border-base-300 bg-crema p-4' },
           cabecera,
-          el('div', { class: 'row-2' },
+          el('div', { class: 'mb-3 grid gap-3 sm:grid-cols-2' },
             campo(`p-name-${p.id}`, 'Nombre', 'text', p.name, { maxlength: 60, required: true, autocomplete: 'off', 'data-id': p.id, 'data-k': 'name' }, (v) => { p.name = v; actualizarNombresExcepciones(); }),
             campo(`p-email-${p.id}`, 'Correo', 'email', p.email, { maxlength: 120, required: true, autocomplete: 'off', inputmode: 'email', 'data-id': p.id, 'data-k': 'email' }, (v) => { p.email = v; }),
           ),
@@ -109,13 +109,13 @@ export function iniciarFormulario() {
     listaE.replaceChildren(
       ...excepciones.map((ex, idx) => {
         const mk = (k: keyof Excepcion, vacio: string, etiqueta: string) => {
-          const sel = el('select', { 'aria-label': etiqueta, 'data-idx': idx, 'data-k': k }, ...opciones(ex[k], vacio));
+          const sel = el('select', { class: 'select w-full sm:flex-1', 'aria-label': etiqueta, 'data-idx': idx, 'data-k': k }, ...opciones(ex[k], vacio));
           sel.addEventListener('change', () => { ex[k] = sel.value; });
           return sel;
         };
-        const quitar = el('button', { type: 'button', class: 'btn btn-ghost btn-sm', 'aria-label': 'Quitar excepción', text: 'Quitar' });
+        const quitar = el('button', { type: 'button', class: 'btn btn-ghost btn-sm min-h-11 sm:min-h-0', 'aria-label': 'Quitar excepción', text: 'Quitar' });
         quitar.addEventListener('click', () => { excepciones.splice(idx, 1); pintarExcepciones(); });
-        return el('div', { class: 'exception-row' }, mk('from', 'Quién…', 'Quién no regala'), el('span', { text: 'no regala a' }), mk('to', 'A quién…', 'A quién no regala'), quitar);
+        return el('div', { class: 'mb-3 flex flex-col gap-2 sm:flex-row sm:items-center' }, mk('from', 'Quién…', 'Quién no regala'), el('span', { class: 'text-tinta-suave', text: 'no regala a' }), mk('to', 'A quién…', 'A quién no regala'), quitar);
       }),
     );
   }
@@ -150,12 +150,12 @@ export function iniciarFormulario() {
 
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
-    errorBox.classList.add('hidden');
+    errorBox.hidden = true;
     const problema = validar();
     if (problema) return mostrarError(problema);
 
     submitBtn.disabled = true;
-    spinner.classList.remove('hidden');
+    spinner.hidden = false;
     submitLabel.textContent = 'Enviando correos…';
     try {
       let recaptchaToken: string | null = null;
@@ -182,15 +182,15 @@ export function iniciarFormulario() {
       if (data.simulado) document.getElementById('success-msg')!.textContent = 'Modo de pruebas: el sorteo se ha calculado pero no se ha enviado ningún correo.';
       const texto = `🎁 Ya está hecho el sorteo "${nombre}". Mirad vuestro correo (y el spam) para ver a quién os ha tocado. Hazlo tú también gratis: ${location.origin}`;
       (document.getElementById('share-wa') as HTMLAnchorElement).href = `https://wa.me/?text=${encodeURIComponent(texto)}`;
-      form.classList.add('hidden');
-      ok.classList.remove('hidden');
+      form.hidden = true;
+      ok.hidden = false;
       ok.focus();
       ok.scrollIntoView({ block: 'start', behavior: 'smooth' });
     } catch (e) {
       mostrarError(e instanceof Error ? e.message : 'Ha ocurrido un error. Inténtalo de nuevo.');
     } finally {
       submitBtn.disabled = false;
-      spinner.classList.add('hidden');
+      spinner.hidden = true;
       submitLabel.textContent = 'Sortear y enviar correos';
     }
   });

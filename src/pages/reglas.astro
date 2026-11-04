@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
 
 export const prerender = true;
 
@@ -23,23 +24,21 @@ const consejos = [
   description="Aprende cómo funciona el amigo invisible y descubre consejos para organizar un sorteo justo: presupuesto, excepciones, lista de deseos y fecha de intercambio."
   path="/reglas"
 >
-  <section class="hero">
-    <div class="container narrow">
-      <h1>Reglas del amigo invisible</h1>
-      <p class="lead">Todo lo que necesitas para organizar un sorteo perfecto.</p>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container narrow">
-      <h2>Cómo funciona</h2>
-      <div class="grid">
-        {pasos.map((p, i) => <div class="card"><span class="step-num">{i + 1}</span><h3>{p.t}</h3><p>{p.d}</p></div>)}
+  <Hero narrow>
+    <h1 class="mb-4 text-4xl text-white sm:text-5xl">Reglas del amigo invisible</h1>
+    <p class="text-lg text-[#ffe9d2] sm:text-xl">Todo lo que necesitas para organizar un sorteo perfecto.</p>
+  </Hero>
+  <section class="py-12 sm:py-16">
+    <div class="mx-auto max-w-3xl px-4">
+      <h2 class="mb-4 text-3xl">Cómo funciona</h2>
+      <ol class="grid gap-4">
+        {pasos.map((p, i) => <li class="card border border-base-300 bg-base-100"><div class="card-body sm:flex-row sm:items-start"><span class="badge badge-secondary badge-lg size-10 shrink-0 rounded-full font-extrabold">{i + 1}</span><div><h3 class="card-title mb-1">{p.t}</h3><p>{p.d}</p></div></div></li>)}
+      </ol>
+      <h2 class="mb-4 mt-12 text-3xl">Consejos pro</h2>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {consejos.map((c) => <div class="card border border-base-300 bg-base-100"><div class="card-body"><h3 class="card-title">{c.t}</h3><p>{c.d}</p></div></div>)}
       </div>
-      <h2 style="margin-top:2.5rem">Consejos pro</h2>
-      <div class="grid grid-2">
-        {consejos.map((c) => <div class="card"><h3>{c.t}</h3><p>{c.d}</p></div>)}
-      </div>
-      <p class="center" style="margin-top:2.5rem"><a class="btn btn-primary btn-lg" href="/crear">Crear mi sorteo ahora</a></p>
+      <p class="mt-10 text-center"><a class="btn btn-primary btn-lg w-full sm:w-auto" href="/crear">Crear mi sorteo ahora</a></p>
     </div>
   </section>
 </Layout>

@@ -1,0 +1,17 @@
+---
+import Trineo from './Trineo.astro';
+
+interface Props {
+  narrow?: boolean;
+  center?: boolean;
+  trineo?: boolean;
+}
+const { narrow = false, center = false, trineo = false } = Astro.props;
+---
+
+<section class="hero-navidad py-12 sm:py-20">
+  {trineo && <Trineo />}
+  <div class:list={['container-hero mx-auto px-4', narrow ? 'max-w-3xl' : 'max-w-5xl', center && 'text-center']}>
+    <slot />
+  </div>
+</section>

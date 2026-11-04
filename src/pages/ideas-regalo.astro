@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
 import { Icon } from 'astro-icon/components';
 import { rangos } from '../data/ideas';
 
@@ -19,29 +20,27 @@ const listLd = {
   path="/ideas-regalo"
   jsonLd={[listLd]}
 >
-  <section class="hero">
-    <div class="container narrow">
-      <h1>Ideas de regalo para amigo invisible</h1>
-      <p class="lead">Regalos que gustan, ordenados por presupuesto. Elige el tope de tu sorteo y acierta sin pasarte.</p>
-      <ul class="chip-list" style="margin-top:1rem">
-        {rangos.map((r) => <li><a href={`#${r.id}`}>{r.precio}</a></li>)}
-      </ul>
-    </div>
-  </section>
+  <Hero narrow>
+    <h1 class="mb-4 text-4xl text-white sm:text-5xl">Ideas de regalo para amigo invisible</h1>
+    <p class="mb-5 text-lg text-[#ffe9d2] sm:text-xl">Regalos que gustan, ordenados por presupuesto. Elige el tope de tu sorteo y acierta sin pasarte.</p>
+    <ul class="flex flex-wrap gap-2">
+      {rangos.map((r) => <li><a class="btn border-0 bg-white text-primary hover:bg-oro-suave" href={`#${r.id}`}>{r.precio}</a></li>)}
+    </ul>
+  </Hero>
 
-  <section class="section">
-    <div class="container narrow prose">
+  <section class="py-12 sm:py-16">
+    <div class="mx-auto max-w-3xl space-y-10 px-4">
       {rangos.map((r) => (
-        <section id={r.id} style="scroll-margin-top:90px">
-          <h2>{r.titulo}</h2>
-          <ul class="gift-list">{r.ideas.map((i) => <li><Icon name="lucide:gift" aria-hidden="true" /> {i}</li>)}</ul>
+        <section id={r.id} class="scroll-mt-24">
+          <h2 class="mb-4 text-2xl sm:text-3xl">{r.titulo}</h2>
+          <ul class="grid gap-2 sm:grid-cols-2">{r.ideas.map((i) => <li class="flex items-start gap-3 rounded-box border border-base-300 bg-base-100 px-4 py-3"><Icon name="lucide:gift" class="mt-1 size-5 text-primary" aria-hidden="true" /> {i}</li>)}</ul>
         </section>
       ))}
-      <div class="card center" style="margin-top:2.5rem">
-        <h2>¿Ya sabes cuánto gastar?</h2>
+      <div class="card border border-base-300 bg-crema text-center"><div class="card-body items-center">
+        <h2 class="text-2xl sm:text-3xl">¿Ya sabes cuánto gastar?</h2>
         <p>Crea el sorteo, indica el presupuesto y cada participante lo verá en su correo, junto con su lista de deseos.</p>
-        <a class="btn btn-primary btn-lg" href="/crear">Crear sorteo gratis</a>
-      </div>
+        <a class="btn btn-primary btn-lg w-full sm:w-auto" href="/crear">Crear sorteo gratis</a>
+      </div></div>
     </div>
   </section>
 </Layout>

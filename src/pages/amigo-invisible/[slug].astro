@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import Faq from '../../components/Faq.astro';
 import { Icon } from 'astro-icon/components';
 import { landings, getLanding } from '../../data/landings';
 
@@ -28,26 +30,24 @@ const crumbsLd = {
 ---
 
 <Layout title={landing.title} description={landing.description} path={`/amigo-invisible/${landing.slug}`} jsonLd={[faqLd, crumbsLd]}>
-  <section class="hero">
-    <div class="container narrow">
-      <nav class="crumbs" aria-label="Migas de pan" style="color:#ffd9bd"><a href="/">Inicio</a> › {landing.nav}</nav>
-      <h1>{landing.h1}</h1>
-      <p class="lead">{landing.intro}</p>
-      <div class="hero-actions"><a class="btn btn-gold btn-lg" href="/crear"><Icon name="lucide:gift" aria-hidden="true" /> Crear mi sorteo gratis</a></div>
-    </div>
-  </section>
+  <Hero narrow>
+    <nav class="mb-4 text-sm text-[#ffd9bd]" aria-label="Migas de pan"><a class="link link-hover" href="/">Inicio</a> › {landing.nav}</nav>
+    <h1 class="mb-4 text-4xl text-white sm:text-5xl">{landing.h1}</h1>
+    <p class="mb-6 text-lg text-[#ffe9d2] sm:text-xl">{landing.intro}</p>
+    <a class="btn btn-accent btn-lg w-full sm:w-auto" href="/crear"><Icon name="lucide:gift" aria-hidden="true" /> Crear mi sorteo gratis</a>
+  </Hero>
 
-  <section class="section">
-    <div class="container narrow prose">
-      <h2>Consejos para acertar</h2>
-      <div class="grid grid-2">
-        {landing.tips.map((t) => <div class="card"><h3>{t.titulo}</h3><p>{t.texto}</p></div>)}
+  <section class="py-12 sm:py-16">
+    <div class="prose-navidad mx-auto max-w-3xl px-4">
+      <h2 class="text-3xl">Consejos para acertar</h2>
+      <div class="not-prose mt-4 grid gap-4 sm:grid-cols-2">
+        {landing.tips.map((t) => <div class="card border border-base-300 bg-base-100"><div class="card-body"><h3 class="card-title">{t.titulo}</h3><p>{t.texto}</p></div></div>)}
       </div>
 
-      <h2>Presupuesto recomendado: {landing.budget}</h2>
-      <p>Fijar un tope evita comparaciones y gastos desiguales. Lo indicas al crear el sorteo y aparece en el correo de cada participante. ¿Necesitas ideas? Mira nuestra <a href="/ideas-regalo">guía de regalos por precio</a>.</p>
+      <h2 class="text-3xl">Presupuesto recomendado: {landing.budget}</h2>
+      <p>Fijar un tope evita comparaciones y gastos desiguales. Lo indicas al crear el sorteo y aparece en el correo de cada participante. ¿Necesitas ideas? Mira nuestra <a class="link link-primary" href="/ideas-regalo">guía de regalos por precio</a>.</p>
 
-      <h2>Cómo se organiza en 3 pasos</h2>
+      <h2 class="text-3xl">Cómo se organiza en 3 pasos</h2>
       <ol>
         <li>Escribe el nombre y el correo de cada persona.</li>
         <li>Indica el presupuesto, la fecha y las excepciones.</li>
@@ -56,19 +56,19 @@ const crumbsLd = {
     </div>
   </section>
 
-  <section class="section band">
-    <div class="container narrow faq">
-      <h2>Preguntas frecuentes</h2>
-      {landing.faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+  <section class="border-y border-base-300 bg-crema py-12 sm:py-16">
+    <div class="mx-auto max-w-3xl px-4">
+      <h2 class="mb-6 text-3xl">Preguntas frecuentes</h2>
+      <Faq items={landing.faq} />
     </div>
   </section>
 
-  <section class="section">
-    <div class="container narrow">
-      <h2>Otros sorteos</h2>
-      <ul class="chip-list">
-        {others.map((o) => <li><a href={`/amigo-invisible/${o.slug}`}><Icon name={o.icon} aria-hidden="true" /> {o.nav}</a></li>)}
-        <li><a href="/ideas-regalo"><Icon name="lucide:gift" aria-hidden="true" /> Ideas de regalo</a></li>
+  <section class="py-12 sm:py-16">
+    <div class="mx-auto max-w-3xl px-4">
+      <h2 class="mb-4 text-3xl">Otros sorteos</h2>
+      <ul class="flex flex-wrap gap-2">
+        {others.map((o) => <li><a class="btn btn-outline" href={`/amigo-invisible/${o.slug}`}><Icon name={o.icon} aria-hidden="true" /> {o.nav}</a></li>)}
+        <li><a class="btn btn-outline" href="/ideas-regalo"><Icon name="lucide:gift" aria-hidden="true" /> Ideas de regalo</a></li>
       </ul>
     </div>
   </section>

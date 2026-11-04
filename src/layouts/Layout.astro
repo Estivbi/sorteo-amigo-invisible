@@ -101,22 +101,34 @@ const links = [
     {graph.map((obj) => <script is:inline type="application/ld+json" set:html={JSON.stringify(obj)} />)}
   </head>
   <body>
-    <a class="skip" href="#contenido">Saltar al contenido</a>
-    <header class="site-header">
-      <div class="container bar">
-        <a class="brand" href="/" aria-label="Amigo Invisible, inicio">
-          <svg viewBox="0 0 64 64" aria-hidden="true">
-            <rect x="8" y="26" width="48" height="30" rx="5" fill="#b3262e"></rect>
-            <rect x="5" y="19" width="54" height="11" rx="4" fill="#8c1c23"></rect>
-            <rect x="28" y="19" width="8" height="37" fill="#e9b44c"></rect>
-            <path d="M32 19c-9-12-20-4-12 0zM32 19c9-12 20-4 12 0z" fill="none" stroke="#e9b44c" stroke-width="4" stroke-linejoin="round"></path>
-          </svg>
-          Amigo Invisible
-        </a>
-        <nav class="nav" aria-label="Principal">
-          {links.map((l) => <a href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a>)}
-          <a class="btn btn-primary btn-sm" href="/crear">Crear sorteo</a>
-        </nav>
+    <a class="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded-lg focus:bg-neutral focus:px-4 focus:py-2 focus:text-neutral-content" href="#contenido">Saltar al contenido</a>
+    <header class="sticky top-0 z-30 border-b border-base-300 bg-base-100">
+      <div class="navbar mx-auto min-h-16 max-w-5xl px-4">
+        <div class="navbar-start">
+          <a class="flex items-center gap-2 py-2 font-display text-xl font-extrabold text-rojo-oscuro no-underline hover:text-primary sm:text-2xl" href="/" aria-label="Amigo Invisible, inicio">
+            <svg viewBox="0 0 64 64" class="size-8 shrink-0" aria-hidden="true">
+              <rect x="8" y="26" width="48" height="30" rx="5" fill="#b3262e"></rect>
+              <rect x="5" y="19" width="54" height="11" rx="4" fill="#8c1c23"></rect>
+              <rect x="28" y="19" width="8" height="37" fill="#e9b44c"></rect>
+              <path d="M32 19c-9-12-20-4-12 0zM32 19c9-12 20-4 12 0z" fill="none" stroke="#e9b44c" stroke-width="4" stroke-linejoin="round"></path>
+            </svg>
+            <span class="whitespace-nowrap max-xs:hidden">Amigo Invisible</span>
+          </a>
+        </div>
+        <div class="navbar-end gap-1">
+          <nav class="hidden items-center gap-1 md:flex" aria-label="Principal">
+            {links.map((l) => <a class:list={['btn btn-ghost font-bold', current === l.href && 'text-primary underline decoration-2 underline-offset-8']} href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a>)}
+          </nav>
+          <a class="btn btn-primary" href="/crear">Crear sorteo</a>
+          <details class="dropdown dropdown-end md:hidden" id="menu-movil">
+            <summary class="btn btn-ghost btn-square" aria-label="Abrir el menú"><Icon name="lucide:menu" class="size-6" aria-hidden="true" /></summary>
+            <ul class="menu dropdown-content z-40 mt-3 w-64 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg">
+              {links.map((l) => <li><a class="py-3 font-bold" href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a></li>)}
+              <li class="menu-title mt-2">Sorteos para cada ocasión</li>
+              {landings.map((l) => <li><a class="py-3" href={`/amigo-invisible/${l.slug}`}><Icon name={l.icon} aria-hidden="true" /> {l.nav}</a></li>)}
+            </ul>
+          </details>
+        </div>
       </div>
     </header>
 
@@ -124,35 +136,30 @@ const links = [
       <slot />
     </main>
 
-    <footer class="site-footer">
-      <div class="container">
-        <div class="footer-grid">
-          <div>
-            <h2>Amigo Invisible</h2>
-            <p>El sorteo de amigo invisible online más sencillo: gratis, sin registro y sin guardar tus correos.</p>
-          </div>
-          <div>
-            <h2>Sorteos para cada ocasión</h2>
-            <ul>
-              {landings.map((l) => <li><a href={`/amigo-invisible/${l.slug}`}>{l.nav}</a></li>)}
-            </ul>
-          </div>
-          <div>
-            <h2>Más</h2>
-            <ul>
-              <li><a href="/crear">Crear sorteo</a></li>
-              <li><a href="/ideas-regalo">Ideas de regalo</a></li>
-              <li><a href="/reglas">Reglas y consejos</a></li>
-              <li><a href="/privacidad">Privacidad</a></li>
-              {donateUrl && <li><a href={donateUrl} rel="noopener" target="_blank"><Icon name="lucide:coffee" aria-hidden="true" /> Invítanos a un café</a></li>}
-            </ul>
-          </div>
-        </div>
-        <p class="copy">&copy; {new Date().getFullYear()} Amigo Invisible. Hecho con cariño para que la Navidad se parezca más a una fiesta.</p>
+    <footer class="mt-8 bg-rojo-profundo text-neutral-content">
+      <div class="footer mx-auto max-w-5xl gap-8 px-4 py-10 sm:footer-horizontal">
+        <aside class="max-w-xs">
+          <p class="font-display text-xl font-bold text-white">Amigo Invisible</p>
+          <p>El sorteo de amigo invisible online más sencillo: gratis, sin registro y sin guardar tus correos.</p>
+        </aside>
+        <nav aria-label="Sorteos para cada ocasión">
+          <h2 class="footer-title text-accent opacity-100">Sorteos para cada ocasión</h2>
+          {landings.map((l) => <a class="link link-hover" href={`/amigo-invisible/${l.slug}`}>{l.nav}</a>)}
+        </nav>
+        <nav aria-label="Más enlaces">
+          <h2 class="footer-title text-accent opacity-100">Más</h2>
+          <a class="link link-hover" href="/crear">Crear sorteo</a>
+          <a class="link link-hover" href="/ideas-regalo">Ideas de regalo</a>
+          <a class="link link-hover" href="/reglas">Reglas y consejos</a>
+          <a class="link link-hover" href="/privacidad">Privacidad</a>
+          {donateUrl && <a class="link link-hover" href={donateUrl} rel="noopener" target="_blank"><Icon name="lucide:coffee" aria-hidden="true" /> Invítanos a un café</a>}
+        </nav>
       </div>
+      <p class="mx-auto max-w-5xl border-t border-white/20 px-4 py-4 text-sm">&copy; {new Date().getFullYear()} Amigo Invisible. Hecho con cariño para que la Navidad se parezca más a una fiesta.</p>
     </footer>
-      <script>
+    <script>
       import '../scripts/nieve';
+      import '../scripts/menu';
     </script>
   </body>
 </html>

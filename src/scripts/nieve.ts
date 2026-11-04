@@ -1,4 +1,4 @@
-/** Nieve ligera en canvas dentro de cada .hero. Se pausa fuera de pantalla y respeta prefers-reduced-motion. */
+/** Nieve ligera en canvas dentro de cada .hero-navidad. Se pausa fuera de pantalla y respeta prefers-reduced-motion. */
 interface Copo { x: number; y: number; r: number; v: number; fase: number; vx: number }
 
 function iniciar(hero: HTMLElement) {
@@ -45,5 +45,5 @@ function iniciar(hero: HTMLElement) {
 }
 
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.querySelectorAll<HTMLElement>('.hero').forEach(iniciar);
+  document.querySelectorAll<HTMLElement>('.hero-navidad').forEach(iniciar);
 }

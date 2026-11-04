@@ -1,16 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
 
 export const prerender = true;
 ---
 
 <Layout title="Página no encontrada | Amigo Invisible" description="La página que buscas no existe." noindex>
-  <section class="section">
-    <div class="container narrow center">
-      <p style="font-size:4rem;margin:0">🎄</p>
-      <h1>Esta página se ha hecho la invisible</h1>
-      <p class="lead">No encontramos lo que buscas, pero tu sorteo sí puede empezar ahora.</p>
-      <p><a class="btn btn-primary btn-lg" href="/crear">Crear sorteo gratis</a></p>
+  <section class="py-16 sm:py-24">
+    <div class="mx-auto max-w-2xl px-4 text-center">
+      <Icon name="lucide:snowflake" class="mx-auto mb-4 size-16 text-primary" aria-hidden="true" />
+      <h1 class="mb-3 text-4xl sm:text-5xl">Esta página se ha hecho la invisible</h1>
+      <p class="mb-6 text-lg text-tinta-suave">No encontramos lo que buscas, pero tu sorteo sí puede empezar ahora.</p>
+      <a class="btn btn-primary btn-lg w-full sm:w-auto" href="/crear">Crear sorteo gratis</a>
     </div>
   </section>
 </Layout>

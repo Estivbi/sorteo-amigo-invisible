@@ -4,7 +4,7 @@ Sorteo de amigo invisible online, gratis y sin registro. Cada participante recib
 
 ## Stack
 
-Astro 5 (SSR en Vercel) · TypeScript · CSS con tokens propios · iconos Lucide (`astro-icon`) · Resend (o Gmail como alternativa) · Upstash Redis (listas de deseos) · reCAPTCHA v3.
+Astro 5 (SSR en Vercel) · TypeScript · Tailwind v4 + daisyUI (tema `navidad` en `src/styles/global.css`) · iconos Lucide (`astro-icon`) · Resend (o Gmail como alternativa) · Upstash Redis (listas de deseos) · reCAPTCHA v3.
 
 ## Desarrollo
 

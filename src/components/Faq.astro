@@ -1,0 +1,16 @@
+---
+interface Props {
+  items: { q: string; a: string }[];
+  name?: string;
+}
+const { items, name = 'faq' } = Astro.props;
+---
+
+<div class="space-y-3">
+  {items.map((f) => (
+    <details class="collapse collapse-plus border border-base-300 bg-base-100" name={name}>
+      <summary class="collapse-title min-h-14 pe-12 text-lg font-bold">{f.q}</summary>
+      <div class="collapse-content text-tinta-suave"><p>{f.a}</p></div>
+    </details>
+  ))}
+</div>
