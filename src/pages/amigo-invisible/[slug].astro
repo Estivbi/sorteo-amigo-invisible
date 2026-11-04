@@ -1,0 +1,74 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { landings, getLanding } from '../../data/landings';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return landings.map((l) => ({ params: { slug: l.slug } }));
+}
+
+const landing = getLanding(Astro.params.slug!)!;
+const others = landings.filter((l) => l.slug !== landing.slug);
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: landing.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+const crumbsLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: new URL('/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: landing.nav, item: new URL(`/amigo-invisible/${landing.slug}`, Astro.site).toString() },
+  ],
+};
+---
+
+<Layout title={landing.title} description={landing.description} path={`/amigo-invisible/${landing.slug}`} jsonLd={[faqLd, crumbsLd]}>
+  <section class="hero">
+    <div class="container narrow">
+      <nav class="crumbs" aria-label="Migas de pan" style="color:#ffd9bd"><a href="/">Inicio</a> › {landing.nav}</nav>
+      <h1>{landing.h1}</h1>
+      <p class="lead">{landing.intro}</p>
+      <div class="hero-actions"><a class="btn btn-gold btn-lg" href="/crear">🎁 Crear mi sorteo gratis</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow prose">
+      <h2>Consejos para acertar</h2>
+      <div class="grid grid-2">
+        {landing.tips.map((t) => <div class="card"><h3>{t.titulo}</h3><p>{t.texto}</p></div>)}
+      </div>
+
+      <h2>Presupuesto recomendado: {landing.budget}</h2>
+      <p>Fijar un tope evita comparaciones y gastos desiguales. Lo indicas al crear el sorteo y aparece en el correo de cada participante. ¿Necesitas ideas? Mira nuestra <a href="/ideas-regalo">guía de regalos por precio</a>.</p>
+
+      <h2>Cómo se organiza en 3 pasos</h2>
+      <ol>
+        <li>Escribe el nombre y el correo de cada persona.</li>
+        <li>Indica el presupuesto, la fecha y las excepciones.</li>
+        <li>Pulsa crear: cada participante recibe su amigo invisible por email.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container narrow faq">
+      <h2>Preguntas frecuentes</h2>
+      {landing.faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <h2>Otros sorteos</h2>
+      <ul class="chip-list">
+        {others.map((o) => <li><a href={`/amigo-invisible/${o.slug}`}>{o.icon} {o.nav}</a></li>)}
+        <li><a href="/ideas-regalo">🎁 Ideas de regalo</a></li>
+      </ul>
+    </div>
+  </section>
+</Layout>

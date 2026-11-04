@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { rangos } from '../data/ideas';
+
+export const prerender = true;
+
+const listLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Ideas de regalo para amigo invisible por precio',
+  itemListElement: rangos.flatMap((r, i) => [{ '@type': 'ListItem', position: i + 1, name: r.titulo, url: new URL(`/ideas-regalo#${r.id}`, Astro.site).toString() }]),
+};
+---
+
+<Layout
+  title="Ideas de regalo para amigo invisible: 5, 10, 20 y 30 euros"
+  description="Más de 25 ideas de regalo para el amigo invisible organizadas por presupuesto: 5, 10, 20 y 30 euros. Acierta sin gastar de más."
+  path="/ideas-regalo"
+  jsonLd={[listLd]}
+>
+  <section class="hero">
+    <div class="container narrow">
+      <h1>Ideas de regalo para amigo invisible</h1>
+      <p class="lead">Regalos que gustan, ordenados por presupuesto. Elige el tope de tu sorteo y acierta sin pasarte.</p>
+      <ul class="chip-list" style="margin-top:1rem">
+        {rangos.map((r) => <li><a href={`#${r.id}`}>{r.precio}</a></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow prose">
+      {rangos.map((r) => (
+        <section id={r.id} style="scroll-margin-top:90px">
+          <h2>{r.titulo}</h2>
+          <ul class="gift-list">{r.ideas.map((i) => <li>🎁 {i}</li>)}</ul>
+        </section>
+      ))}
+      <div class="card center" style="margin-top:2.5rem">
+        <h2>¿Ya sabes cuánto gastar?</h2>
+        <p>Crea el sorteo, indica el presupuesto y cada participante lo verá en su correo, junto con su lista de deseos.</p>
+        <a class="btn btn-primary btn-lg" href="/crear">Crear sorteo gratis</a>
+      </div>
+    </div>
+  </section>
+</Layout>

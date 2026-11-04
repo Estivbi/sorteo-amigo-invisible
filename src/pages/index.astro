@@ -1,47 +1,122 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import Card from "../components/Card.astro"
-import Button from "../components/Button.astro"
+import Layout from '../layouts/Layout.astro';
+import { landings } from '../data/landings';
+
+export const prerender = true;
+
+const faq = [
+  { q: '¿El sorteo de amigo invisible es gratis?', a: 'Sí. Crear el sorteo y enviar los correos es gratis y no necesitas registrarte ni dar una tarjeta.' },
+  { q: '¿Cuántas personas pueden participar?', a: 'Entre 3 y 40 personas por sorteo. Con menos de 3 no habría secreto.' },
+  { q: '¿Puedo evitar que dos personas se toquen entre sí?', a: 'Sí. Añade excepciones para parejas, hermanos o para quien ya se regaló el año pasado.' },
+  { q: '¿Quién puede ver quién regala a quién?', a: 'Solo cada participante ve a quién le toca. El organizador tampoco ve el resultado, así que puede participar con total sorpresa.' },
+  { q: '¿Guardáis mis datos o los correos?', a: 'No. Los nombres y correos solo se usan para enviar los emails del sorteo y no se almacenan.' },
+  { q: '¿Qué pasa si no llega el correo?', a: 'Revisa la carpeta de spam o correo no deseado. Si tampoco está allí, repite el sorteo comprobando que la dirección es correcta.' },
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+const appLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Amigo Invisible',
+  applicationCategory: 'LifestyleApplication',
+  operatingSystem: 'Web',
+  inLanguage: 'es-ES',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+};
 ---
 
-<Layout title="Bienvenido a Amigo Invisible">
-  <div class="container">
-    <!-- Hero Section -->
-    <div style="text-align: center; margin: 3rem 0;">
-      <h1 style="font-size: 2rem; margin-bottom: 1rem; font-weight: 600;">
-        Amigo Invisible
-      </h1>
-      <p style="font-size: 1rem; color: rgba(255,255,255,0.9); margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-        Organiza sorteos de manera fácil, divertida y completamente gratuita. 
-        <strong>¡Sorprende a tus amigos, familia o compañeros de trabajo!</strong>
+<Layout
+  title="Amigo invisible online gratis: sorteo en 2 minutos | Amigo Invisible"
+  description="Organiza tu amigo invisible online, gratis y sin registro. Añade participantes, excepciones, presupuesto y lista de deseos; cada uno recibe su asignación por email."
+  path="/"
+  jsonLd={[faqLd, appLd]}
+>
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow">Navidad 2026 · Gratis · Sin registro</span>
+      <h1>Tu amigo invisible,<br />listo en 2 minutos</h1>
+      <p class="lead">
+        Escribe quién participa, añade las excepciones que quieras y nosotros hacemos el sorteo. Cada persona recibe en su correo a quién le toca regalar, con presupuesto, fecha y lista de deseos.
       </p>
-      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <Button href="/crear" variant="primary" size="md">Crear Sorteo Ahora</Button>
-        <Button href="/reglas" variant="secondary" size="md">Ver Reglas</Button>
+      <div class="hero-actions">
+        <a class="btn btn-gold btn-lg" href="/crear">🎁 Crear mi sorteo gratis</a>
+        <a class="btn btn-light btn-lg" href="/reglas">Cómo funciona</a>
+      </div>
+      <p class="hero-note">✔ Sin cuentas ni contraseñas &nbsp; ✔ No guardamos tus datos &nbsp; ✔ Funciona desde el móvil</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="center">
+        <span class="eyebrow">Cómo funciona</span>
+        <h2>Tres pasos y a regalar</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card"><span class="step-num">1</span><h3>Añade a los participantes</h3><p>Nombre y correo de cada persona. Si quieres, deja que cada uno indique ideas de regalo.</p></div>
+        <div class="card"><span class="step-num">2</span><h3>Configura las reglas</h3><p>Presupuesto, fecha del intercambio y excepciones: quién no puede regalar a quién.</p></div>
+        <div class="card"><span class="step-num">3</span><h3>Sortea y listo</h3><p>Cada participante recibe un email privado con su amigo invisible. Tú no ves el resultado.</p></div>
       </div>
     </div>
+  </section>
 
-    <!-- Support Section -->
-    <div style="text-align: center; margin: 4rem 0; padding: 0 1rem;">
-      <div style="background: rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);">
-        <div style="font-size: 2.5rem; margin-bottom: 1rem;"></div>
-        <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; color: rgba(255,255,255,0.95);">
-          ¿Te gusta esta web?
-        </h2>
-        <p style="color: rgba(255,255,255,0.8); margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-          Esta web es <strong>completamente gratuita</strong>, pero mantenerla funcional requiere tiempo y recursos. 
-          ¡Cualquier ayuda es súper apreciada!
-        </p>
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        </div>
+  <section class="section band">
+    <div class="container">
+      <div class="center">
+        <span class="eyebrow">Por qué nos eligen</span>
+        <h2>Pensado para que nada salga mal</h2>
+      </div>
+      <div class="grid grid-3">
+        <div class="card"><span class="icon">🎯</span><h3>Sorteo justo</h3><p>Nadie se toca a sí mismo y se respetan todas las excepciones.</p></div>
+        <div class="card"><span class="icon">📝</span><h3>Lista de deseos</h3><p>Cada participante puede añadir ideas y tu amigo invisible las verá en el correo.</p></div>
+        <div class="card"><span class="icon">📅</span><h3>Fecha y calendario</h3><p>El correo incluye un enlace para guardar el día del intercambio.</p></div>
+        <div class="card"><span class="icon">🔒</span><h3>Privado de verdad</h3><p>No guardamos nombres ni correos. Cada email lleva solo su asignación.</p></div>
+        <div class="card"><span class="icon">📱</span><h3>Desde el móvil</h3><p>Crea el sorteo en el sofá y lo tienes hecho en un par de minutos.</p></div>
+        <div class="card"><span class="icon">💸</span><h3>Gratis</h3><p>Sin cuotas ni anuncios. Si te gusta, invítanos a un café.</p></div>
       </div>
     </div>
+  </section>
 
-    <!-- CTA Section -->
-    <Card style="text-align: center; margin: 3rem 0; background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));">
-      <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: #4a5568;">¿Listo para empezar?</h2>
-      <p style="color: #6b7280; margin-bottom: 2rem; font-size: 1.1rem;">Es gratis, fácil y divertido. ¡Tu próximo amigo invisible te está esperando!</p>
-      <Button href="/crear" variant="primary" size="md">Comenzar Sorteo</Button>
-    </Card>
-  </div>
+  <section class="section">
+    <div class="container">
+      <div class="center">
+        <span class="eyebrow">Para cada ocasión</span>
+        <h2>¿Con quién haces el amigo invisible?</h2>
+      </div>
+      <div class="grid grid-2">
+        {landings.map((l) => (
+          <a class="card" href={`/amigo-invisible/${l.slug}`}>
+            <span class="icon" aria-hidden="true">{l.icon}</span>
+            <h3>{l.nav}</h3>
+            <p>{l.description}</p>
+          </a>
+        ))}
+      </div>
+      <p class="center" style="margin-top:1.5rem"><a href="/ideas-regalo">¿Sin ideas? Mira regalos para 5, 10, 20 y 30 € →</a></p>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container narrow faq">
+      <h2 class="center">Preguntas frecuentes</h2>
+      {faq.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container center">
+      <h2>¿Listo para repartir sorpresas?</h2>
+      <p class="lead">Crear el sorteo lleva menos que escribir el mensaje en el grupo de WhatsApp.</p>
+      <p><a class="btn btn-primary btn-lg" href="/crear">Crear sorteo gratis</a></p>
+    </div>
+  </section>
 </Layout>

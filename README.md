@@ -1,52 +1,31 @@
-# Proyecto de Amigo Invisible
+# Amigo Invisible
 
-![Amigo Invisible!](https://github.com/user-attachments/assets/c930ede2-5132-42a3-89bd-2c5cee108ec2)
+Sorteo de amigo invisible online, gratis y sin registro. Cada participante recibe por email a quién le toca regalar, con presupuesto, fecha del intercambio (con enlace a calendario) y la lista de deseos de su amigo invisible. No se guarda ningún dato.
 
-Este proyecto es una aplicación web para organizar juegos de Amigo Invisible. Los usuarios pueden crear un nuevo juego, especificar un presupuesto, agregar participantes y definir excepciones. La aplicación asigna aleatoriamente a cada participante un destinatario y envía correos electrónicos con la información de la asignación.
+## Stack
 
-## Características
+Astro 5 (SSR en Vercel) · TypeScript · CSS con tokens propios · Resend (o Gmail como alternativa) · reCAPTCHA v3.
 
-- Crear un nuevo juego de Amigo Invisible.
-- Especificar un presupuesto para los regalos.
-- Agregar participantes con sus nombres y correos electrónicos.
-- Definir excepciones para evitar que ciertos participantes se asignen entre sí.
-- Enviar correos electrónicos a los participantes con la información de la asignación.
+## Desarrollo
 
-## Tecnologías Utilizadas
+```bash
+npm ci
+cp .env.example .env   # rellena lo que necesites; sin claves el envío se simula
+npm run dev            # http://localhost:4321
+npm test               # lógica del sorteo
+npm run build          # comprobación de tipos + build
+```
 
-- Node.js
-- Express
-- API Gmail
-- Astro
-- JavaScript
+## Variables de entorno
 
-## Instalación
+Ver `.env.example`. Para producción: `SITE_URL`, `RESEND_API_KEY` + `MAIL_FROM` (dominio verificado en Resend), `RECAPTCHA_SITEKEY` / `RECAPTCHA_SECRET`, `ALLOWED_ORIGIN` y, opcional, `PUBLIC_DONATE_URL`.
 
-1. Clona el repositorio:
+## SEO
 
-   git clone https://github.com/tu-usuario/amigo-invisible.git
+Páginas por intención de búsqueda en `src/data/landings.ts` (`/amigo-invisible/<slug>`), guía de regalos en `/ideas-regalo`, `sitemap.xml`, `robots.txt`, canonical, Open Graph y JSON-LD (WebSite, Organization, FAQPage, BreadcrumbList, WebApplication).
 
-   cd amigo-invisible
+## Seguridad
 
-2. Instala las dependencias:
+Validación y saneado en servidor, máximo 40 participantes, reCAPTCHA, campo trampa anti-bots, límite por IP y comprobación de origen. El servidor nunca devuelve quién regala a quién.
 
-	npm i
-
-3. Configura las credenciales de Google API:
-
-	Crea un proyecto en Google Cloud Console.
-	Habilita la API de Gmail.
-	Configura la pantalla de consentimiento OAuth.
-	Crea credenciales OAuth 2.0 y descarga el archivo credentials.json.
-	Guarda el archivo credentials.json en la raíz del proyecto.
-
-4. Ejecuta el servidor:
-	node server.js
-	npm run dev
-
-## Contribuciones
-Las contribuciones son bienvenidas. Por favor, abre un issue o envía un pull request para discutir cualquier cambio que te gustaría hacer.
-
-## Licencia
-Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE para obtener más detalles.
-
+Licencia MIT.

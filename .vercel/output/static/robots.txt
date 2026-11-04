@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://sorteo-amigo-invisible.vercel.app/sitemap.xml
