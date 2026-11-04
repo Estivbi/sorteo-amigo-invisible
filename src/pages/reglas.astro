@@ -1,84 +1,45 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import Card from "../components/Card.astro"
-import Button from "../components/Button.astro"
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = true;
+
+const pasos = [
+  { t: 'Preparación digital', d: 'Añade a todos los participantes con su correo. Se acabaron los papelitos y el gorro.' },
+  { t: 'Sorteo inteligente', d: 'El sistema asigna a cada persona un amigo invisible, sin repetirse a sí misma y respetando las excepciones que configures.' },
+  { t: 'Notificación secreta', d: 'Cada participante recibe un email privado con el nombre de la persona a quien debe regalar.' },
+  { t: 'A regalar', d: 'Cada uno compra su regalo dentro del presupuesto y guarda el secreto hasta el día del intercambio.' },
+];
+const consejos = [
+  { t: 'Presupuesto justo', d: 'Fija un rango cómodo para todos (por ejemplo, 15-25 €).' },
+  { t: 'Excepciones útiles', d: 'Úsalas para parejas, familiares directos o quien ya se regaló el año anterior.' },
+  { t: 'Mantén el secreto', d: 'La gracia es la sorpresa: no reveles a quién te tocó hasta el intercambio.' },
+  { t: 'Fecha límite', d: 'Acuerda un día concreto para el intercambio y recuérdalo al grupo.' },
+  { t: 'Lista de deseos', d: 'Cada persona puede añadir 2 o 3 ideas y cambiarlas cuando quiera desde su correo. Es la mejor manera de acertar.' },
+];
 ---
 
-<Layout title="Reglas del Amigo Invisible">
-  <div class="container">
-    <div style="text-align: center; margin-bottom: 3rem;">
-      <h1 style="font-size: 2rem; margin-bottom: 1rem;">📖 Reglas del Amigo Invisible</h1>
-      <p style="font-size: 1rem; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto;">
-        Todo lo que necesitas saber para organizar el sorteo perfecto
-      </p>
+<Layout
+  title="Reglas del amigo invisible: cómo funciona y consejos"
+  description="Aprende cómo funciona el amigo invisible y descubre consejos para organizar un sorteo justo: presupuesto, excepciones, lista de deseos y fecha de intercambio."
+  path="/reglas"
+>
+  <section class="hero">
+    <div class="container narrow">
+      <h1>Reglas del amigo invisible</h1>
+      <p class="lead">Todo lo que necesitas para organizar un sorteo perfecto.</p>
     </div>
-
-    <Card style="margin: 2rem auto; max-width: 800px;">
-      <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 2rem; color: #4a5568; text-align: center;">🎯 Cómo Funciona</h2>
-      
-      <div style="display: grid; gap: 2rem;">
-        <div style="display: flex; gap: 1rem; align-items: flex-start;">
-          <div style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">1</div>
-          <div>
-            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">🎮 Preparación Digital</h3>
-            <p style="color: #6b7280; line-height: 1.6;">Añade a todos los participantes con sus emails. Nuestra plataforma se encarga del sorteo automáticamente, sin papelitos ni recipientes.</p>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 1rem; align-items: flex-start;">
-          <div style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">2</div>
-          <div>
-            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">🎲 Sorteo Inteligente</h3>
-            <p style="color: #6b7280; line-height: 1.6;">El sistema asigna automáticamente a cada participante una persona a quien regalar, garantizando que nadie se toque a sí mismo y respetando las excepciones que configures.</p>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 1rem; align-items: flex-start;">
-          <div style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">3</div>
-          <div>
-            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">📧 Notificación Secreta</h3>
-            <p style="color: #6b7280; line-height: 1.6;">Cada participante recibe un email privado con el nombre de la persona a quien debe regalar. Solo ellos conocen esta información.</p>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 1rem; align-items: flex-start;">
-          <div style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">4</div>
-          <div>
-            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">🎁 ¡A Regalar!</h3>
-            <p style="color: #6b7280; line-height: 1.6;">Los participantes compran sus regalos respetando el presupuesto acordado y mantienen el secreto hasta el día del intercambio.</p>
-          </div>
-        </div>
+  </section>
+  <section class="section">
+    <div class="container narrow">
+      <h2>Cómo funciona</h2>
+      <div class="grid">
+        {pasos.map((p, i) => <div class="card"><span class="step-num">{i + 1}</span><h3>{p.t}</h3><p>{p.d}</p></div>)}
       </div>
-    </div>
-
-    <Card style="margin: 2rem auto; max-width: 800px;">
-      <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 2rem; color: #4a5568; text-align: center;">✨ Consejos Pro</h2>
-      
-      <div style="display: grid; gap: 1rem;">
-        <div style="padding: 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 12px; border-left: 4px solid #667eea;">
-          <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">💰 Presupuesto Justo</h4>
-          <p style="color: #6b7280; margin: 0;">Establece un rango de precio que sea cómodo para todos los participantes (ej: 15-25€).</p>
-        </div>
-
-        <div style="padding: 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 12px; border-left: 4px solid #667eea;">
-          <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">🚫 Excepciones Útiles</h4>
-          <p style="color: #6b7280; margin: 0;">Configura excepciones para parejas, familiares directos o personas que ya se han regalado antes.</p>
-        </div>
-
-        <div style="padding: 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 12px; border-left: 4px solid #667eea;">
-          <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">🤐 Mantén el Secreto</h4>
-          <p style="color: #6b7280; margin: 0;">La diversión está en la sorpresa. ¡No reveles a quién te tocó hasta el momento del intercambio!</p>
-        </div>
-
-        <div style="padding: 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 12px; border-left: 4px solid #667eea;">
-          <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: #4a5568;">📅 Fecha Límite</h4>
-          <p style="color: #6b7280; margin: 0;">Acuerda una fecha específica para el intercambio y recuérdala a todos los participantes.</p>
-        </div>
+      <h2 style="margin-top:2.5rem">Consejos pro</h2>
+      <div class="grid grid-2">
+        {consejos.map((c) => <div class="card"><h3>{c.t}</h3><p>{c.d}</p></div>)}
       </div>
+      <p class="center" style="margin-top:2.5rem"><a class="btn btn-primary btn-lg" href="/crear">Crear mi sorteo ahora</a></p>
     </div>
-
-    <div style="text-align: center; margin: 3rem 0;">
-      <Button href="/crear" variant="primary">🚀 ¡Crear Mi Sorteo Ahora!</Button>
-    </div>
-  </div>
-
+  </section>
+</Layout>
