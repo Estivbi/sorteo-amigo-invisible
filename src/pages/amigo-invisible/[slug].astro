@@ -40,9 +40,9 @@ const crumbsLd = {
   <section class="py-12 sm:py-16">
     <div class="prose-navidad mx-auto max-w-3xl px-4">
       <h2 class="text-3xl">Consejos para acertar</h2>
-      <div class="not-prose mt-4 grid gap-4 sm:grid-cols-2">
-        {landing.tips.map((t) => <div class="card border border-base-300 bg-base-100"><div class="card-body"><h3 class="card-title">{t.titulo}</h3><p>{t.texto}</p></div></div>)}
-      </div>
+      <ul class="mt-4 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+        {landing.tips.map((t) => <li class="border-s-4 border-accent ps-4"><h3 class="mb-1 text-xl">{t.titulo}</h3><p class="text-tinta-suave">{t.texto}</p></li>)}
+      </ul>
 
       <h2 class="text-3xl">Presupuesto recomendado: {landing.budget}</h2>
       <p>Fijar un tope evita comparaciones y gastos desiguales. Lo indicas al crear el sorteo y aparece en el correo de cada participante. ¿Necesitas ideas? Mira nuestra <a class="link link-primary" href="/ideas-regalo">guía de regalos por precio</a>.</p>

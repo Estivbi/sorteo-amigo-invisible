@@ -35,9 +35,9 @@ const consejos = [
         {pasos.map((p, i) => <li class="card border border-base-300 bg-base-100"><div class="card-body sm:flex-row sm:items-start"><span class="badge badge-secondary badge-lg size-10 shrink-0 rounded-full font-extrabold">{i + 1}</span><div><h3 class="card-title mb-1">{p.t}</h3><p>{p.d}</p></div></div></li>)}
       </ol>
       <h2 class="mb-4 mt-12 text-3xl">Consejos pro</h2>
-      <div class="grid gap-4 sm:grid-cols-2">
-        {consejos.map((c) => <div class="card border border-base-300 bg-base-100"><div class="card-body"><h3 class="card-title">{c.t}</h3><p>{c.d}</p></div></div>)}
-      </div>
+      <ul class="grid gap-x-10 gap-y-6 sm:grid-cols-2">
+        {consejos.map((c) => <li class="border-s-4 border-accent ps-4"><h3 class="mb-1 text-xl">{c.t}</h3><p class="text-tinta-suave">{c.d}</p></li>)}
+      </ul>
       <p class="mt-10 text-center"><a class="btn btn-primary btn-lg w-full sm:w-auto" href="/crear">Crear mi sorteo ahora</a></p>
     </div>
   </section>

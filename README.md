@@ -30,6 +30,16 @@ Para activarlo: en Vercel, Marketplace → Upstash Redis (plan gratuito); añade
 
 Nieve en canvas (`src/scripts/nieve.ts`, se pausa fuera de pantalla) y trineo de Papá Noel en SVG (`src/components/Trineo.astro`). Ambos se desactivan con `prefers-reduced-motion`.
 
+## Monetización
+
+Todo es opcional y se activa por variables de entorno; sin ellas no aparece ningún enlace de afiliado ni de donación.
+
+- `PUBLIC_AMAZON_TAG`: etiqueta de Amazon Afiliados. Activa los botones «Buscar» en `/ideas-regalo`, «Buscar este regalo» en la página privada y el aviso legal en el pie.
+- `PUBLIC_VIAJES_URL`: enlace de afiliado a excursiones en Rovaniemi.
+- `PUBLIC_DONATE_URL`: enlace de donación.
+
+Los enlaces llevan `rel="sponsored nofollow noopener noreferrer"`. Solo se envía un término de búsqueda a la tienda cuando la persona pulsa el botón. Ideas para una versión premium en `TODO.md`.
+
 ## SEO
 
 Páginas por intención de búsqueda en `src/data/landings.ts` (`/amigo-invisible/<slug>`), guía de regalos en `/ideas-regalo`, `sitemap.xml`, `robots.txt`, canonical, Open Graph y JSON-LD (WebSite, Organization, FAQPage, BreadcrumbList, WebApplication).

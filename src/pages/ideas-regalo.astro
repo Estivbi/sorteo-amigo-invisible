@@ -1,10 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import AvisoAfiliados from '../components/AvisoAfiliados.astro';
+import { enlaceAmazon, REL_AFILIADO } from '../lib/afiliados';
 import { Icon } from 'astro-icon/components';
 import { rangos } from '../data/ideas';
 
 export const prerender = true;
+const tag = import.meta.env.PUBLIC_AMAZON_TAG;
 
 const listLd = {
   '@context': 'https://schema.org',
@@ -30,10 +33,26 @@ const listLd = {
 
   <section class="py-12 sm:py-16">
     <div class="mx-auto max-w-3xl space-y-10 px-4">
+      <AvisoAfiliados />
       {rangos.map((r) => (
         <section id={r.id} class="scroll-mt-24">
           <h2 class="mb-4 text-2xl sm:text-3xl">{r.titulo}</h2>
-          <ul class="grid gap-2 sm:grid-cols-2">{r.ideas.map((i) => <li class="flex items-start gap-3 rounded-box border border-base-300 bg-base-100 px-4 py-3"><Icon name="lucide:gift" class="mt-1 size-5 text-primary" aria-hidden="true" /> {i}</li>)}</ul>
+          <ul class="grid gap-2 sm:grid-cols-2">
+            {r.ideas.map((i) => {
+              const url = enlaceAmazon(i.q, tag);
+              return (
+                <li class="flex items-center gap-3 rounded-box border border-base-300 bg-base-100 py-1 ps-4 pe-1">
+                  <Icon name="lucide:gift" class="size-5 shrink-0 text-primary" aria-hidden="true" />
+                  <span class="flex-1 py-2">{i.t}</span>
+                  {url && (
+                    <a class="btn btn-ghost btn-sm min-h-11 text-primary" href={url} target="_blank" rel={REL_AFILIADO} aria-label={`Buscar ${i.t} en Amazon`}>
+                      <Icon name="lucide:search" aria-hidden="true" /> Buscar
+                    </a>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         </section>
       ))}
       <div class="card border border-base-300 bg-crema text-center"><div class="card-body items-center">

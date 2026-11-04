@@ -12,6 +12,8 @@ interface ImportMetaEnv {
   readonly DEV_BYPASS_EMAILS?: string;
   readonly PUBLIC_DONATE_URL?: string;
   readonly SITE_URL?: string;
+  readonly PUBLIC_AMAZON_TAG?: string;
+  readonly PUBLIC_VIAJES_URL?: string;
   readonly UPSTASH_REDIS_REST_URL?: string;
   readonly UPSTASH_REDIS_REST_TOKEN?: string;
   readonly KV_REST_API_URL?: string;
