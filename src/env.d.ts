@@ -12,6 +12,10 @@ interface ImportMetaEnv {
   readonly DEV_BYPASS_EMAILS?: string;
   readonly PUBLIC_DONATE_URL?: string;
   readonly SITE_URL?: string;
+  readonly UPSTASH_REDIS_REST_URL?: string;
+  readonly UPSTASH_REDIS_REST_TOKEN?: string;
+  readonly KV_REST_API_URL?: string;
+  readonly KV_REST_API_TOKEN?: string;
 }
 
 interface ImportMeta {

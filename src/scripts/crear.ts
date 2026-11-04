@@ -191,7 +191,7 @@ export function iniciarFormulario() {
     } finally {
       submitBtn.disabled = false;
       spinner.classList.add('hidden');
-      submitLabel.textContent = '🎁 Sortear y enviar correos';
+      submitLabel.textContent = 'Sortear y enviar correos';
     }
   });
 }

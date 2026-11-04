@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Trineo from '../components/Trineo.astro';
+import { Icon } from 'astro-icon/components';
 import { landings } from '../data/landings';
 
 export const prerender = true;
@@ -9,7 +11,7 @@ const faq = [
   { q: '¿Cuántas personas pueden participar?', a: 'Entre 3 y 40 personas por sorteo. Con menos de 3 no habría secreto.' },
   { q: '¿Puedo evitar que dos personas se toquen entre sí?', a: 'Sí. Añade excepciones para parejas, hermanos o para quien ya se regaló el año pasado.' },
   { q: '¿Quién puede ver quién regala a quién?', a: 'Solo cada participante ve a quién le toca. El organizador tampoco ve el resultado, así que puede participar con total sorpresa.' },
-  { q: '¿Guardáis mis datos o los correos?', a: 'No. Los nombres y correos solo se usan para enviar los emails del sorteo y no se almacenan.' },
+  { q: '¿Guardáis mis datos o los correos?', a: 'Los correos no se guardan nunca: solo se usan para enviar los emails. Para que cada persona pueda editar su lista de deseos guardamos temporalmente su nombre y su lista, y se borran solos unos días después del intercambio.' },
   { q: '¿Qué pasa si no llega el correo?', a: 'Revisa la carpeta de spam o correo no deseado. Si tampoco está allí, repite el sorteo comprobando que la dirección es correcta.' },
 ];
 
@@ -36,6 +38,7 @@ const appLd = {
   jsonLd={[faqLd, appLd]}
 >
   <section class="hero">
+    <Trineo />
     <div class="container">
       <span class="eyebrow">Navidad 2026 · Gratis · Sin registro</span>
       <h1>Tu amigo invisible,<br />listo en 2 minutos</h1>
@@ -43,10 +46,10 @@ const appLd = {
         Escribe quién participa, añade las excepciones que quieras y nosotros hacemos el sorteo. Cada persona recibe en su correo a quién le toca regalar, con presupuesto, fecha y lista de deseos.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-gold btn-lg" href="/crear">🎁 Crear mi sorteo gratis</a>
+        <a class="btn btn-gold btn-lg" href="/crear"><Icon name="lucide:gift" aria-hidden="true" /> Crear mi sorteo gratis</a>
         <a class="btn btn-light btn-lg" href="/reglas">Cómo funciona</a>
       </div>
-      <p class="hero-note">✔ Sin cuentas ni contraseñas &nbsp; ✔ No guardamos tus datos &nbsp; ✔ Funciona desde el móvil</p>
+      <p class="hero-note">✔ Sin cuentas ni contraseñas &nbsp; ✔ Nunca guardamos tus correos &nbsp; ✔ Funciona desde el móvil</p>
     </div>
   </section>
 
@@ -71,12 +74,12 @@ const appLd = {
         <h2>Pensado para que nada salga mal</h2>
       </div>
       <div class="grid grid-3">
-        <div class="card"><span class="icon">🎯</span><h3>Sorteo justo</h3><p>Nadie se toca a sí mismo y se respetan todas las excepciones.</p></div>
-        <div class="card"><span class="icon">📝</span><h3>Lista de deseos</h3><p>Cada participante puede añadir ideas y tu amigo invisible las verá en el correo.</p></div>
-        <div class="card"><span class="icon">📅</span><h3>Fecha y calendario</h3><p>El correo incluye un enlace para guardar el día del intercambio.</p></div>
-        <div class="card"><span class="icon">🔒</span><h3>Privado de verdad</h3><p>No guardamos nombres ni correos. Cada email lleva solo su asignación.</p></div>
-        <div class="card"><span class="icon">📱</span><h3>Desde el móvil</h3><p>Crea el sorteo en el sofá y lo tienes hecho en un par de minutos.</p></div>
-        <div class="card"><span class="icon">💸</span><h3>Gratis</h3><p>Sin cuotas ni anuncios. Si te gusta, invítanos a un café.</p></div>
+        <div class="card"><span class="icon"><Icon name="lucide:target" aria-hidden="true" /></span><h3>Sorteo justo</h3><p>Nadie se toca a sí mismo y se respetan todas las excepciones.</p></div>
+        <div class="card"><span class="icon"><Icon name="lucide:notebook-pen" aria-hidden="true" /></span><h3>Lista de deseos editable</h3><p>Cada participante añade o cambia sus ideas desde su correo y su amigo invisible ve siempre la versión actual.</p></div>
+        <div class="card"><span class="icon"><Icon name="lucide:calendar-days" aria-hidden="true" /></span><h3>Fecha y calendario</h3><p>El correo incluye un enlace para guardar el día del intercambio.</p></div>
+        <div class="card"><span class="icon"><Icon name="lucide:lock" aria-hidden="true" /></span><h3>Privado de verdad</h3><p>Nunca guardamos correos. Cada email lleva solo su asignación y tú no ves el resultado.</p></div>
+        <div class="card"><span class="icon"><Icon name="lucide:smartphone" aria-hidden="true" /></span><h3>Desde el móvil</h3><p>Crea el sorteo en el sofá y lo tienes hecho en un par de minutos.</p></div>
+        <div class="card"><span class="icon"><Icon name="lucide:piggy-bank" aria-hidden="true" /></span><h3>Gratis</h3><p>Sin cuotas ni anuncios. Si te gusta, invítanos a un café.</p></div>
       </div>
     </div>
   </section>
@@ -90,13 +93,32 @@ const appLd = {
       <div class="grid grid-2">
         {landings.map((l) => (
           <a class="card" href={`/amigo-invisible/${l.slug}`}>
-            <span class="icon" aria-hidden="true">{l.icon}</span>
+            <span class="icon"><Icon name={l.icon} aria-hidden="true" /></span>
             <h3>{l.nav}</h3>
             <p>{l.description}</p>
           </a>
         ))}
       </div>
       <p class="center" style="margin-top:1.5rem"><a href="/ideas-regalo">¿Sin ideas? Mira regalos para 5, 10, 20 y 30 € →</a></p>
+    </div>
+  </section>
+
+  <section class="section band-green">
+    <div class="container laponia">
+      <div>
+        <span class="eyebrow" style="color:var(--gold)">Para soñar un poco</span>
+        <h2>¿Y si el regalo es un viaje a Laponia?</h2>
+        <p>En Rovaniemi, justo en el Círculo Polar Ártico, está la Aldea de Papá Noel: renos, huskies, aurora boreal y el buzón de las cartas a Santa. Un plan de Navidad que se recuerda toda la vida.</p>
+        <a class="btn btn-gold" href="https://santaclausvillage.info/" target="_blank" rel="noopener noreferrer"><Icon name="lucide:plane" aria-hidden="true" /> Descubrir la Aldea de Papá Noel</a>
+      </div>
+      <div class="tarjeta-viaje">
+        <h3>Lo que no te puedes perder</h3>
+        <ul>
+          <li>Cruzar la línea del Círculo Polar Ártico</li>
+          <li>Conocer a Papá Noel en su oficina</li>
+          <li>Paseo en trineo de renos o de huskies</li>
+        </ul>
+      </div>
     </div>
   </section>
 

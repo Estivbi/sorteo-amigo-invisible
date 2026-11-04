@@ -2,13 +2,10 @@ import type { APIRoute } from 'astro';
 import { asignar, ErrorSorteo, validarDatos } from '../../lib/sorteo';
 import { construirCorreo, enviarCorreos } from '../../lib/email';
 import { permitido } from '../../lib/limite';
+import { almacenDisponible, generarToken, guardarRegistros, type RegistroAmigo } from '../../lib/almacen';
+import { env, ipDe, json, origenPermitido } from '../../lib/http';
 
 export const prerender = false;
-
-const json = (cuerpo: Record<string, unknown>, status = 200) =>
-  new Response(JSON.stringify(cuerpo), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
-
-const env = (k: string) => ((import.meta.env as Record<string, string | undefined>)[k] ?? process.env[k] ?? '').toString();
 
 async function verificarRecaptcha(token: unknown): Promise<boolean> {
   const secreto = env('RECAPTCHA_SECRET');
@@ -27,24 +24,9 @@ async function verificarRecaptcha(token: unknown): Promise<boolean> {
   }
 }
 
-function origenPermitido(request: Request): boolean {
-  const permitidoEnv = env('ALLOWED_ORIGIN');
-  if (!permitidoEnv) return true;
-  const origen = request.headers.get('origin') ?? request.headers.get('referer');
-  if (!origen) return false;
-  try {
-    const host = new URL(origen).hostname;
-    return host === permitidoEnv || host.endsWith(`.${permitidoEnv}`);
-  } catch {
-    return false;
-  }
-}
-
-export const POST: APIRoute = async ({ request, clientAddress }) => {
+export const POST: APIRoute = async ({ request, clientAddress, url, site }) => {
   if (!origenPermitido(request)) return json({ error: 'origen_no_permitido', mensaje: 'Origen no permitido.' }, 403);
-
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || clientAddress || 'desconocida';
-  if (!permitido(ip)) return json({ error: 'demasiadas_peticiones', mensaje: 'Has hecho demasiados sorteos seguidos. Espera unos minutos.' }, 429);
+  if (!permitido(ipDe(request, clientAddress))) return json({ error: 'demasiadas_peticiones', mensaje: 'Has hecho demasiados sorteos seguidos. Espera unos minutos.' }, 429);
 
   let cuerpo: Record<string, unknown>;
   try {
@@ -63,13 +45,29 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
     const juego = validarDatos(cuerpo);
     const asignaciones = asignar(juego.participants, juego.exceptions);
-    const correos = asignaciones.map((a) => construirCorreo(a, juego));
+
+    // Enlaces privados: cada participante puede ver la lista de su amigo y editar la suya. Solo se guardan nombres y listas.
+    const conEnlaces = almacenDisponible();
+    const base = import.meta.env.DEV ? url.origin : (site ?? url).origin;
+    const tokens = new Map(juego.participants.map((p) => [p.id, generarToken()]));
+    if (conEnlaces) {
+      const registros: Record<string, RegistroAmigo> = {};
+      for (const { giver, receiver } of asignaciones) {
+        registros[tokens.get(giver.id)!] = {
+          n: giver.name, w: giver.wishlist ?? '', r: tokens.get(receiver.id)!, g: juego.gameName, d: juego.eventDate, b: juego.budget,
+        };
+      }
+      await guardarRegistros(registros, juego.eventDate);
+    }
+
+    const correos = asignaciones.map((a) => construirCorreo(a, juego, conEnlaces ? `${base}/amigo/${tokens.get(a.giver.id)}` : undefined));
     const proveedor = await enviarCorreos(correos);
-    // No se guarda nada ni se devuelve quién regala a quién.
+    if (proveedor === 'simulado' && import.meta.env.DEV) for (const a of asignaciones) console.info(`[dev] enlace de ${a.giver.name}: ${base}/amigo/${tokens.get(a.giver.id)}`);
+    // Nunca se devuelve quién regala a quién.
     return json({ ok: true, sent: correos.length, simulado: proveedor === 'simulado' });
   } catch (err) {
     if (err instanceof ErrorSorteo) return json({ error: err.codigo, mensaje: err.message }, err.codigo === 'sin_solucion' ? 422 : 400);
-    console.error('create-game: fallo al enviar', err instanceof Error ? err.message : 'desconocido');
+    console.error('create-game: fallo', err instanceof Error ? err.message : 'desconocido');
     return json({ error: 'envio_fallido', mensaje: 'No hemos podido enviar los correos. Inténtalo de nuevo en unos minutos.' }, 502);
   }
 };

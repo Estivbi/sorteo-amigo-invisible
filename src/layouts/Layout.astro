@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { Icon } from 'astro-icon/components';
 import { landings } from '../data/landings';
 
 interface Props {
@@ -11,6 +12,8 @@ interface Props {
   /** Objetos JSON-LD adicionales. */
   jsonLd?: Record<string, unknown>[];
   ogImage?: string;
+  /** Página con enlace privado: no indexar y no filtrar el referrer. */
+  privado?: boolean;
 }
 
 const SITE_NAME = 'Amigo Invisible';
@@ -21,9 +24,11 @@ const {
   noindex = false,
   jsonLd = [],
   ogImage = '/og.png',
+  privado = false,
 } = Astro.props;
 
 const site = Astro.site ?? new URL(Astro.url.origin);
+const sinIndexar = noindex || privado;
 const canonical = new URL(path === '/' ? '/' : path.replace(/\/$/, ''), site).toString();
 const ogImageUrl = new URL(ogImage, site).toString();
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -60,7 +65,8 @@ const links = [
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
+    <meta name="robots" content={sinIndexar ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
+    {privado && <meta name="referrer" content="no-referrer" />}
     <meta name="theme-color" content="#b3262e" />
     <meta name="generator" content={Astro.generator} />
     <meta name="recaptcha-sitekey" content={import.meta.env.RECAPTCHA_SITEKEY || ''} />
@@ -123,7 +129,7 @@ const links = [
         <div class="footer-grid">
           <div>
             <h2>Amigo Invisible</h2>
-            <p>El sorteo de amigo invisible online más sencillo: gratis, sin registro y sin guardar tus datos.</p>
+            <p>El sorteo de amigo invisible online más sencillo: gratis, sin registro y sin guardar tus correos.</p>
           </div>
           <div>
             <h2>Sorteos para cada ocasión</h2>
@@ -138,12 +144,15 @@ const links = [
               <li><a href="/ideas-regalo">Ideas de regalo</a></li>
               <li><a href="/reglas">Reglas y consejos</a></li>
               <li><a href="/privacidad">Privacidad</a></li>
-              {donateUrl && <li><a href={donateUrl} rel="noopener" target="_blank">☕ Invítanos a un café</a></li>}
+              {donateUrl && <li><a href={donateUrl} rel="noopener" target="_blank"><Icon name="lucide:coffee" aria-hidden="true" /> Invítanos a un café</a></li>}
             </ul>
           </div>
         </div>
         <p class="copy">&copy; {new Date().getFullYear()} Amigo Invisible. Hecho con cariño para que la Navidad se parezca más a una fiesta.</p>
       </div>
     </footer>
+      <script>
+      import '../scripts/nieve';
+    </script>
   </body>
 </html>

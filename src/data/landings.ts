@@ -15,7 +15,7 @@ export const landings: Landing[] = [
   {
     slug: 'oficina',
     nav: 'Para la oficina',
-    icon: '💼',
+    icon: 'lucide:briefcase',
     title: 'Amigo invisible para la oficina y el trabajo: sorteo online gratis',
     description:
       'Organiza el amigo invisible de la oficina en 2 minutos: sorteo online gratis, excepciones entre compañeros, presupuesto y aviso por email. Sin registro.',
@@ -38,7 +38,7 @@ export const landings: Landing[] = [
   {
     slug: 'familia',
     nav: 'Para la familia',
-    icon: '👨‍👩‍👧‍👦',
+    icon: 'lucide:house',
     title: 'Amigo invisible en familia: sorteo online gratis con excepciones',
     description:
       'Sorteo de amigo invisible para la familia: evita que parejas o hermanos se toquen entre sí, añade lista de deseos y envía las asignaciones por email. Gratis.',
@@ -55,13 +55,13 @@ export const landings: Landing[] = [
     faq: [
       { q: '¿Se pueden poner excepciones entre hermanos o parejas?', a: 'Sí. Indica quién no puede regalar a quién y el sorteo las respeta siempre.' },
       { q: '¿Los niños sin email pueden participar?', a: 'Pon el correo de uno de sus padres. Esa persona recibirá la asignación y la mantendrá en secreto.' },
-      { q: '¿Se guardan los datos de mi familia?', a: 'No. Los datos solo se usan para enviar los correos y no se almacenan.' },
+      { q: '¿Se guardan los datos de mi familia?', a: 'Los correos nunca se guardan. Solo se conservan unos días nombres y listas de deseos para que cada uno pueda editar la suya.' },
     ],
   },
   {
     slug: 'amigos',
     nav: 'Para amigos',
-    icon: '🎉',
+    icon: 'lucide:party-popper',
     title: 'Amigo invisible entre amigos: crea el sorteo online en 2 minutos',
     description:
       'Haz el amigo invisible con tu grupo de amigos: sorteo online gratis, sin registro, con presupuesto, lista de deseos y fecha del intercambio por email.',
@@ -84,7 +84,7 @@ export const landings: Landing[] = [
   {
     slug: 'online',
     nav: 'Sorteo online',
-    icon: '💌',
+    icon: 'lucide:mail-check',
     title: 'Sorteo de amigo invisible online gratis, sin registro',
     description:
       'Sorteo de amigo invisible online gratis y sin registro. Añade participantes, excepciones y presupuesto, y cada uno recibe su amigo invisible por email.',

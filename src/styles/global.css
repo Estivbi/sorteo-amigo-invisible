@@ -97,10 +97,9 @@ p { margin: 0 0 1em; }
 .hero h1, .hero p { color: #fff; }
 .hero .lead { color: #ffe9d2; }
 .hero .eyebrow { color: var(--gold); }
-.hero::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.55; background-image: radial-gradient(circle, #fff 1.5px, transparent 2px), radial-gradient(circle, #fff 1px, transparent 1.5px); background-size: 140px 140px, 90px 90px; background-position: 0 0, 40px 60px; animation: snow 28s linear infinite; }
-@keyframes snow { to { background-position: 30px 140px, 10px 150px; } }
-@media (prefers-reduced-motion: reduce) { .hero::before { animation: none; } }
-.hero .container { position: relative; }
+/* Nieve: canvas inyectado por scripts/nieve.ts */
+.nieve { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.hero .container { position: relative; z-index: 1; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 1.6rem; }
 .hero-note { margin-top: 1.2rem; font-size: 0.95rem; color: #ffd9bd; }
 .hero.center .hero-actions { justify-content: center; }
@@ -177,3 +176,29 @@ input[aria-invalid='true'] { border-color: var(--red); }
 .site-footer ul { list-style: none; margin: 0; padding: 0; }
 .site-footer li { margin-bottom: 6px; }
 .copy { font-size: 0.9rem; border-top: 1px solid rgb(255 255 255 / 0.18); padding-top: 1rem; margin: 0; }
+
+/* ---------- Iconos (astro-icon / Lucide) ---------- */
+svg[data-icon] { width: 1.25em; height: 1.25em; flex-shrink: 0; vertical-align: -0.2em; }
+.card .icon svg { width: 2rem; height: 2rem; color: var(--red); }
+.card .icon { margin-bottom: 0.6rem; }
+.big-icon { width: 4rem; height: 4rem; color: var(--red); margin-bottom: 0.5rem; }
+.btn svg[data-icon] { width: 1.15em; height: 1.15em; }
+textarea { resize: vertical; }
+
+/* ---------- Papá Noel con trineo ---------- */
+.trineo { position: absolute; top: 0; left: 0; width: 100%; height: 150px; pointer-events: none; z-index: 0; overflow: hidden; }
+.trineo svg { position: absolute; left: 0; top: 0; width: min(380px, 60vw); height: auto; opacity: 0.9; transform: translateX(-110%); animation: vuelo 42s linear 4s infinite; }
+@keyframes vuelo {
+  0% { transform: translate(-110%, 20px); }
+  12% { transform: translate(40vw, -6px); }
+  24% { transform: translate(calc(100vw + 10%), 14px); }
+  100% { transform: translate(calc(100vw + 10%), 14px); }
+}
+@media (prefers-reduced-motion: reduce) { .trineo { display: none; } }
+@media (max-width: 640px) { .trineo { top: 4%; opacity: 0.6; } }
+
+/* ---------- Laponia ---------- */
+.laponia { display: grid; gap: 24px; align-items: center; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .laponia { grid-template-columns: 1.4fr 1fr; } }
+.laponia .tarjeta-viaje { background: rgb(255 255 255 / 0.1); border: 1px solid rgb(255 255 255 / 0.25); border-radius: var(--radius); padding: 1.5rem; }
+.laponia a.btn { margin-top: 0.4rem; }

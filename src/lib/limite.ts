@@ -7,7 +7,7 @@ const VENTANA_MS = 10 * 60 * 1000;
 const MAX = 5;
 const contadores = new Map<string, { n: number; desde: number }>();
 
-export function permitido(ip: string, ahora = Date.now()): boolean {
+export function permitido(ip: string, max = MAX, ahora = Date.now()): boolean {
   for (const [k, v] of contadores) if (ahora - v.desde > VENTANA_MS) contadores.delete(k);
   const actual = contadores.get(ip);
   if (!actual || ahora - actual.desde > VENTANA_MS) {
@@ -15,5 +15,5 @@ export function permitido(ip: string, ahora = Date.now()): boolean {
     return true;
   }
   actual.n += 1;
-  return actual.n <= MAX;
+  return actual.n <= max;
 }

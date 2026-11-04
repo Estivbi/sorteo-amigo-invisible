@@ -27,7 +27,15 @@
 			"dest": "_render"
 		},
 		{
+			"src": "^/amigo/([^/]+?)$",
+			"dest": "_render"
+		},
+		{
 			"src": "^/api/create-game$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/lista$",
 			"dest": "_render"
 		},
 		{

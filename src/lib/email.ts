@@ -27,7 +27,7 @@ export interface Correo {
   html: string;
 }
 
-export function construirCorreo({ giver, receiver }: Asignacion, juego: DatosSorteo): Correo {
+export function construirCorreo({ giver, receiver }: Asignacion, juego: DatosSorteo, enlace?: string): Correo {
   const lineas: string[] = [];
   const lineasHtml: string[] = [];
   const add = (txt: string, html = escaparHtml(txt)) => (lineas.push(txt), lineasHtml.push(`<li style="margin:6px 0">${html}</li>`));
@@ -46,6 +46,7 @@ export function construirCorreo({ giver, receiver }: Asignacion, juego: DatosSor
     '',
     ...lineas.map((l) => `- ${l}`),
     ...(cal ? ['', `Añadir al calendario: ${cal}`] : []),
+    ...(enlace ? ['', `Tu enlace privado (ver la lista actualizada de ${receiver.name} y cambiar la tuya): ${enlace}`] : []),
     '',
     'Recuerda: es un secreto. ¡Feliz Navidad!',
   ].join('\n');
@@ -63,6 +64,7 @@ export function construirCorreo({ giver, receiver }: Asignacion, juego: DatosSor
     <p style="font-size:28px;font-weight:bold;color:#b3262e;margin:8px 0 16px;text-align:center">${escaparHtml(receiver.name)}</p>
     ${lineasHtml.length ? `<ul style="padding-left:20px">${lineasHtml.join('')}</ul>` : ''}
     ${cal ? `<p style="text-align:center;margin:20px 0"><a href="${escaparHtml(cal)}" style="background:#1f5d46;color:#fff;text-decoration:none;padding:12px 20px;border-radius:999px;font-weight:bold">📅 Añadir al calendario</a></p>` : ''}
+    ${enlace ? `<p style="text-align:center;margin:20px 0"><a href="${escaparHtml(enlace)}" style="background:#b3262e;color:#fff;text-decoration:none;padding:12px 20px;border-radius:999px;font-weight:bold">📝 Ver su lista y editar la mía</a></p><p style="color:#5f4a41;font-size:13px;text-align:center">Es tu enlace privado: no lo compartas. Caduca solo unos días después del intercambio.</p>` : ''}
     <p style="color:#5f4a41;font-size:14px">Recuerda: es un secreto hasta el día del intercambio. ¡Feliz Navidad!</p>
   </div>
 </div></body></html>`;

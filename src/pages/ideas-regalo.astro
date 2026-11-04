@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
 import { rangos } from '../data/ideas';
 
 export const prerender = true;
@@ -33,7 +34,7 @@ const listLd = {
       {rangos.map((r) => (
         <section id={r.id} style="scroll-margin-top:90px">
           <h2>{r.titulo}</h2>
-          <ul class="gift-list">{r.ideas.map((i) => <li>🎁 {i}</li>)}</ul>
+          <ul class="gift-list">{r.ideas.map((i) => <li><Icon name="lucide:gift" aria-hidden="true" /> {i}</li>)}</ul>
         </section>
       ))}
       <div class="card center" style="margin-top:2.5rem">

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
 import { landings, getLanding } from '../../data/landings';
 
 export const prerender = true;
@@ -32,7 +33,7 @@ const crumbsLd = {
       <nav class="crumbs" aria-label="Migas de pan" style="color:#ffd9bd"><a href="/">Inicio</a> › {landing.nav}</nav>
       <h1>{landing.h1}</h1>
       <p class="lead">{landing.intro}</p>
-      <div class="hero-actions"><a class="btn btn-gold btn-lg" href="/crear">🎁 Crear mi sorteo gratis</a></div>
+      <div class="hero-actions"><a class="btn btn-gold btn-lg" href="/crear"><Icon name="lucide:gift" aria-hidden="true" /> Crear mi sorteo gratis</a></div>
     </div>
   </section>
 
@@ -66,8 +67,8 @@ const crumbsLd = {
     <div class="container narrow">
       <h2>Otros sorteos</h2>
       <ul class="chip-list">
-        {others.map((o) => <li><a href={`/amigo-invisible/${o.slug}`}>{o.icon} {o.nav}</a></li>)}
-        <li><a href="/ideas-regalo">🎁 Ideas de regalo</a></li>
+        {others.map((o) => <li><a href={`/amigo-invisible/${o.slug}`}><Icon name={o.icon} aria-hidden="true" /> {o.nav}</a></li>)}
+        <li><a href="/ideas-regalo"><Icon name="lucide:gift" aria-hidden="true" /> Ideas de regalo</a></li>
       </ul>
     </div>
   </section>

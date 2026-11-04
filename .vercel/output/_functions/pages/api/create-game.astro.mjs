@@ -1,9 +1,12 @@
 import nodemailer from 'nodemailer';
+import { p as permitido } from '../../chunks/limite_DLU5utPO.mjs';
+import { o as origenPermitido, j as json, i as ipDe, a as almacenDisponible, g as generarToken, b as guardarRegistros, e as env$1 } from '../../chunks/almacen_CV3BvHwB.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const MIN_PARTICIPANTES = 3;
 const MAX_PARTICIPANTES = 40;
 class ErrorSorteo extends Error {
+  codigo;
   constructor(codigo, mensaje) {
     super(mensaje);
     this.codigo = codigo;
@@ -67,8 +70,8 @@ function asignar(participants, exceptions, aleatorio = Math.random) {
   throw new ErrorSorteo("sin_solucion", "Con esas excepciones no es posible hacer el sorteo. Quita alguna e inténtalo de nuevo.");
 }
 
-const __vite_import_meta_env__$1 = {"ASSETS_PREFIX": undefined, "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "SITE": "https://sorteo-amigo-invisible.vercel.app", "SSR": true};
-const env$1 = (k) => (Object.assign(__vite_import_meta_env__$1, { _: process.env._ })[k] ?? process.env[k] ?? "").toString();
+const __vite_import_meta_env__ = {"ASSETS_PREFIX": undefined, "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "SITE": "https://sorteo-amigo-invisible.vercel.app", "SSR": true};
+const env = (k) => (Object.assign(__vite_import_meta_env__, { _: process.env._ })[k] ?? process.env[k] ?? "").toString();
 const escaparHtml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 const eur = (n) => new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR", maximumFractionDigits: 2 }).format(n);
 const fechaLarga = (iso) => new Intl.DateTimeFormat("es-ES", { dateStyle: "full", timeZone: "UTC" }).format(/* @__PURE__ */ new Date(`${iso}T00:00:00Z`));
@@ -81,7 +84,7 @@ function enlaceCalendario(juego) {
   const q = new URLSearchParams({ action: "TEMPLATE", text: `🎁 ${juego.gameName}`, dates: `${inicio}/${finTxt}` });
   return `https://calendar.google.com/calendar/render?${q}`;
 }
-function construirCorreo({ giver, receiver }, juego) {
+function construirCorreo({ giver, receiver }, juego, enlace) {
   const lineas = [];
   const lineasHtml = [];
   const add = (txt, html2 = escaparHtml(txt)) => (lineas.push(txt), lineasHtml.push(`<li style="margin:6px 0">${html2}</li>`));
@@ -98,6 +101,7 @@ function construirCorreo({ giver, receiver }, juego) {
     "",
     ...lineas.map((l) => `- ${l}`),
     ...cal ? ["", `Añadir al calendario: ${cal}`] : [],
+    ...enlace ? ["", `Tu enlace privado (ver la lista actualizada de ${receiver.name} y cambiar la tuya): ${enlace}`] : [],
     "",
     "Recuerda: es un secreto. ¡Feliz Navidad!"
   ].join("\n");
@@ -114,34 +118,35 @@ function construirCorreo({ giver, receiver }, juego) {
     <p style="font-size:28px;font-weight:bold;color:#b3262e;margin:8px 0 16px;text-align:center">${escaparHtml(receiver.name)}</p>
     ${lineasHtml.length ? `<ul style="padding-left:20px">${lineasHtml.join("")}</ul>` : ""}
     ${cal ? `<p style="text-align:center;margin:20px 0"><a href="${escaparHtml(cal)}" style="background:#1f5d46;color:#fff;text-decoration:none;padding:12px 20px;border-radius:999px;font-weight:bold">📅 Añadir al calendario</a></p>` : ""}
+    ${enlace ? `<p style="text-align:center;margin:20px 0"><a href="${escaparHtml(enlace)}" style="background:#b3262e;color:#fff;text-decoration:none;padding:12px 20px;border-radius:999px;font-weight:bold">📝 Ver su lista y editar la mía</a></p><p style="color:#5f4a41;font-size:13px;text-align:center">Es tu enlace privado: no lo compartas. Caduca solo unos días después del intercambio.</p>` : ""}
     <p style="color:#5f4a41;font-size:14px">Recuerda: es un secreto hasta el día del intercambio. ¡Feliz Navidad!</p>
   </div>
 </div></body></html>`;
   return { to: giver.email, subject: `🎁 Tu amigo invisible: ${juego.gameName}`, text, html };
 }
 function proveedorActivo() {
-  if (env$1("DEV_BYPASS_EMAILS").toLowerCase() === "true") return "simulado";
-  if (env$1("RESEND_API_KEY") && env$1("MAIL_FROM")) return "resend";
-  if (env$1("GMAIL_USER") && env$1("GMAIL_PASS")) return "gmail";
+  if (env("DEV_BYPASS_EMAILS").toLowerCase() === "true") return "simulado";
+  if (env("RESEND_API_KEY") && env("MAIL_FROM")) return "resend";
+  if (env("GMAIL_USER") && env("GMAIL_PASS")) return "gmail";
   return "simulado";
 }
 async function enviarResend(correos) {
-  const replyTo = env$1("MAIL_REPLYTO") || void 0;
-  const from = env$1("MAIL_FROM");
+  const replyTo = env("MAIL_REPLYTO") || void 0;
+  const from = env("MAIL_FROM");
   for (let i = 0; i < correos.length; i += 100) {
     const lote = correos.slice(i, i + 100).map((c) => ({ from, to: [c.to], subject: c.subject, text: c.text, html: c.html, reply_to: replyTo }));
     const res = await fetch("https://api.resend.com/emails/batch", {
       method: "POST",
-      headers: { Authorization: `Bearer ${env$1("RESEND_API_KEY")}`, "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${env("RESEND_API_KEY")}`, "Content-Type": "application/json" },
       body: JSON.stringify(lote)
     });
     if (!res.ok) throw new Error(`resend_${res.status}`);
   }
 }
 async function enviarGmail(correos) {
-  const transporter = nodemailer.createTransport({ service: "gmail", auth: { user: env$1("GMAIL_USER"), pass: env$1("GMAIL_PASS") } });
-  const from = env$1("MAIL_FROM") || env$1("GMAIL_USER");
-  const replyTo = env$1("MAIL_REPLYTO") || void 0;
+  const transporter = nodemailer.createTransport({ service: "gmail", auth: { user: env("GMAIL_USER"), pass: env("GMAIL_PASS") } });
+  const from = env("MAIL_FROM") || env("GMAIL_USER");
+  const replyTo = env("MAIL_REPLYTO") || void 0;
   const resultados = await Promise.allSettled(correos.map((c) => transporter.sendMail({ from, replyTo, to: c.to, subject: c.subject, text: c.text, html: c.html })));
   if (resultados.some((r) => r.status === "rejected")) throw new Error("gmail_error");
 }
@@ -152,26 +157,9 @@ async function enviarCorreos(correos) {
   return proveedor;
 }
 
-const VENTANA_MS = 10 * 60 * 1e3;
-const MAX = 5;
-const contadores = /* @__PURE__ */ new Map();
-function permitido(ip, ahora = Date.now()) {
-  for (const [k, v] of contadores) if (ahora - v.desde > VENTANA_MS) contadores.delete(k);
-  const actual = contadores.get(ip);
-  if (!actual || ahora - actual.desde > VENTANA_MS) {
-    contadores.set(ip, { n: 1, desde: ahora });
-    return true;
-  }
-  actual.n += 1;
-  return actual.n <= MAX;
-}
-
-const __vite_import_meta_env__ = {"ASSETS_PREFIX": undefined, "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "SITE": "https://sorteo-amigo-invisible.vercel.app", "SSR": true};
 const prerender = false;
-const json = (cuerpo, status = 200) => new Response(JSON.stringify(cuerpo), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
-const env = (k) => (Object.assign(__vite_import_meta_env__, { _: process.env._ })[k] ?? process.env[k] ?? "").toString();
 async function verificarRecaptcha(token) {
-  const secreto = env("RECAPTCHA_SECRET");
+  const secreto = env$1("RECAPTCHA_SECRET");
   if (!secreto) return true;
   if (typeof token !== "string" || !token) return false;
   try {
@@ -186,22 +174,9 @@ async function verificarRecaptcha(token) {
     return false;
   }
 }
-function origenPermitido(request) {
-  const permitidoEnv = env("ALLOWED_ORIGIN");
-  if (!permitidoEnv) return true;
-  const origen = request.headers.get("origin") ?? request.headers.get("referer");
-  if (!origen) return false;
-  try {
-    const host = new URL(origen).hostname;
-    return host === permitidoEnv || host.endsWith(`.${permitidoEnv}`);
-  } catch {
-    return false;
-  }
-}
-const POST = async ({ request, clientAddress }) => {
+const POST = async ({ request, clientAddress, url, site }) => {
   if (!origenPermitido(request)) return json({ error: "origen_no_permitido", mensaje: "Origen no permitido." }, 403);
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || clientAddress || "desconocida";
-  if (!permitido(ip)) return json({ error: "demasiadas_peticiones", mensaje: "Has hecho demasiados sorteos seguidos. Espera unos minutos." }, 429);
+  if (!permitido(ipDe(request, clientAddress))) return json({ error: "demasiadas_peticiones", mensaje: "Has hecho demasiados sorteos seguidos. Espera unos minutos." }, 429);
   let cuerpo;
   try {
     cuerpo = await request.json();
@@ -215,12 +190,30 @@ const POST = async ({ request, clientAddress }) => {
   try {
     const juego = validarDatos(cuerpo);
     const asignaciones = asignar(juego.participants, juego.exceptions);
-    const correos = asignaciones.map((a) => construirCorreo(a, juego));
+    const conEnlaces = almacenDisponible();
+    const base = false ? url.origin : (site ?? url).origin;
+    const tokens = new Map(juego.participants.map((p) => [p.id, generarToken()]));
+    if (conEnlaces) {
+      const registros = {};
+      for (const { giver, receiver } of asignaciones) {
+        registros[tokens.get(giver.id)] = {
+          n: giver.name,
+          w: giver.wishlist ?? "",
+          r: tokens.get(receiver.id),
+          g: juego.gameName,
+          d: juego.eventDate,
+          b: juego.budget
+        };
+      }
+      await guardarRegistros(registros, juego.eventDate);
+    }
+    const correos = asignaciones.map((a) => construirCorreo(a, juego, conEnlaces ? `${base}/amigo/${tokens.get(a.giver.id)}` : void 0));
     const proveedor = await enviarCorreos(correos);
+    if (proveedor === "simulado" && false) ;
     return json({ ok: true, sent: correos.length, simulado: proveedor === "simulado" });
   } catch (err) {
     if (err instanceof ErrorSorteo) return json({ error: err.codigo, mensaje: err.message }, err.codigo === "sin_solucion" ? 422 : 400);
-    console.error("create-game: fallo al enviar", err instanceof Error ? err.message : "desconocido");
+    console.error("create-game: fallo", err instanceof Error ? err.message : "desconocido");
     return json({ error: "envio_fallido", mensaje: "No hemos podido enviar los correos. Inténtalo de nuevo en unos minutos." }, 502);
   }
 };
