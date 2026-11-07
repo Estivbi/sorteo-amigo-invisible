@@ -5,7 +5,6 @@ interface ImportMetaEnv {
   readonly RECAPTCHA_SECRET?: string;
   readonly RESEND_API_KEY?: string;
   readonly MAIL_FROM?: string;
-  readonly MAIL_REPLYTO?: string;
   readonly GMAIL_USER?: string;
   readonly GMAIL_PASS?: string;
   readonly ALLOWED_ORIGIN?: string;
