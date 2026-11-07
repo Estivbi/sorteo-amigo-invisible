@@ -20,6 +20,12 @@ function enlaceCalendario(juego: DatosSorteo): string | null {
   return `https://calendar.google.com/calendar/render?${q}`;
 }
 
+/** Marca los correos como automáticos: los gestores de correo no devuelven respuestas automáticas (fuera de oficina, etc.). */
+export const CABECERAS_AUTOMATICAS = { 'Auto-Submitted': 'auto-generated', 'X-Auto-Response-Suppress': 'All' };
+
+/** Aviso al pie de cada correo: el sistema no tiene buzón de entrada. */
+export const AVISO_NO_RESPONDER = 'Este correo se ha enviado automáticamente. Por favor, no respondas a este mensaje: nadie lo leerá.';
+
 export interface Correo {
   to: string;
   subject: string;
@@ -49,6 +55,8 @@ export function construirCorreo({ giver, receiver }: Asignacion, juego: DatosSor
     ...(enlace ? ['', `Tu enlace privado (ver la lista actualizada de ${receiver.name} y cambiar la tuya): ${enlace}`] : []),
     '',
     'Recuerda: es un secreto. ¡Feliz Navidad!',
+    '',
+    AVISO_NO_RESPONDER,
   ].join('\n');
 
   const html = `<!doctype html><html lang="es"><body style="margin:0;background:#fff8ef;font-family:Arial,Helvetica,sans-serif;color:#2b1a14">
@@ -66,6 +74,7 @@ export function construirCorreo({ giver, receiver }: Asignacion, juego: DatosSor
     ${cal ? `<p style="text-align:center;margin:20px 0"><a href="${escaparHtml(cal)}" style="background:#1f5d46;color:#fff;text-decoration:none;padding:12px 20px;border-radius:999px;font-weight:bold">📅 Añadir al calendario</a></p>` : ''}
     ${enlace ? `<p style="text-align:center;margin:20px 0"><a href="${escaparHtml(enlace)}" style="background:#b3262e;color:#fff;text-decoration:none;padding:12px 20px;border-radius:999px;font-weight:bold">📝 Ver su lista y editar la mía</a></p><p style="color:#5f4a41;font-size:13px;text-align:center">Es tu enlace privado: no lo compartas. Caduca solo unos días después del intercambio.</p>` : ''}
     <p style="color:#5f4a41;font-size:14px">Recuerda: es un secreto hasta el día del intercambio. ¡Feliz Navidad!</p>
+    <p style="color:#5f4a41;font-size:12px;border-top:1px solid #ecd9c5;padding-top:12px;margin-bottom:0">${escaparHtml(AVISO_NO_RESPONDER)}</p>
   </div>
 </div></body></html>`;
 
@@ -82,11 +91,10 @@ export function proveedorActivo(): Proveedor {
 }
 
 async function enviarResend(correos: Correo[]): Promise<void> {
-  const replyTo = env('MAIL_REPLYTO') || undefined;
   const from = env('MAIL_FROM');
   // La API por lotes admite hasta 100 correos por petición.
   for (let i = 0; i < correos.length; i += 100) {
-    const lote = correos.slice(i, i + 100).map((c) => ({ from, to: [c.to], subject: c.subject, text: c.text, html: c.html, reply_to: replyTo }));
+    const lote = correos.slice(i, i + 100).map((c) => ({ from, to: [c.to], subject: c.subject, text: c.text, html: c.html, headers: CABECERAS_AUTOMATICAS }));
     const res = await fetch('https://api.resend.com/emails/batch', {
       method: 'POST',
       headers: { Authorization: `Bearer ${env('RESEND_API_KEY')}`, 'Content-Type': 'application/json' },
@@ -99,8 +107,7 @@ async function enviarResend(correos: Correo[]): Promise<void> {
 async function enviarGmail(correos: Correo[]): Promise<void> {
   const transporter = nodemailer.createTransport({ service: 'gmail', auth: { user: env('GMAIL_USER'), pass: env('GMAIL_PASS') } });
   const from = env('MAIL_FROM') || env('GMAIL_USER');
-  const replyTo = env('MAIL_REPLYTO') || undefined;
-  const resultados = await Promise.allSettled(correos.map((c) => transporter.sendMail({ from, replyTo, to: c.to, subject: c.subject, text: c.text, html: c.html })));
+  const resultados = await Promise.allSettled(correos.map((c) => transporter.sendMail({ from, to: c.to, subject: c.subject, text: c.text, html: c.html, headers: CABECERAS_AUTOMATICAS })));
   if (resultados.some((r) => r.status === 'rejected')) throw new Error('gmail_error');
 }
 
