@@ -18,7 +18,7 @@ export const prerender = true;
       <p>Para que cada participante pueda ver la lista de deseos de su amigo invisible y editar la suya, guardamos de forma temporal el nombre de cada participante, su lista de deseos, el nombre de la persona a quien regala, el nombre del sorteo, el presupuesto y la fecha. Se asocian a un enlace privado y aleatorio que solo recibe cada participante.</p>
       <p>Estos datos se borran automáticamente 7 días después de la fecha del intercambio (o a los 45 días si no indicaste fecha).</p>
       <h2 class="text-2xl">Proveedores</h2>
-      <p>Para enviar los correos usamos un proveedor de email transaccional, para guardar temporalmente las listas un servicio de base de datos en la nube (Upstash Redis) y, para evitar abusos, Google reCAPTCHA.</p>
+      <p>Para enviar los correos usamos un proveedor de email transaccional, para guardar temporalmente las listas un servicio de base de datos en la nube (Upstash Redis) y, para evitar abusos, Cloudflare Turnstile, que comprueba que quien crea el sorteo es una persona y no un robot.</p>
       <h2 class="text-2xl">Enlaces de afiliado</h2>
       <p>Algunas páginas (ideas de regalo y la página privada de cada participante) pueden incluir enlaces de afiliado a tiendas como Amazon. Si compras desde ellos, la web recibe una pequeña comisión sin coste extra para ti. Cuando pulsas «Buscar», el término de búsqueda (por ejemplo, una idea de la lista de deseos) se envía a la tienda. Si no pulsas, no se envía nada.</p>
       <h2 class="text-2xl">Importante</h2>

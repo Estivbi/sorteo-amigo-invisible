@@ -4,7 +4,7 @@ Sorteo de amigo invisible online, gratis y sin registro. Cada participante recib
 
 ## Stack
 
-Astro 5 (SSR en Vercel) · TypeScript · Tailwind v4 + daisyUI (tema `navidad` en `src/styles/global.css`) · iconos Lucide (`astro-icon`) · Resend (o Gmail como alternativa) · Upstash Redis (listas de deseos) · reCAPTCHA v3.
+Astro 5 (SSR en Vercel) · TypeScript · Tailwind v4 + daisyUI (tema `navidad` en `src/styles/global.css`) · iconos Lucide (`astro-icon`) · Resend (o Gmail como alternativa) · Upstash Redis (listas de deseos) · Cloudflare Turnstile.
 
 ## Desarrollo
 
@@ -18,7 +18,7 @@ npm run build          # comprobación de tipos + build
 
 ## Variables de entorno
 
-Ver `.env.example`. Para producción: `SITE_URL`, `RESEND_API_KEY` + `MAIL_FROM` (dominio verificado en Resend), `RECAPTCHA_SITEKEY` / `RECAPTCHA_SECRET`, `ALLOWED_ORIGIN` y, opcional, `PUBLIC_DONATE_URL`.
+Ver `.env.example`. Para producción: `SITE_URL`, `RESEND_API_KEY` + `MAIL_FROM` (dominio verificado en Resend), `PUBLIC_TURNSTILE_SITEKEY` / `TURNSTILE_SECRET`, `ALLOWED_ORIGIN` y, opcional, `PUBLIC_DONATE_URL`.
 
 ## Correos sin respuesta
 
@@ -50,6 +50,6 @@ Páginas por intención de búsqueda en `src/data/landings.ts` (`/amigo-invisibl
 
 ## Seguridad
 
-Validación y saneado en servidor, máximo 40 participantes, reCAPTCHA, campo trampa anti-bots, límite por IP y comprobación de origen. El servidor nunca devuelve quién regala a quién.
+Validación y saneado en servidor, máximo 40 participantes, Cloudflare Turnstile (obligatorio cuando se envían correos reales), campo trampa anti-bots, límite por IP y comprobación de origen. El servidor nunca devuelve quién regala a quién.
 
 Licencia MIT.

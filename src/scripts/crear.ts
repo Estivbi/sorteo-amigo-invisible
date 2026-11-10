@@ -16,24 +16,57 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, props: Record<string,
   return nodo;
 }
 
-async function obtenerTokenRecaptcha(): Promise<string | null> {
-  const siteKey = document.querySelector<HTMLMetaElement>('meta[name="recaptcha-sitekey"]')?.content;
-  if (!siteKey) return null;
-  const g = () => (window as unknown as { grecaptcha?: { ready(cb: () => void): void; execute(k: string, o: { action: string }): Promise<string> } }).grecaptcha;
-  if (!g()) {
+interface TurnstileApi {
+  render(el: HTMLElement, opciones: Record<string, unknown>): string;
+  execute(id: string): void;
+  reset(id: string): void;
+}
+const turnstileGlobal = () => (window as unknown as { turnstile?: TurnstileApi }).turnstile;
+
+let widgetId: string | null = null;
+let esperando: { resolver(t: string): void; rechazar(e: Error): void } | null = null;
+
+async function cargarTurnstile(): Promise<TurnstileApi> {
+  if (!turnstileGlobal()) {
     await new Promise<void>((resolve, reject) => {
       const s = document.createElement('script');
-      s.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(siteKey)}`;
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
       s.async = true;
       s.onload = () => resolve();
-      s.onerror = () => reject(new Error('recaptcha'));
+      s.onerror = () => reject(new Error('turnstile'));
       document.head.appendChild(s);
     });
   }
-  const api = g();
-  if (!api) return null;
-  await new Promise<void>((resolve) => api.ready(resolve));
-  return api.execute(siteKey, { action: 'create_game' });
+  const api = turnstileGlobal();
+  if (!api) throw new Error('turnstile');
+  return api;
+}
+
+/** Pide un token nuevo a Turnstile. Es invisible salvo que Cloudflare necesite que la persona confirme algo. */
+async function obtenerTokenTurnstile(): Promise<string | null> {
+  const siteKey = document.querySelector<HTMLMetaElement>('meta[name="turnstile-sitekey"]')?.content;
+  if (!siteKey) return null;
+  const api = await cargarTurnstile();
+  const caja = document.getElementById('turnstile-box')!;
+  if (widgetId === null) {
+    widgetId = api.render(caja, {
+      sitekey: siteKey,
+      action: 'crear_sorteo',
+      language: 'es',
+      appearance: 'interaction-only',
+      execution: 'execute',
+      callback: (token: string) => esperando?.resolver(token),
+      'error-callback': () => esperando?.rechazar(new Error('turnstile')),
+      'timeout-callback': () => esperando?.rechazar(new Error('turnstile')),
+    });
+  } else {
+    api.reset(widgetId); // cada token vale una sola vez
+  }
+  return new Promise<string>((resolver, rechazar) => {
+    const limite = setTimeout(() => rechazar(new Error('turnstile')), 45000);
+    esperando = { resolver: (t) => { clearTimeout(limite); resolver(t); }, rechazar: (e) => { clearTimeout(limite); rechazar(e); } };
+    api.execute(widgetId!);
+  });
 }
 
 export function iniciarFormulario() {
@@ -158,8 +191,8 @@ export function iniciarFormulario() {
     spinner.hidden = false;
     submitLabel.textContent = 'Enviando correos…';
     try {
-      let recaptchaToken: string | null = null;
-      try { recaptchaToken = await obtenerTokenRecaptcha(); } catch { /* el servidor decide si lo exige */ }
+      let captchaToken: string | null = null;
+      try { captchaToken = await obtenerTokenTurnstile(); } catch { /* el servidor decide si lo exige */ }
       const presupuesto = (form.elements.namedItem('budget') as HTMLInputElement).value;
       const res = await fetch('/api/create-game', {
         method: 'POST',
@@ -171,7 +204,7 @@ export function iniciarFormulario() {
           website: (form.elements.namedItem('website') as HTMLInputElement).value,
           participants: participantes,
           exceptions: excepciones.filter((e) => e.from && e.to && e.from !== e.to),
-          recaptchaToken,
+          captchaToken,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as { mensaje?: string; simulado?: boolean };

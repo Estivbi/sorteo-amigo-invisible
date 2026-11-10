@@ -1,28 +1,12 @@
 import type { APIRoute } from 'astro';
 import { asignar, ErrorSorteo, validarDatos } from '../../lib/sorteo';
-import { construirCorreo, enviarCorreos } from '../../lib/email';
+import { construirCorreo, enviarCorreos, proveedorActivo } from '../../lib/email';
+import { verificarTurnstile } from '../../lib/turnstile';
 import { permitido } from '../../lib/limite';
 import { almacenDisponible, generarToken, guardarRegistros, type RegistroAmigo } from '../../lib/almacen';
 import { env, ipDe, json, origenPermitido } from '../../lib/http';
 
 export const prerender = false;
-
-async function verificarRecaptcha(token: unknown): Promise<boolean> {
-  const secreto = env('RECAPTCHA_SECRET');
-  if (!secreto) return true; // sin configurar (desarrollo)
-  if (typeof token !== 'string' || !token) return false;
-  try {
-    const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ secret: secreto, response: token }),
-    });
-    const r = (await res.json()) as { success?: boolean; score?: number };
-    return Boolean(r.success) && (typeof r.score !== 'number' || r.score >= 0.5);
-  } catch {
-    return false;
-  }
-}
 
 export const POST: APIRoute = async ({ request, clientAddress, url, site }) => {
   if (!origenPermitido(request)) return json({ error: 'origen_no_permitido', mensaje: 'Origen no permitido.' }, 403);
@@ -38,8 +22,18 @@ export const POST: APIRoute = async ({ request, clientAddress, url, site }) => {
   // Trampa para bots: un humano nunca rellena este campo oculto.
   if (cuerpo.website) return json({ ok: true, sent: 0 });
 
-  if (!(await verificarRecaptcha(cuerpo.recaptchaToken))) {
-    return json({ error: 'recaptcha', mensaje: 'No hemos podido verificar que eres una persona. Recarga la página e inténtalo de nuevo.' }, 403);
+  // Con envío real de correos, el antibots es obligatorio; en desarrollo o modo simulado puede faltar.
+  const captcha = await verificarTurnstile({
+    token: cuerpo.captchaToken,
+    secret: env('TURNSTILE_SECRET'),
+    ip: ipDe(request, clientAddress),
+    exigido: proveedorActivo() !== 'simulado',
+  });
+  if (!captcha.ok) {
+    if (captcha.motivo === 'no_configurado') console.error('create-game: falta TURNSTILE_SECRET con el envío de correos activo');
+    return captcha.motivo === 'no_configurado'
+      ? json({ error: 'captcha_no_configurado', mensaje: 'La protección antibots no está configurada. Inténtalo más tarde.' }, 503)
+      : json({ error: 'captcha', mensaje: 'No hemos podido verificar que eres una persona. Recarga la página e inténtalo de nuevo.' }, 403);
   }
 
   try {

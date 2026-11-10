@@ -60,12 +60,14 @@ const donateUrl = import.meta.env.PUBLIC_DONATE_URL || '';
               <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
             </div>
 
+            <div id="turnstile-box" class="flex justify-center"></div>
+
             <div>
               <button type="submit" id="submit-btn" class="btn btn-primary btn-lg w-full">
                 <span class="loading loading-spinner" aria-hidden="true" hidden></span>
                 <span id="submit-label">Sortear y enviar correos</span>
               </button>
-              <p class="mt-3 text-center text-sm text-tinta-suave">Protegido por reCAPTCHA de Google.</p>
+              <p class="mt-3 text-center text-sm text-tinta-suave">Protegido por Cloudflare Turnstile.</p>
             </div>
           </form>
 
