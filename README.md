@@ -20,6 +20,10 @@ npm run build          # comprobación de tipos + build
 
 Ver `.env.example`. Para producción: `SITE_URL`, `RESEND_API_KEY` + `MAIL_FROM` (dominio verificado en Resend), `RECAPTCHA_SITEKEY` / `RECAPTCHA_SECRET`, `ALLOWED_ORIGIN` y, opcional, `PUBLIC_DONATE_URL`.
 
+## Correos sin respuesta
+
+Los correos son automáticos y no admiten respuesta: no llevan `Reply-To`, llevan las cabeceras `Auto-Submitted: auto-generated` y `X-Auto-Response-Suppress: All` (evitan respuestas automáticas como «fuera de la oficina») y terminan con un aviso. Usa un remitente sin buzón, por ejemplo `MAIL_FROM="Amigo Invisible <no-reply@tudominio.com>"`, y no crees para él ningún alias ni catch-all. Con Gmail (solo para pruebas) las respuestas llegan a esa cuenta, porque no se puede evitar.
+
 ## Listas de deseos editables
 
 Al crear el sorteo se guarda, con un token aleatorio de 128 bits por participante, solo: nombre, lista, token de a quién regala, nombre del sorteo, presupuesto y fecha. Nunca correos. Todo caduca solo (TTL): 7 días después del intercambio, o 45 días sin fecha. Sin Redis configurado en producción la función se desactiva y el correo sale sin enlace; en desarrollo se usa memoria.
