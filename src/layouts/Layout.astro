@@ -71,7 +71,7 @@ const links = [
     {privado && <meta name="referrer" content="no-referrer" />}
     <meta name="theme-color" content="#b3262e" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="recaptcha-sitekey" content={import.meta.env.RECAPTCHA_SITEKEY || ''} />
+    <meta name="turnstile-sitekey" content={import.meta.env.PUBLIC_TURNSTILE_SITEKEY || ''} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />

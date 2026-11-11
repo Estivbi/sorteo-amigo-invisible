@@ -1,7 +1,7 @@
 /**
  * Limitador de peticiones por IP en memoria.
  * En serverless cada instancia tiene su propio contador, así que es una barrera de mejor esfuerzo:
- * la protección fuerte son reCAPTCHA y el tope de participantes por sorteo.
+ * la protección fuerte son Turnstile y el tope de participantes por sorteo.
  */
 const VENTANA_MS = 10 * 60 * 1000;
 const MAX = 5;

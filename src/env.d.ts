@@ -1,8 +1,8 @@
 /// <reference path="../.astro/types.d.ts" />
 
 interface ImportMetaEnv {
-  readonly RECAPTCHA_SITEKEY?: string;
-  readonly RECAPTCHA_SECRET?: string;
+  readonly PUBLIC_TURNSTILE_SITEKEY?: string;
+  readonly TURNSTILE_SECRET?: string;
   readonly RESEND_API_KEY?: string;
   readonly MAIL_FROM?: string;
   readonly GMAIL_USER?: string;
