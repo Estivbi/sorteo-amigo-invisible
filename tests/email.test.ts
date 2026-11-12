@@ -42,3 +42,17 @@ test('incluye presupuesto, fecha y la lista del amigo invisible', () => {
   assert.ok(c.text.includes('23 de diciembre de 2026'));
   assert.ok(c.text.includes('libros & café'));
 });
+
+test('los botones son de tabla, con el fondo en la celda, y no se parten en móviles estrechos', () => {
+  const c = construirCorreo({ giver: ana, receiver: beto }, juego, 'https://ejemplo.com/amigo/abc');
+  assert.ok(c.html.includes('<table role="presentation"'));
+  assert.ok(c.html.includes('bgcolor="#b3262e"'));
+  assert.ok(c.html.includes('bgcolor="#1f5d46"'));
+  assert.ok(!c.html.includes('border-radius:999px'), 'sin enlaces en línea con relleno redondeado');
+  assert.ok(c.html.includes('Mi enlace privado'));
+});
+
+test('declara soporte de modo claro y oscuro', () => {
+  const c = construirCorreo({ giver: ana, receiver: beto }, juego);
+  assert.ok(c.html.includes('<meta name="color-scheme" content="light dark">'));
+});
