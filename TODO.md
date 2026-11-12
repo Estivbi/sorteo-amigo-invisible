@@ -35,3 +35,7 @@ No está en marcha, pero encaja con lo que ya hay (Upstash Redis para guardar da
 - Enlace de afiliado de viajes a Rovaniemi en la sección de Laponia. Se activa con `PUBLIC_VIAJES_URL`.
 - Donación con `PUBLIC_DONATE_URL`.
 - Otros programas a valorar: Awin (agrupa tiendas como Etsy), Civitatis y GetYourGuide para las excursiones, Booking para alojamiento.
+
+## Después del 7 de enero
+
+- Cambiar el tema navideño por uno neutro: hero, nieve, trineo, sección de Laponia, paleta, textos con «Navidad», imagen `og.png` y correos. Hay un recordatorio programado para el 8 de enero. Antes de tocar diseño, proponerlo y esperar el ok.
