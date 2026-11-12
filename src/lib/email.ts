@@ -1,4 +1,3 @@
-import nodemailer from 'nodemailer';
 import type { Asignacion, DatosSorteo } from './sorteo';
 
 const env = (k: string): string => ((import.meta.env as Record<string, string | undefined>)[k] ?? process.env[k] ?? '').toString();
@@ -105,6 +104,7 @@ async function enviarResend(correos: Correo[]): Promise<void> {
 }
 
 async function enviarGmail(correos: Correo[]): Promise<void> {
+  const { default: nodemailer } = await import('nodemailer'); // solo se carga si se usa Gmail
   const transporter = nodemailer.createTransport({ service: 'gmail', auth: { user: env('GMAIL_USER'), pass: env('GMAIL_PASS') } });
   const from = env('MAIL_FROM') || env('GMAIL_USER');
   const resultados = await Promise.allSettled(correos.map((c) => transporter.sendMail({ from, to: c.to, subject: c.subject, text: c.text, html: c.html, headers: CABECERAS_AUTOMATICAS })));

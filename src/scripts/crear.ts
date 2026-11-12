@@ -24,7 +24,10 @@ interface TurnstileApi {
 const turnstileGlobal = () => (window as unknown as { turnstile?: TurnstileApi }).turnstile;
 
 let widgetId: string | null = null;
-let esperando: { resolver(t: string): void; rechazar(e: Error): void } | null = null;
+let api: TurnstileApi | null = null;
+let listo: string | null = null; // token ya resuelto y todavía sin usar
+let preparando: Promise<void> | null = null;
+const esperando: { resolver(t: string): void; rechazar(e: Error): void }[] = [];
 
 async function cargarTurnstile(): Promise<TurnstileApi> {
   if (!turnstileGlobal()) {
@@ -37,35 +40,66 @@ async function cargarTurnstile(): Promise<TurnstileApi> {
       document.head.appendChild(s);
     });
   }
-  const api = turnstileGlobal();
-  if (!api) throw new Error('turnstile');
-  return api;
+  const global = turnstileGlobal();
+  if (!global) throw new Error('turnstile');
+  return global;
 }
 
-/** Pide un token nuevo a Turnstile. Es invisible salvo que Cloudflare necesite que la persona confirme algo. */
-async function obtenerTokenTurnstile(): Promise<string | null> {
+function tokenRecibido(token: string) {
+  const alguien = esperando.shift();
+  if (alguien) alguien.resolver(token);
+  else listo = token;
+}
+
+function tokenFallido() {
+  listo = null;
+  esperando.splice(0).forEach((e) => e.rechazar(new Error('turnstile')));
+}
+
+/**
+ * Empieza a resolver el reto en cuanto la persona toca el formulario: cuando pulse el botón,
+ * el token ya está listo y no hay que esperar a Cloudflare. Es invisible salvo que Cloudflare necesite una confirmación.
+ */
+function prepararTurnstile(): Promise<void> {
   const siteKey = document.querySelector<HTMLMetaElement>('meta[name="turnstile-sitekey"]')?.content;
-  if (!siteKey) return null;
-  const api = await cargarTurnstile();
-  const caja = document.getElementById('turnstile-box')!;
-  if (widgetId === null) {
-    widgetId = api.render(caja, {
-      sitekey: siteKey,
-      action: 'crear_sorteo',
-      language: 'es',
-      appearance: 'interaction-only',
-      execution: 'execute',
-      callback: (token: string) => esperando?.resolver(token),
-      'error-callback': () => esperando?.rechazar(new Error('turnstile')),
-      'timeout-callback': () => esperando?.rechazar(new Error('turnstile')),
-    });
-  } else {
-    api.reset(widgetId); // cada token vale una sola vez
+  if (!siteKey) return Promise.resolve();
+  if (!preparando) {
+    preparando = cargarTurnstile()
+      .then((a) => {
+        api = a;
+        widgetId = a.render(document.getElementById('turnstile-box')!, {
+          sitekey: siteKey,
+          action: 'crear_sorteo',
+          language: 'es',
+          appearance: 'interaction-only',
+          callback: tokenRecibido,
+          'expired-callback': () => { listo = null; },
+          'error-callback': tokenFallido,
+          'timeout-callback': tokenFallido,
+        });
+      })
+      .catch(() => { preparando = null; tokenFallido(); });
+  }
+  return preparando;
+}
+
+/** Entrega el token ya preparado (o espera al que está en curso) y pide otro para un posible segundo intento. */
+async function obtenerTokenTurnstile(): Promise<string | null> {
+  if (!document.querySelector<HTMLMetaElement>('meta[name="turnstile-sitekey"]')?.content) return null;
+  await prepararTurnstile();
+  const reiniciar = () => { if (api && widgetId !== null) api.reset(widgetId); }; // cada token vale una sola vez
+  if (listo) {
+    const token = listo;
+    listo = null;
+    reiniciar();
+    return token;
   }
   return new Promise<string>((resolver, rechazar) => {
     const limite = setTimeout(() => rechazar(new Error('turnstile')), 45000);
-    esperando = { resolver: (t) => { clearTimeout(limite); resolver(t); }, rechazar: (e) => { clearTimeout(limite); rechazar(e); } };
-    api.execute(widgetId!);
+    esperando.push({
+      resolver: (t) => { clearTimeout(limite); reiniciar(); resolver(t); },
+      rechazar: (e) => { clearTimeout(limite); rechazar(e); },
+    });
   });
 }
 
@@ -78,6 +112,9 @@ export function iniciarFormulario() {
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
   const spinner = submitBtn.querySelector<HTMLElement>('.loading')!;
   const submitLabel = document.getElementById('submit-label')!;
+
+  // En cuanto la persona toca el formulario, Turnstile empieza a trabajar en segundo plano.
+  form.addEventListener('focusin', () => { void prepararTurnstile(); }, { once: true });
 
   let contador = 0;
   const participantes: Participante[] = [];
