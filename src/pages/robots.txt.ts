@@ -1,9 +1,9 @@
 import type { APIRoute } from 'astro';
+import { generarRobots } from '../lib/seo';
 
 export const prerender = true;
 
 export const GET: APIRoute = ({ site }) =>
-  new Response(
-    `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${new URL('/sitemap.xml', site)}\n`,
-    { headers: { 'Content-Type': 'text/plain; charset=utf-8' } },
-  );
+  new Response(generarRobots(new URL('/sitemap.xml', site).toString()), {
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+  });
