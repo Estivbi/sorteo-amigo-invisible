@@ -1,5 +1,9 @@
 ---
 import '../styles/global.css';
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource-variable/nunito/wght.css';
+import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
+import nunitoLatin from '@fontsource-variable/nunito/files/nunito-latin-wght-normal.woff2?url';
 import { Icon } from 'astro-icon/components';
 import { landings } from '../data/landings';
 import { AVISO_AMAZON } from '../lib/afiliados';
@@ -76,7 +80,6 @@ const links = [
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
@@ -93,12 +96,8 @@ const links = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Nunito:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" href={nunitoLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
 
     {graph.map((obj) => <script is:inline type="application/ld+json" set:html={JSON.stringify(obj)} />)}
   </head>
@@ -150,11 +149,11 @@ const links = [
           <p>El sorteo de amigo invisible online más sencillo: gratis, sin registro y sin guardar tus correos.</p>
         </aside>
         <nav aria-label="Sorteos para cada ocasión">
-          <h2 class="footer-title text-accent normal-case tracking-normal">Sorteos para cada ocasión</h2>
+          <h2 class="footer-title text-accent normal-case tracking-normal opacity-100">Sorteos para cada ocasión</h2>
           {landings.map((l) => <a class="link link-hover" href={`/amigo-invisible/${l.slug}`}>{l.nav}</a>)}
         </nav>
         <nav aria-label="Más enlaces">
-          <h2 class="footer-title text-accent normal-case tracking-normal">Más</h2>
+          <h2 class="footer-title text-accent normal-case tracking-normal opacity-100">Más</h2>
           <a class="link link-hover" href="/crear">Crear sorteo</a>
           <a class="link link-hover" href="/ideas-regalo">Ideas de regalo</a>
           <a class="link link-hover" href="/reglas">Reglas y consejos</a>

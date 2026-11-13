@@ -18,7 +18,7 @@ export const landings: Landing[] = [
     slug: 'oficina',
     nav: 'Para la oficina',
     icon: 'lucide:briefcase',
-    title: 'Amigo invisible para la oficina y el trabajo: sorteo online gratis',
+    title: 'Amigo invisible para la oficina: sorteo online gratis',
     description:
       'Organiza el amigo invisible de la oficina en 2 minutos: sorteo online gratis, excepciones entre compañeros, presupuesto y aviso por email. Sin registro.',
     resumen: 'Presupuesto cerrado y excepciones entre compañeros.',
@@ -42,7 +42,7 @@ export const landings: Landing[] = [
     slug: 'familia',
     nav: 'Para la familia',
     icon: 'lucide:house',
-    title: 'Amigo invisible en familia: sorteo online gratis con excepciones',
+    title: 'Amigo invisible en familia: sorteo online y excepciones',
     description:
       'Sorteo de amigo invisible para la familia: evita que parejas o hermanos se toquen entre sí, añade lista de deseos y envía las asignaciones por email. Gratis.',
     resumen: 'Sin que se toquen las parejas y con lista de deseos.',
@@ -66,7 +66,7 @@ export const landings: Landing[] = [
     slug: 'amigos',
     nav: 'Para amigos',
     icon: 'lucide:party-popper',
-    title: 'Amigo invisible entre amigos: crea el sorteo online en 2 minutos',
+    title: 'Amigo invisible entre amigos: sorteo online en 2 minutos',
     description:
       'Haz el amigo invisible con tu grupo de amigos: sorteo online gratis, sin registro, con presupuesto, lista de deseos y fecha del intercambio por email.',
     resumen: 'Sin papelitos ni quedadas: cada uno lo recibe en el móvil.',
