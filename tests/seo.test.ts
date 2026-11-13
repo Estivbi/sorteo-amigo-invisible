@@ -4,7 +4,7 @@ import { RASTREADORES_IA, generarLlmsTxt, generarRobots } from '../src/lib/seo.t
 
 test('robots.txt permite todo salvo las rutas privadas y apunta al sitemap', () => {
   const r = generarRobots('https://ejemplo.com/sitemap.xml');
-  assert.ok(r.startsWith('User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /amigo/'));
+  assert.ok(r.startsWith('User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /amigo/\nDisallow: /estadisticas'));
   assert.ok(r.includes('Sitemap: https://ejemplo.com/sitemap.xml'));
 });
 
@@ -12,7 +12,7 @@ test('cada rastreador de IA está permitido y también respeta las rutas privada
   const r = generarRobots('https://ejemplo.com/sitemap.xml');
   for (const n of RASTREADORES_IA) assert.ok(r.includes(`User-agent: ${n}\n`), n);
   const grupoIa = r.slice(r.indexOf('User-agent: GPTBot'));
-  assert.ok(grupoIa.includes('Allow: /\nDisallow: /api/\nDisallow: /amigo/'));
+  assert.ok(grupoIa.includes('Allow: /\nDisallow: /api/\nDisallow: /amigo/\nDisallow: /estadisticas'));
   assert.ok(!/Disallow: \/\s*$/m.test(r), 'ningún bloqueo total');
 });
 

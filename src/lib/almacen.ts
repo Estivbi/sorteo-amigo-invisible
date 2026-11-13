@@ -24,12 +24,15 @@ const tokenRedis = () => env('UPSTASH_REDIS_REST_TOKEN') || env('KV_REST_API_TOK
 const enDesarrollo = () => Boolean((import.meta.env as { DEV?: boolean }).DEV);
 
 /** En producción hace falta Redis; en desarrollo se usa memoria para poder probar sin cuenta. */
+/** true si hay una base Redis real configurada (no la memoria de desarrollo). */
+export const redisConfigurado = () => Boolean(urlRedis() && tokenRedis());
+
 export const almacenDisponible = () => Boolean(urlRedis() && tokenRedis()) || enDesarrollo();
 
 const memoria = new Map<string, { v: string; exp: number }>();
 const clave = (t: string) => `amigo:${t}`;
 
-async function redis(comandos: unknown[][]): Promise<{ result: unknown }[]> {
+export async function ejecutarRedis(comandos: unknown[][]): Promise<{ result: unknown }[]> {
   const res = await fetch(`${urlRedis()}/pipeline`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${tokenRedis()}`, 'Content-Type': 'application/json' },
@@ -46,7 +49,7 @@ export async function guardarRegistros(registros: Record<string, RegistroAmigo>,
     for (const [t, r] of entradas) memoria.set(clave(t), { v: JSON.stringify(r), exp: Date.now() + ttl * 1000 });
     return;
   }
-  await redis(entradas.map(([t, r]) => ['SET', clave(t), JSON.stringify(r), 'EX', ttl]));
+  await ejecutarRedis(entradas.map(([t, r]) => ['SET', clave(t), JSON.stringify(r), 'EX', ttl]));
 }
 
 export async function leerRegistro(token: string): Promise<RegistroAmigo | null> {
@@ -56,7 +59,7 @@ export async function leerRegistro(token: string): Promise<RegistroAmigo | null>
     const e = memoria.get(clave(token));
     crudo = e && e.exp > Date.now() ? e.v : null;
   } else {
-    const [r] = await redis([['GET', clave(token)]]);
+    const [r] = await ejecutarRedis([['GET', clave(token)]]);
     crudo = typeof r?.result === 'string' ? r.result : null;
   }
   if (!crudo) return null;
@@ -77,6 +80,6 @@ export async function actualizarLista(token: string, lista: string): Promise<boo
     if (e) memoria.set(clave(token), { ...e, v: nuevo });
     return true;
   }
-  await redis([['SET', clave(token), nuevo, 'KEEPTTL']]);
+  await ejecutarRedis([['SET', clave(token), nuevo, 'KEEPTTL']]);
   return true;
 }

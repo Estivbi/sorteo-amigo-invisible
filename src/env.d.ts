@@ -11,6 +11,12 @@ interface ImportMetaEnv {
   readonly DEV_BYPASS_EMAILS?: string;
   readonly PUBLIC_DONATE_URL?: string;
   readonly SITE_URL?: string;
+  readonly ADMIN_TOKEN?: string;
+  readonly TELEGRAM_BOT_TOKEN?: string;
+  readonly TELEGRAM_CHAT_ID?: string;
+  readonly LIMITE_CORREOS_DIA?: string;
+  readonly LIMITE_POR_DESTINATARIO?: string;
+  readonly LIMITE_SORTEOS_IP_DIA?: string;
   readonly PUBLIC_AMAZON_TAG?: string;
   readonly PUBLIC_VIAJES_URL?: string;
   readonly UPSTASH_REDIS_REST_URL?: string;

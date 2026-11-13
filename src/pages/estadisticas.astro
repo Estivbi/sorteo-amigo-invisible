@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = true;
+---
+
+<Layout title="Estadísticas | Amigo Invisible" description="Panel privado de uso de la web." noindex>
+  <section class="py-10 sm:py-14">
+    <div class="mx-auto max-w-5xl px-4">
+      <h1 class="mb-2 text-3xl sm:text-4xl">Estadísticas</h1>
+      <p class="mb-6 text-tinta-suave">Uso de los últimos 14 días. Solo para quien administra la web.</p>
+
+      <form id="acceso" class="card mb-8 max-w-md border border-base-300 bg-base-100">
+        <div class="card-body gap-3">
+          <label class="font-bold" for="token">Token de administración</label>
+          <input class="input w-full" type="password" id="token" autocomplete="off" required />
+          <button class="btn btn-primary" type="submit" id="entrar">Ver estadísticas</button>
+          <p id="error" class="text-sm text-error" role="alert" hidden></p>
+        </div>
+      </form>
+
+      <div id="resultado" hidden>
+        <div class="card mb-6 border border-base-300 bg-base-100"><div class="card-body gap-2">
+          <h2 class="card-title text-xl">Correos de hoy</h2>
+          <p><span id="uso" class="font-display text-3xl font-extrabold"></span> de <span id="limite"></span> <span class="text-tinta-suave">(tope diario)</span></p>
+          <progress id="barra" class="progress progress-primary w-full" value="0" max="100"></progress>
+        </div></div>
+        <div class="overflow-x-auto rounded-box border border-base-300 bg-base-100">
+          <table class="table table-sm" id="tabla"></table>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { iniciarPanel } from '../scripts/estadisticas';
+  iniciarPanel();
+</script>
