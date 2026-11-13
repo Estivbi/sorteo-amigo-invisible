@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "sorteo-amigo-invisible\\.vercel\\.app" }],
+      "destination": "https://amigoinvisible.stibios.com/:path*",
+      "permanent": true
+    }
+  ]
+}
