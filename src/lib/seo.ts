@@ -1,6 +1,6 @@
 /** Textos de robots.txt y llms.txt, separados de las rutas para poder probarlos. */
 
-const RUTAS_PRIVADAS = ['/api/', '/amigo/'];
+const RUTAS_PRIVADAS = ['/api/', '/amigo/', '/estadisticas'];
 
 /** Rastreadores de buscadores de IA y de asistentes: se permiten expresamente. */
 export const RASTREADORES_IA = [

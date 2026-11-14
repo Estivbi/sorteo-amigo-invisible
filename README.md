@@ -20,6 +20,23 @@ npm run build          # comprobación de tipos + build
 
 Ver `.env.example`. Para producción: `SITE_URL`, `RESEND_API_KEY` + `MAIL_FROM` (dominio verificado en Resend), `PUBLIC_TURNSTILE_SITEKEY` / `TURNSTILE_SECRET`, `ALLOWED_ORIGIN` y, opcional, `PUBLIC_DONATE_URL`.
 
+## Protección contra abuso y métricas
+
+Pensado para el plan gratuito de Resend (100 correos al día, 3.000 al mes). Antes de enviar nada, cada sorteo reserva cupo en Upstash; si no cabe, se rechaza con un mensaje claro y se avisa por Telegram.
+
+| Límite | Variable | Por defecto |
+|---|---|---|
+| Correos al día en toda la web | `LIMITE_CORREOS_DIA` | 80 |
+| Correos al día a una misma dirección | `LIMITE_POR_DESTINATARIO` | 5 |
+| Sorteos al día desde una misma IP | `LIMITE_SORTEOS_IP_DIA` | 10 |
+
+- Los contadores usan una **huella HMAC** de la IP y del correo (no se guardan en claro) y caducan a las 26 horas. El día se cuenta con la hora de Madrid.
+- Con envío real de correos, sin base de datos o sin `TURNSTILE_SECRET` no se crean sorteos.
+- Si el envío falla, el cupo reservado se devuelve.
+- **Estadísticas:** `/estadisticas` (con `ADMIN_TOKEN`) muestra el uso de los últimos 14 días. Se guardan contadores diarios, sin datos personales, 90 días.
+- **Avisos por Telegram** (`TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID`): 80 % del tope, tope alcanzado, errores de envío, abuso por IP o por dirección y configuración que falta. Como mucho uno por tipo cada hora, salvo el del 80 % que es diario.
+- Cada respuesta de `/api/create-game` lleva `Server-Timing` con lo que tarda cada paso.
+
 ## Correos sin respuesta
 
 Los correos son automáticos y no admiten respuesta: no llevan `Reply-To`, llevan las cabeceras `Auto-Submitted: auto-generated` y `X-Auto-Response-Suppress: All` (evitan respuestas automáticas como «fuera de la oficina») y terminan con un aviso. Usa un remitente sin buzón, por ejemplo `MAIL_FROM="Amigo Invisible <no-reply@tudominio.com>"`, y no crees para él ningún alias ni catch-all. Con Gmail (solo para pruebas) las respuestas llegan a esa cuenta, porque no se puede evitar.
