@@ -8,7 +8,7 @@ const gente = (n: number, desde = 0) => Array.from({ length: n }, (_, i) => ({ n
 const base = (c: ReturnType<typeof crearContadoresMemoria>, extra = {}) => ({ contadores: c, config, secreto: 's', dia: '2026-11-13', ip: '203.0.113.7', ...extra });
 
 test('la configuración lee las variables y usa valores por defecto razonables', () => {
-  assert.deepEqual(leerConfig(() => ''), { globalDia: 80, porDestinatario: 5, porIpDia: 10 });
+  assert.deepEqual(leerConfig(() => ''), { globalDia: 80, porDestinatario: 15, porIpDia: 15 });
   assert.deepEqual(leerConfig((k) => ({ LIMITE_CORREOS_DIA: '50', LIMITE_POR_DESTINATARIO: '3', LIMITE_SORTEOS_IP_DIA: '4' })[k] ?? ''), { globalDia: 50, porDestinatario: 3, porIpDia: 4 });
   assert.deepEqual(leerConfig((k) => (k === 'LIMITE_CORREOS_DIA' ? 'abc' : '')).globalDia, 80, 'un valor inválido no rompe nada');
   assert.deepEqual(leerConfig((k) => (k === 'LIMITE_CORREOS_DIA' ? '-5' : '')).globalDia, 80, 'ni uno negativo');

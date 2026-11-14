@@ -27,8 +27,8 @@ Pensado para el plan gratuito de Resend (100 correos al día, 3.000 al mes). Ant
 | Límite | Variable | Por defecto |
 |---|---|---|
 | Correos al día en toda la web | `LIMITE_CORREOS_DIA` | 80 |
-| Correos al día a una misma dirección | `LIMITE_POR_DESTINATARIO` | 5 |
-| Sorteos al día desde una misma IP | `LIMITE_SORTEOS_IP_DIA` | 10 |
+| Correos al día a una misma dirección | `LIMITE_POR_DESTINATARIO` | 15 |
+| Sorteos al día desde una misma IP | `LIMITE_SORTEOS_IP_DIA` | 15 |
 
 - Los contadores usan una **huella HMAC** de la IP y del correo (no se guardan en claro) y caducan a las 26 horas. El día se cuenta con la hora de Madrid.
 - Con envío real de correos, sin base de datos o sin `TURNSTILE_SECRET` no se crean sorteos.
