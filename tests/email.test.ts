@@ -56,3 +56,9 @@ test('declara soporte de modo claro y oscuro', () => {
   const c = construirCorreo({ giver: ana, receiver: beto }, juego);
   assert.ok(c.html.includes('<meta name="color-scheme" content="light dark">'));
 });
+
+test('el correo explica a quien no lo esperaba que puede ignorarlo', () => {
+  const c = construirCorreo({ giver: ana, receiver: beto }, juego);
+  assert.ok(c.text.includes('Si no esperabas este correo'));
+  assert.ok(c.html.includes('Si no esperabas este correo'));
+});

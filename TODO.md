@@ -39,3 +39,10 @@ No está en marcha, pero encaja con lo que ya hay (Upstash Redis para guardar da
 ## Después del 7 de enero
 
 - Cambiar el tema navideño por uno neutro: hero, nieve, trineo, sección de Laponia, paleta, textos con «Navidad», imagen `og.png` y correos. Hay un recordatorio programado para el 8 de enero. Antes de tocar diseño, proponerlo y esperar el ok.
+
+## Seguridad: siguientes pasos
+
+- Página de contacto y aviso legal con quién está detrás del sitio (lo pide Amazon Afiliados y da confianza).
+- Baja de direcciones: un enlace en el correo para que una dirección no vuelva a recibir sorteos (lista de bloqueo en Redis, guardando solo la huella).
+- Cabecera `Content-Security-Policy`: empezar en modo solo informe, porque Turnstile y los scripts en línea de Astro exigen permisos concretos.
+- Lista de dominios de correo desechable, si se detecta abuso con ellos.

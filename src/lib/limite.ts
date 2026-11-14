@@ -4,7 +4,7 @@
  * la protección fuerte son Turnstile y el tope de participantes por sorteo.
  */
 const VENTANA_MS = 10 * 60 * 1000;
-const MAX = 5;
+const MAX = 10;
 const contadores = new Map<string, { n: number; desde: number }>();
 
 export function permitido(ip: string, max = MAX, ahora = Date.now()): boolean {

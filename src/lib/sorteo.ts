@@ -1,3 +1,5 @@
+import { emailValido, limpiarTexto, tieneEnlaces } from './texto.ts';
+
 export const MIN_PARTICIPANTES = 3;
 export const MAX_PARTICIPANTES = 40;
 
@@ -34,15 +36,17 @@ export class ErrorSorteo extends Error {
   }
 }
 
-const EMAIL_RE = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]{2,}$/;
-const limpiar = (v: unknown, max: number) =>
-  typeof v === 'string' ? v.replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max) : '';
+/** Los textos que viajan por correo a terceros no pueden llevar enlaces: evita usar la web para mandar phishing. */
+export function sinEnlaces(texto: string): void {
+  if (tieneEnlaces(texto)) throw new ErrorSorteo('enlaces_no_permitidos', 'Los nombres y las ideas de regalo no pueden llevar enlaces, correos ni usuarios.');
+}
 
 /** Valida y normaliza la carga recibida del cliente. Lanza ErrorSorteo si algo no es válido. */
 export function validarDatos(raw: unknown): DatosSorteo {
   const d = (raw ?? {}) as Record<string, unknown>;
-  const gameName = limpiar(d.gameName, 80);
+  const gameName = limpiarTexto(d.gameName, 80);
   if (!gameName) throw new ErrorSorteo('nombre_requerido', 'Ponle un nombre al sorteo.');
+  sinEnlaces(gameName);
 
   let budget: number | null = null;
   if (d.budget !== null && d.budget !== undefined && d.budget !== '') {
@@ -70,13 +74,16 @@ export function validarDatos(raw: unknown): DatosSorteo {
   const vistos = new Set<string>();
   const participants: Participante[] = d.participants.map((p, i) => {
     const o = (p ?? {}) as Record<string, unknown>;
-    const name = limpiar(o.name, 60);
-    const email = limpiar(o.email, 120).toLowerCase();
+    const name = limpiarTexto(o.name, 60);
+    const email = limpiarTexto(o.email, 254).toLowerCase();
     if (!name) throw new ErrorSorteo('nombre_participante', `Falta el nombre del participante ${i + 1}.`);
-    if (!EMAIL_RE.test(email)) throw new ErrorSorteo('email_invalido', `El correo de ${name} no es válido.`);
+    sinEnlaces(name);
+    if (!emailValido(email)) throw new ErrorSorteo('email_invalido', `El correo de ${name} no es válido.`);
     if (vistos.has(email)) throw new ErrorSorteo('email_repetido', `El correo de ${name} está repetido.`);
     vistos.add(email);
-    return { id: String(o.id ?? i), name, email, wishlist: limpiar(o.wishlist, 200) || undefined };
+    const wishlist = limpiarTexto(o.wishlist, 200);
+    sinEnlaces(wishlist);
+    return { id: String(o.id ?? i), name, email, wishlist: wishlist || undefined };
   });
 
   const ids = new Set(participants.map((p) => p.id));

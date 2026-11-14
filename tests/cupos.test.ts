@@ -3,13 +3,13 @@ import assert from 'node:assert/strict';
 import { crearContadoresMemoria } from '../src/lib/contadores.ts';
 import { diaMadrid, huella, leerConfig, reservarCupo } from '../src/lib/cupos.ts';
 
-const config = { globalDia: 10, porDestinatario: 2, porIpDia: 3 };
+const config = { globalDia: 10, porDestinatario: 2, porIpDia: 3, porIpCorreos: 100 };
 const gente = (n: number, desde = 0) => Array.from({ length: n }, (_, i) => ({ nombre: `P${desde + i}`, email: `p${desde + i}@ejemplo.com` }));
 const base = (c: ReturnType<typeof crearContadoresMemoria>, extra = {}) => ({ contadores: c, config, secreto: 's', dia: '2026-11-13', ip: '203.0.113.7', ...extra });
 
 test('la configuración lee las variables y usa valores por defecto razonables', () => {
-  assert.deepEqual(leerConfig(() => ''), { globalDia: 80, porDestinatario: 5, porIpDia: 15 });
-  assert.deepEqual(leerConfig((k) => ({ LIMITE_CORREOS_DIA: '50', LIMITE_POR_DESTINATARIO: '3', LIMITE_SORTEOS_IP_DIA: '4' })[k] ?? ''), { globalDia: 50, porDestinatario: 3, porIpDia: 4 });
+  assert.deepEqual(leerConfig(() => ''), { globalDia: 80, porDestinatario: 5, porIpDia: 15, porIpCorreos: 40 });
+  assert.deepEqual(leerConfig((k) => ({ LIMITE_CORREOS_DIA: '50', LIMITE_POR_DESTINATARIO: '3', LIMITE_SORTEOS_IP_DIA: '4', LIMITE_CORREOS_IP_DIA: '20' })[k] ?? ''), { globalDia: 50, porDestinatario: 3, porIpDia: 4, porIpCorreos: 20 });
   assert.deepEqual(leerConfig((k) => (k === 'LIMITE_CORREOS_DIA' ? 'abc' : '')).globalDia, 80, 'un valor inválido no rompe nada');
   assert.deepEqual(leerConfig((k) => (k === 'LIMITE_CORREOS_DIA' ? '-5' : '')).globalDia, 80, 'ni uno negativo');
 });
@@ -87,4 +87,14 @@ test('el contador permite leer el uso actual y los últimos días salen en orden
   assert.deepEqual(await c.leer(['cupo:global:2026-11-13', 'cupo:global:2026-11-12']), [3, 0]);
   const { ultimosDias } = await import('../src/lib/cupos.ts');
   assert.deepEqual(ultimosDias(3, new Date('2026-11-13T10:00:00Z')), ['2026-11-13', '2026-11-12', '2026-11-11']);
+});
+
+test('una sola IP no puede gastar el cupo del día con pocos sorteos grandes (tope de correos por IP)', async () => {
+  const c = crearContadoresMemoria();
+  const poca = { config: { ...config, porIpCorreos: 6 } };
+  assert.equal((await reservarCupo({ ...base(c, poca), destinatarios: gente(5) })).ok, true);
+  // 5 + 3 = 8 > 6: un segundo sorteo de la misma IP no cabe, aunque aún queden sorteos y cupo global
+  assert.deepEqual(await reservarCupo({ ...base(c, poca), destinatarios: gente(3, 50) }), { ok: false, rechazo: { tipo: 'ip' } });
+  // otra IP sí puede
+  assert.equal((await reservarCupo({ ...base(c, { ...poca, ip: '198.51.100.9' }), destinatarios: gente(3, 60) })).ok, true);
 });

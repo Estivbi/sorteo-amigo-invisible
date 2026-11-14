@@ -6,6 +6,7 @@ import { permitido } from '../../lib/limite';
 import { crearCronometro } from '../../lib/tiempos';
 import { almacenDisponible, generarToken, guardarRegistros, type RegistroAmigo } from '../../lib/almacen';
 import { env, ipDe, json, origenPermitido } from '../../lib/http';
+import { leerJsonSeguro } from '../../lib/cuerpo';
 import { diaMadrid, reservarCupo, type Rechazo, type ResultadoCupo } from '../../lib/cupos';
 import { avisar, configLimites, contadoresReales, secretoHuella } from '../../lib/servicios';
 
@@ -44,13 +45,12 @@ async function manejar({ request, clientAddress, url, site }: APIContext, sumar:
     return json({ error: 'demasiadas_peticiones', mensaje: 'Has hecho demasiados sorteos seguidos. Espera unos minutos.' }, 429);
   }
 
-  let cuerpo: Record<string, unknown>;
-  try {
-    cuerpo = await request.json();
-  } catch {
-    sumar('json_invalido');
-    return json({ error: 'json_invalido', mensaje: 'Petición no válida.' }, 400);
+  const lectura = await leerJsonSeguro(request);
+  if (!lectura.ok) {
+    sumar('cuerpo_no_valido');
+    return json({ error: lectura.error, mensaje: 'Petición no válida.' }, lectura.estado);
   }
+  const cuerpo = lectura.cuerpo;
 
   // Trampa para bots: un humano nunca rellena este campo oculto.
   if (cuerpo.website) {
