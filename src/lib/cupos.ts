@@ -5,7 +5,7 @@ export interface ConfigLimites { globalDia: number; porDestinatario: number; por
 /** Lee los límites de las variables de entorno. Un valor ausente, no numérico o no positivo usa el de por defecto. */
 export function leerConfig(env: (clave: string) => string): ConfigLimites {
   const num = (clave: string, defecto: number) => { const n = Number(env(clave)); return Number.isInteger(n) && n > 0 ? n : defecto; };
-  return { globalDia: num('LIMITE_CORREOS_DIA', 80), porDestinatario: num('LIMITE_POR_DESTINATARIO', 5), porIpDia: num('LIMITE_SORTEOS_IP_DIA', 10) };
+  return { globalDia: num('LIMITE_CORREOS_DIA', 80), porDestinatario: num('LIMITE_POR_DESTINATARIO', 15), porIpDia: num('LIMITE_SORTEOS_IP_DIA', 15) };
 }
 
 /** Día en curso con la hora de Madrid (AAAA-MM-DD): los contadores se reinician a medianoche de España. */
