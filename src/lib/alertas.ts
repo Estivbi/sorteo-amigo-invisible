@@ -1,10 +1,10 @@
 import type { Contadores } from './contadores';
 
 /** Envía un mensaje por Telegram. Nunca lanza errores ni deja el token en los mensajes de error. */
-export async function enviarTelegram(token: string, chatId: string, texto: string, fetchFn: typeof fetch = fetch): Promise<boolean> {
+export async function enviarTelegram(token: string, chatId: string, texto: string, fetchFn: typeof fetch = fetch, servidor = 'https://api.telegram.org'): Promise<boolean> {
   if (!token || !chatId) return false;
   try {
-    const res = await fetchFn(`https://api.telegram.org/bot${token}/sendMessage`, {
+    const res = await fetchFn(`${servidor.replace(/\/+$/, '')}/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chat_id: chatId, text: texto, disable_web_page_preview: true }),
@@ -38,4 +38,25 @@ export async function avisar(tipo: string, texto: string, { contadores, enviar }
   } catch {
     return false;
   }
+}
+
+interface DatosNuevoSorteo {
+  participantes: number;
+  usoHoy: number;
+  limite: number;
+  conFecha: boolean;
+  conPresupuesto: boolean;
+  excepciones: number;
+  simulado: boolean;
+}
+
+/** Texto del aviso al administrador cuando alguien crea un sorteo. Solo números: nunca nombres, correos ni el nombre del sorteo. */
+export function textoNuevoSorteo(d: DatosNuevoSorteo): string {
+  const plural = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`;
+  return [
+    `🎁 Nuevo sorteo${d.simulado ? ' (simulado)' : ''} en Amigo Invisible`,
+    `• ${d.participantes} participantes`,
+    `• ${d.conFecha ? 'Con fecha de intercambio' : 'Sin fecha'} · ${d.conPresupuesto ? 'con presupuesto' : 'sin presupuesto'} · ${plural(d.excepciones, 'excepción', 'excepciones')}`,
+    `• Correos de hoy: ${d.usoHoy} de ${d.limite}`,
+  ].join('\n');
 }

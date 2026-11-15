@@ -36,6 +36,7 @@ Pensado para el plan gratuito de Resend (100 correos al día, 3.000 al mes). Ant
 - Si el envío falla, el cupo reservado se devuelve.
 - **Estadísticas:** `/estadisticas` (con `ADMIN_TOKEN`) muestra el uso de los últimos 14 días. Se guardan contadores diarios, sin datos personales, 90 días.
 - **Avisos por Telegram** (`TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID`): 80 % del tope, tope alcanzado, errores de envío, abuso por IP o por dirección y configuración que falta. Como mucho uno por tipo cada hora, salvo el del 80 % que es diario.
+- **Aviso de cada sorteo nuevo** por Telegram, con el número de participantes, si lleva fecha, presupuesto y excepciones, y los correos de hoy. Solo números: nunca nombres, correos ni el nombre del sorteo. Sale a la vez que los correos, así que no añade espera, y si Telegram falla el sorteo funciona igual. `TELEGRAM_API_URL` (opcional) permite apuntar a otro servidor, solo para pruebas.
 - Cada respuesta de `/api/create-game` lleva `Server-Timing` con lo que tarda cada paso.
 
 ## Validación y seguridad del formulario

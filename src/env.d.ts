@@ -14,6 +14,7 @@ interface ImportMetaEnv {
   readonly ADMIN_TOKEN?: string;
   readonly TELEGRAM_BOT_TOKEN?: string;
   readonly TELEGRAM_CHAT_ID?: string;
+  readonly TELEGRAM_API_URL?: string;
   readonly LIMITE_CORREOS_DIA?: string;
   readonly LIMITE_POR_DESTINATARIO?: string;
   readonly LIMITE_SORTEOS_IP_DIA?: string;

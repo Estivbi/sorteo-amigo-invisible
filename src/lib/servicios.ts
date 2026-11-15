@@ -21,7 +21,15 @@ export const secretoHuella = () => env('ADMIN_TOKEN') || 'amigo-invisible';
 export function canalAvisos(): ((texto: string) => Promise<boolean>) | null {
   const token = env('TELEGRAM_BOT_TOKEN');
   const chat = env('TELEGRAM_CHAT_ID');
-  return token && chat ? (texto) => enviarTelegram(token, chat, texto) : null;
+  const servidor = env('TELEGRAM_API_URL') || undefined; // solo para pruebas con un servidor falso
+  return token && chat ? (texto) => enviarTelegram(token, chat, texto, fetch, servidor) : null;
+}
+
+/** Envía un aviso informativo al administrador sin limitar su frecuencia. Nunca lanza errores. */
+export async function notificar(texto: string): Promise<boolean> {
+  const canal = canalAvisos();
+  if (!canal) return false;
+  try { return await canal(texto); } catch { return false; }
 }
 
 export const avisar = (tipo: string, texto: string, ventanaSegundos?: number) =>
