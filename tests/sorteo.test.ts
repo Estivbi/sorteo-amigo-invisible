@@ -51,3 +51,27 @@ test('rechaza presupuestos y fechas absurdos', () => {
   assert.throws(() => validarDatos(base({ budget: -3 })), /presupuesto/i);
   assert.throws(() => validarDatos(base({ eventDate: '25/12/2026' })), /fecha/i);
 });
+
+test('rechaza enlaces en el nombre del sorteo, en los nombres y en las ideas de regalo', () => {
+  const con = (campo: 'gameName' | 'name' | 'wishlist', valor: string) => {
+    const p = gente(3);
+    if (campo === 'gameName') return base({ gameName: valor });
+    (p[0] as any)[campo] = valor;
+    return base({ participants: p });
+  };
+  for (const [campo, valor] of [['gameName', 'Gana en www.estafa.example'], ['name', 'Entra en http://estafa.example'], ['wishlist', 'mira bit.ly/3xYz']] as const) {
+    assert.throws(() => validarDatos(con(campo, valor)), (e) => e instanceof ErrorSorteo && e.codigo === 'enlaces_no_permitidos', campo);
+  }
+});
+
+test('un correo con caracteres que pueden colar más destinatarios es inválido', () => {
+  const p = gente(3);
+  p[0].email = 'a,b@ejemplo.com';
+  assert.throws(() => validarDatos(base({ participants: p })), /no es válido/);
+});
+
+test('el texto se limpia de caracteres invisibles antes de guardarse', () => {
+  const p = gente(3);
+  p[0].name = 'A​n‮a';
+  assert.equal(validarDatos(base({ participants: p })).participants[0].name, 'Ana');
+});

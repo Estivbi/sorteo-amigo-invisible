@@ -6,8 +6,10 @@ import { permitido } from '../../lib/limite';
 import { crearCronometro } from '../../lib/tiempos';
 import { almacenDisponible, generarToken, guardarRegistros, type RegistroAmigo } from '../../lib/almacen';
 import { env, ipDe, json, origenPermitido } from '../../lib/http';
+import { leerJsonSeguro } from '../../lib/cuerpo';
 import { diaMadrid, reservarCupo, type Rechazo, type ResultadoCupo } from '../../lib/cupos';
-import { avisar, configLimites, contadoresReales, secretoHuella } from '../../lib/servicios';
+import { avisar, configLimites, contadoresReales, notificar, secretoHuella } from '../../lib/servicios';
+import { textoNuevoSorteo } from '../../lib/alertas';
 
 export const prerender = false;
 
@@ -44,13 +46,12 @@ async function manejar({ request, clientAddress, url, site }: APIContext, sumar:
     return json({ error: 'demasiadas_peticiones', mensaje: 'Has hecho demasiados sorteos seguidos. Espera unos minutos.' }, 429);
   }
 
-  let cuerpo: Record<string, unknown>;
-  try {
-    cuerpo = await request.json();
-  } catch {
-    sumar('json_invalido');
-    return json({ error: 'json_invalido', mensaje: 'Petición no válida.' }, 400);
+  const lectura = await leerJsonSeguro(request);
+  if (!lectura.ok) {
+    sumar('cuerpo_no_valido');
+    return json({ error: lectura.error, mensaje: 'Petición no válida.' }, lectura.estado);
   }
+  const cuerpo = lectura.cuerpo;
 
   // Trampa para bots: un humano nunca rellena este campo oculto.
   if (cuerpo.website) {
@@ -74,6 +75,7 @@ async function manejar({ request, clientAddress, url, site }: APIContext, sumar:
   }
 
   let reserva: ResultadoCupo | null = null;
+  let avisoSorteo: Promise<boolean> = Promise.resolve(false);
   try {
     const juego = validarDatos(cuerpo);
     const asignaciones = asignar(juego.participants, juego.exceptions);
@@ -112,10 +114,19 @@ async function manejar({ request, clientAddress, url, site }: APIContext, sumar:
     }
     t.marca('almacen');
 
+    // Aviso por Telegram de que hay un sorteo nuevo: sale a la vez que los correos, así no añade espera.
+    if (reserva?.ok) {
+      avisoSorteo = notificar(textoNuevoSorteo({
+        participantes: juego.participants.length, usoHoy: reserva.usoGlobal, limite: config.globalDia,
+        conFecha: Boolean(juego.eventDate), conPresupuesto: Boolean(juego.budget), excepciones: juego.exceptions.length, simulado: !real,
+      }));
+    }
+
     const correos = asignaciones.map((a) => construirCorreo(a, juego, conEnlaces ? `${base}/amigo/${tokens.get(a.giver.id)}` : undefined));
     t.marca('preparar');
     const proveedor = await enviarCorreos(correos);
     t.marca('correo');
+    await avisoSorteo;
     if (proveedor === 'simulado' && import.meta.env.DEV) for (const a of asignaciones) console.info(`[dev] enlace de ${a.giver.name}: ${base}/amigo/${tokens.get(a.giver.id)}`);
 
     sumar('sorteos');
@@ -134,6 +145,7 @@ async function manejar({ request, clientAddress, url, site }: APIContext, sumar:
     const motivo = err instanceof Error ? err.message : 'desconocido';
     console.error('create-game: fallo', motivo);
     sumar('error_envio');
+    await avisoSorteo;
     if (reserva?.ok) await reserva.liberar().catch(() => {}); // el correo no salió: se devuelve el cupo
     await avisar('error_envio', `❌ Amigo Invisible: fallo al crear un sorteo o enviar los correos (${motivo.slice(0, 80)}).`);
     return json({ error: 'envio_fallido', mensaje: 'No hemos podido enviar los correos. Inténtalo de nuevo en unos minutos.' }, 502);

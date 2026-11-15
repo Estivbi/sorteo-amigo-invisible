@@ -33,3 +33,28 @@ test('Telegram: envía el chat y el texto, y no filtra el token ni lanza errores
   assert.equal(await enviarTelegram('123:ABC', '42', 'hola', roto), false);
   assert.equal(await enviarTelegram('', '42', 'hola', f), false);
 });
+
+test('el aviso de un sorteo nuevo solo lleva números, nunca nombres, correos ni el nombre del sorteo', async () => {
+  const { textoNuevoSorteo } = await import('../src/lib/alertas.ts');
+  const t = textoNuevoSorteo({ participantes: 10, usoHoy: 28, limite: 80, conFecha: true, conPresupuesto: false, excepciones: 2, simulado: false });
+  assert.match(t, /Nuevo sorteo/);
+  assert.match(t, /10 participantes/);
+  assert.match(t, /28 de 80/);
+  assert.match(t, /con fecha/i);
+  assert.match(t, /2 excepciones/);
+  assert.ok(!/@|http/.test(t), 'sin correos ni enlaces');
+});
+
+test('el aviso distingue un sorteo simulado y escribe bien el singular', async () => {
+  const { textoNuevoSorteo } = await import('../src/lib/alertas.ts');
+  assert.match(textoNuevoSorteo({ participantes: 3, usoHoy: 3, limite: 80, conFecha: false, conPresupuesto: true, excepciones: 1, simulado: true }), /simulado/i);
+  const uno = textoNuevoSorteo({ participantes: 3, usoHoy: 3, limite: 80, conFecha: false, conPresupuesto: false, excepciones: 1, simulado: false });
+  assert.match(uno, /1 excepción(?!es)/);
+});
+
+test('Telegram: se puede apuntar a otro servidor (para pruebas) sin cambiar nada más', async () => {
+  const urls: string[] = [];
+  const f = (async (url: string) => { urls.push(url); return { ok: true } as Response; }) as unknown as typeof fetch;
+  assert.equal(await enviarTelegram('1:A', '2', 'x', f, 'http://localhost:4410/'), true);
+  assert.equal(urls[0], 'http://localhost:4410/bot1:A/sendMessage');
+});

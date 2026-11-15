@@ -25,6 +25,9 @@ export const CABECERAS_AUTOMATICAS = { 'Auto-Submitted': 'auto-generated', 'X-Au
 /** Aviso al pie de cada correo: el sistema no tiene buzón de entrada. */
 export const AVISO_NO_RESPONDER = 'Este correo se ha enviado automáticamente. Por favor, no respondas a este mensaje: nadie lo leerá.';
 
+/** Para quien recibe el correo sin haberlo pedido: otra persona lo ha incluido en un sorteo. */
+export const AVISO_NO_ESPERADO = 'Si no esperabas este correo, alguien te ha incluido en un sorteo de amigo invisible. Puedes ignorarlo: no tienes que hacer nada.';
+
 export interface Correo {
   to: string;
   subject: string;
@@ -60,6 +63,7 @@ export function construirCorreo({ giver, receiver }: Asignacion, juego: DatosSor
     '',
     'Recuerda: es un secreto. ¡Feliz Navidad!',
     '',
+    AVISO_NO_ESPERADO,
     AVISO_NO_RESPONDER,
   ].join('\n');
 
@@ -78,7 +82,7 @@ export function construirCorreo({ giver, receiver }: Asignacion, juego: DatosSor
     ${cal ? botonCorreo(cal, '📅 Añadir al calendario', '#1f5d46') : ''}
     ${enlace ? botonCorreo(enlace, '📝 Mi enlace privado', '#b3262e') + `<p style="color:#5f4a41;font-size:13px;text-align:center;margin:0 0 16px">Aquí ves la lista de ${escaparHtml(receiver.name)} y editas la tuya. No lo compartas: caduca unos días después del intercambio.</p>` : ''}
     <p style="color:#5f4a41;font-size:14px">Recuerda: es un secreto hasta el día del intercambio. ¡Feliz Navidad!</p>
-    <p style="color:#5f4a41;font-size:12px;border-top:1px solid #ecd9c5;padding-top:12px;margin-bottom:0">${escaparHtml(AVISO_NO_RESPONDER)}</p>
+    <p style="color:#5f4a41;font-size:12px;border-top:1px solid #ecd9c5;padding-top:12px;margin-bottom:0">${escaparHtml(AVISO_NO_ESPERADO)} ${escaparHtml(AVISO_NO_RESPONDER)}</p>
   </div>
 </div></body></html>`;
 

@@ -28,14 +28,27 @@ Pensado para el plan gratuito de Resend (100 correos al día, 3.000 al mes). Ant
 |---|---|---|
 | Correos al día en toda la web | `LIMITE_CORREOS_DIA` | 80 |
 | Correos al día a una misma dirección | `LIMITE_POR_DESTINATARIO` | 5 |
-| Sorteos al día desde una misma IP | `LIMITE_SORTEOS_IP_DIA` | 10 |
+| Sorteos al día desde una misma IP | `LIMITE_SORTEOS_IP_DIA` | 15 |
+| Correos al día desde una misma IP | `LIMITE_CORREOS_IP_DIA` | 40 |
 
 - Los contadores usan una **huella HMAC** de la IP y del correo (no se guardan en claro) y caducan a las 26 horas. El día se cuenta con la hora de Madrid.
 - Con envío real de correos, sin base de datos o sin `TURNSTILE_SECRET` no se crean sorteos.
 - Si el envío falla, el cupo reservado se devuelve.
 - **Estadísticas:** `/estadisticas` (con `ADMIN_TOKEN`) muestra el uso de los últimos 14 días. Se guardan contadores diarios, sin datos personales, 90 días.
 - **Avisos por Telegram** (`TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID`): 80 % del tope, tope alcanzado, errores de envío, abuso por IP o por dirección y configuración que falta. Como mucho uno por tipo cada hora, salvo el del 80 % que es diario.
+- **Aviso de cada sorteo nuevo** por Telegram, con el número de participantes, si lleva fecha, presupuesto y excepciones, y los correos de hoy. Solo números: nunca nombres, correos ni el nombre del sorteo. Sale a la vez que los correos, así que no añade espera, y si Telegram falla el sorteo funciona igual. `TELEGRAM_API_URL` (opcional) permite apuntar a otro servidor, solo para pruebas.
 - Cada respuesta de `/api/create-game` lleva `Server-Timing` con lo que tarda cada paso.
+
+## Validación y seguridad del formulario
+
+- **Sin enlaces en lo que viaja por correo.** El nombre del sorteo, los nombres y las ideas de regalo se envían a terceros, así que se rechazan enlaces, dominios, correos y usuarios (`@`). Evita usar la web para mandar phishing.
+- **Texto limpio.** Se eliminan caracteres de control, ceros de ancho y marcas de inversión de texto (RLO), y se colapsan los espacios.
+- **Correo estricto.** Solo ASCII y caracteres habituales; se descartan comas, punto y coma, paréntesis, comillas y barras, que algunos sistemas de envío leen como varios destinatarios.
+- **Cuerpo de la petición.** Debe ser `application/json`, objeto, de 64 KB como máximo (8 KB en `/api/lista`). Si no, 415, 413 o 400.
+- **Tope de correos por IP** además del de sorteos: una sola IP no puede agotar el cupo diario con pocos sorteos grandes.
+- **Cabeceras de seguridad** en `vercel.json`: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` y `Permissions-Policy`.
+- El correo avisa a quien no lo esperaba de que puede ignorarlo.
+- Límite en memoria por instancia: 10 peticiones cada 10 minutos (cuenta también las inválidas).
 
 ## Correos sin respuesta
 

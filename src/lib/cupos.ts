@@ -1,11 +1,11 @@
 import type { Contadores } from './contadores';
 
-export interface ConfigLimites { globalDia: number; porDestinatario: number; porIpDia: number }
+export interface ConfigLimites { globalDia: number; porDestinatario: number; porIpDia: number; porIpCorreos: number }
 
 /** Lee los límites de las variables de entorno. Un valor ausente, no numérico o no positivo usa el de por defecto. */
 export function leerConfig(env: (clave: string) => string): ConfigLimites {
   const num = (clave: string, defecto: number) => { const n = Number(env(clave)); return Number.isInteger(n) && n > 0 ? n : defecto; };
-  return { globalDia: num('LIMITE_CORREOS_DIA', 80), porDestinatario: num('LIMITE_POR_DESTINATARIO', 5), porIpDia: num('LIMITE_SORTEOS_IP_DIA', 10) };
+  return { globalDia: num('LIMITE_CORREOS_DIA', 80), porDestinatario: num('LIMITE_POR_DESTINATARIO', 5), porIpDia: num('LIMITE_SORTEOS_IP_DIA', 15), porIpCorreos: num('LIMITE_CORREOS_IP_DIA', 40) };
 }
 
 /** Día en curso con la hora de Madrid (AAAA-MM-DD): los contadores se reinician a medianoche de España. */
@@ -45,18 +45,21 @@ interface Entrada {
  */
 export async function reservarCupo({ contadores, config, secreto, dia, ip, destinatarios }: Entrada): Promise<ResultadoCupo> {
   const claveGlobal = `cupo:global:${dia}`;
-  const claveIp = `cupo:ip:${dia}:${await huella(ip, secreto)}`;
+  const huellaIp = await huella(ip, secreto);
+  const claveIp = `cupo:ip:${dia}:${huellaIp}`;
+  const claveIpCorreos = `cupo:ipcorreos:${dia}:${huellaIp}`;
   const clavesDest = await Promise.all(destinatarios.map(async (d) => `cupo:dest:${dia}:${await huella(d.email, secreto)}`));
 
   const items = [
     { clave: claveGlobal, n: destinatarios.length, ttl: TTL_DIA },
     { clave: claveIp, n: 1, ttl: TTL_DIA },
+    { clave: claveIpCorreos, n: destinatarios.length, ttl: TTL_DIA },
     ...clavesDest.map((clave) => ({ clave, n: 1, ttl: TTL_DIA })),
   ];
-  const [global, porIp, ...porDest] = await contadores.incrementar(items);
+  const [global, porIp, porIpCorreos, ...porDest] = await contadores.incrementar(items);
   const devolver = () => contadores.decrementar(items.map(({ clave, n }) => ({ clave, n })));
 
-  if (porIp > config.porIpDia) { await devolver(); return { ok: false, rechazo: { tipo: 'ip' } }; }
+  if (porIp > config.porIpDia || porIpCorreos > config.porIpCorreos) { await devolver(); return { ok: false, rechazo: { tipo: 'ip' } }; }
   const excedido = porDest.findIndex((n) => n > config.porDestinatario);
   if (excedido >= 0) { await devolver(); return { ok: false, rechazo: { tipo: 'destinatario', nombre: destinatarios[excedido].nombre } }; }
   if (global > config.globalDia) { await devolver(); return { ok: false, rechazo: { tipo: 'global' } }; }
