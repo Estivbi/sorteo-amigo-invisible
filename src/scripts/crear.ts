@@ -1,5 +1,7 @@
+import { expandirExcepciones, leyendaExcepcion, siguienteModo, type FilaExcepcion, type Modo } from '../lib/excepciones';
+
 interface Participante { id: string; name: string; email: string; wishlist: string }
-interface Excepcion { from: string; to: string }
+const FLECHAS: Record<Modo, string> = { ambos: '⇄', ida: '→', vuelta: '←' };
 
 const MIN = 3;
 const MAX = 40;
@@ -118,7 +120,7 @@ export function iniciarFormulario() {
 
   let contador = 0;
   const participantes: Participante[] = [];
-  const excepciones: Excepcion[] = [];
+  const excepciones: FilaExcepcion[] = [];
   const nuevo = (): Participante => ({ id: String(contador++), name: '', email: '', wishlist: '' });
 
   const mostrarError = (msg: string) => {
@@ -142,7 +144,7 @@ export function iniciarFormulario() {
           const quitar = el('button', { type: 'button', class: 'btn btn-ghost btn-sm min-h-11 sm:min-h-0', 'aria-label': `Quitar al participante ${i + 1}`, text: 'Quitar' });
           quitar.addEventListener('click', () => {
             participantes.splice(i, 1);
-            for (let k = excepciones.length - 1; k >= 0; k--) if (excepciones[k].from === p.id || excepciones[k].to === p.id) excepciones.splice(k, 1);
+            for (let k = excepciones.length - 1; k >= 0; k--) if (excepciones[k].a === p.id || excepciones[k].b === p.id) excepciones.splice(k, 1);
             pintarParticipantes();
             pintarExcepciones();
           });
@@ -167,25 +169,38 @@ export function iniciarFormulario() {
     ...participantes.map((p, i) => el('option', { value: p.id, selected: p.id === seleccion, text: p.name || `Participante ${i + 1}` })),
   ];
 
+  const nombreDe = (id: string) => {
+    const i = participantes.findIndex((p) => p.id === id);
+    return i < 0 ? '' : participantes[i].name.trim() || `Participante ${i + 1}`;
+  };
+  const leyendaDe = (ex: FilaExcepcion) => leyendaExcepcion(ex, nombreDe(ex.a), nombreDe(ex.b));
+
+  /** Al escribir un nombre se actualizan las listas y las frases de todas las excepciones, sin repintarlas. */
   function actualizarNombresExcepciones() {
     listaE.querySelectorAll('select').forEach((sel) => {
       const idx = Number(sel.dataset.idx);
-      const cual = sel.dataset.k as keyof Excepcion;
-      sel.replaceChildren(...opciones(excepciones[idx][cual], cual === 'from' ? 'Quién…' : 'A quién…'));
+      const cual = sel.dataset.k as 'a' | 'b';
+      sel.replaceChildren(...opciones(excepciones[idx][cual], cual === 'a' ? 'Persona 1…' : 'Persona 2…'));
     });
+    listaE.querySelectorAll<HTMLElement>('[data-leyenda]').forEach((p) => { p.textContent = leyendaDe(excepciones[Number(p.dataset.leyenda)]); });
   }
 
   function pintarExcepciones() {
     listaE.replaceChildren(
       ...excepciones.map((ex, idx) => {
-        const mk = (k: keyof Excepcion, vacio: string, etiqueta: string) => {
+        const mk = (k: 'a' | 'b', vacio: string, etiqueta: string) => {
           const sel = el('select', { class: 'select w-full sm:flex-1', 'aria-label': etiqueta, 'data-idx': idx, 'data-k': k }, ...opciones(ex[k], vacio));
-          sel.addEventListener('change', () => { ex[k] = sel.value; });
+          sel.addEventListener('change', () => { ex[k] = sel.value; leyenda.textContent = leyendaDe(ex); });
           return sel;
         };
+        const leyenda = el('p', { id: `exc-leyenda-${idx}`, class: 'mt-1 text-sm text-tinta-suave', 'data-leyenda': idx, 'aria-live': 'polite', text: leyendaDe(ex) });
+        // En móvil las listas van una sobre otra: la flecha gira para apuntar de arriba abajo.
+        const glifo = el('span', { class: 'inline-block rotate-90 sm:rotate-0', 'aria-hidden': 'true', text: FLECHAS[ex.modo] });
+        const flecha = el('button', { type: 'button', class: 'btn btn-outline btn-primary min-h-11 min-w-14 self-center text-xl sm:self-auto', title: 'Pulsa para cambiar el sentido', 'aria-label': 'Cambiar el sentido de la excepción', 'aria-describedby': `exc-leyenda-${idx}` }, glifo);
+        flecha.addEventListener('click', () => { ex.modo = siguienteModo(ex.modo); glifo.textContent = FLECHAS[ex.modo]; leyenda.textContent = leyendaDe(ex); });
         const quitar = el('button', { type: 'button', class: 'btn btn-ghost btn-sm min-h-11 sm:min-h-0', 'aria-label': 'Quitar excepción', text: 'Quitar' });
         quitar.addEventListener('click', () => { excepciones.splice(idx, 1); pintarExcepciones(); });
-        return el('div', { class: 'mb-3 flex flex-col gap-2 sm:flex-row sm:items-center' }, mk('from', 'Quién…', 'Quién no regala'), el('span', { class: 'text-tinta-suave', text: 'no regala a' }), mk('to', 'A quién…', 'A quién no regala'), quitar);
+        return el('div', { class: 'mb-4' }, el('div', { class: 'flex flex-col gap-2 sm:flex-row sm:items-center' }, mk('a', 'Persona 1…', 'Primera persona de la excepción'), flecha, mk('b', 'Persona 2…', 'Segunda persona de la excepción'), quitar), leyenda);
       }),
     );
   }
@@ -197,7 +212,7 @@ export function iniciarFormulario() {
     pintarExcepciones();
     document.getElementById(`p-name-${participantes[participantes.length - 1].id}`)?.focus();
   });
-  document.getElementById('add-exception')!.addEventListener('click', () => { excepciones.push({ from: '', to: '' }); pintarExcepciones(); });
+  document.getElementById('add-exception')!.addEventListener('click', () => { excepciones.push({ a: '', b: '', modo: 'ambos' }); pintarExcepciones(); });
 
   for (let i = 0; i < MIN; i++) participantes.push(nuevo());
   pintarParticipantes();
@@ -236,7 +251,7 @@ export function iniciarFormulario() {
           eventDate: (form.elements.namedItem('eventDate') as HTMLInputElement).value || null,
           website: (form.elements.namedItem('website') as HTMLInputElement).value,
           participants: participantes,
-          exceptions: excepciones.filter((e) => e.from && e.to && e.from !== e.to),
+          exceptions: expandirExcepciones(excepciones),
           captchaToken,
         }),
       });
