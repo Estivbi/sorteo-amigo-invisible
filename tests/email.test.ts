@@ -62,3 +62,21 @@ test('el correo explica a quien no lo esperaba que puede ignorarlo', () => {
   assert.ok(c.text.includes('Si no esperabas este correo'));
   assert.ok(c.html.includes('Si no esperabas este correo'));
 });
+
+test('en el correo, los enlaces de la lista de deseos salen resumidos y se remite al enlace privado', () => {
+  const conEnlace: Participante = { ...beto, wishlist: 'un libro https://www.amazon.es/dp/B0123?tag=otro' };
+  const c = construirCorreo({ giver: ana, receiver: conEnlace }, juego, 'https://ejemplo.com/amigo/abc');
+  for (const parte of [c.text, c.html]) {
+    assert.ok(parte.includes('[enlace de amazon.es]'));
+    assert.ok(!parte.includes('B0123'));
+    assert.ok(!parte.includes('tag=otro'));
+  }
+  assert.ok(c.text.includes('enlaces'), 'avisa de que los enlaces están en el enlace privado');
+});
+
+test('sin enlace privado, el correo no promete enlaces que no puede dar', () => {
+  const conEnlace: Participante = { ...beto, wishlist: 'un libro https://www.amazon.es/dp/B0123' };
+  const c = construirCorreo({ giver: ana, receiver: conEnlace }, juego);
+  assert.ok(c.text.includes('[enlace de amazon.es]'));
+  assert.ok(!c.text.includes('tu enlace privado'));
+});
