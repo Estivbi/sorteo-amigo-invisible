@@ -1,0 +1,83 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import Faq from '../../components/Faq.astro';
+import { Icon } from 'astro-icon/components';
+import { guias, getGuia } from '../../data/guias';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return guias.map((g) => ({ params: { slug: g.slug } }));
+}
+
+const guia = getGuia(Astro.params.slug!)!;
+const otras = guias.filter((g) => g.slug !== guia.slug);
+const url = new URL(`/guias/${guia.slug}`, Astro.site).toString();
+
+const articuloLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: guia.h1,
+  description: guia.description,
+  inLanguage: 'es-ES',
+  datePublished: guia.publicada,
+  dateModified: guia.publicada,
+  mainEntityOfPage: url,
+  image: new URL(`/og/guia-${guia.slug}.png`, Astro.site).toString(),
+  author: { '@type': 'Organization', name: 'Amigo Invisible', url: new URL('/', Astro.site).toString() },
+  publisher: { '@type': 'Organization', name: 'Amigo Invisible', url: new URL('/', Astro.site).toString() },
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: guia.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+const migasLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: new URL('/', Astro.site).toString() },
+    { '@type': 'ListItem', position: 2, name: 'Guías', item: new URL('/guias', Astro.site).toString() },
+    { '@type': 'ListItem', position: 3, name: guia.nav, item: url },
+  ],
+};
+---
+
+<Layout title={`${guia.title} | Amigo Invisible`} description={guia.description} path={`/guias/${guia.slug}`} ogImage={`/og/guia-${guia.slug}.png`} jsonLd={[articuloLd, faqLd, migasLd]}>
+  <Hero narrow>
+    <nav class="mb-4 text-sm text-[#ffd9bd]" aria-label="Migas de pan"><a class="link link-hover" href="/">Inicio</a> › <a class="link link-hover" href="/guias">Guías</a> › {guia.nav}</nav>
+    <h1 class="mb-4 text-4xl text-white sm:text-5xl">{guia.h1}</h1>
+    <p class="mb-6 text-lg text-[#ffe9d2] sm:text-xl">{guia.intro}</p>
+    <a class="btn btn-accent btn-lg w-full sm:w-auto" href="/crear"><Icon name="lucide:gift" aria-hidden="true" /> Crear mi sorteo gratis</a>
+  </Hero>
+
+  <article class="py-12 sm:py-16">
+    <div class="prose-navidad mx-auto max-w-3xl px-4">
+      {guia.secciones.map((s) => (
+        <>
+          <h2 class="text-3xl">{s.titulo}</h2>
+          {s.parrafos?.map((p) => <p>{p}</p>)}
+          {s.lista && (s.ordenada ? <ol>{s.lista.map((i) => <li>{i}</li>)}</ol> : <ul>{s.lista.map((i) => <li>{i}</li>)}</ul>)}
+        </>
+      ))}
+    </div>
+  </article>
+
+  <section class="border-y border-base-300 bg-crema py-12 sm:py-16">
+    <div class="mx-auto max-w-3xl px-4">
+      <h2 class="mb-6 text-3xl">Preguntas frecuentes</h2>
+      <Faq items={guia.faq} />
+    </div>
+  </section>
+
+  <section class="py-12 sm:py-16">
+    <div class="mx-auto max-w-3xl px-4">
+      <h2 class="mb-4 text-3xl">Más guías</h2>
+      <ul class="flex flex-wrap gap-2">
+        {otras.map((o) => <li><a class="btn btn-outline" href={`/guias/${o.slug}`}>{o.nav}</a></li>)}
+        <li><a class="btn btn-outline" href="/ideas-regalo"><Icon name="lucide:gift" aria-hidden="true" /> Ideas de regalo</a></li>
+      </ul>
+    </div>
+  </section>
+</Layout>

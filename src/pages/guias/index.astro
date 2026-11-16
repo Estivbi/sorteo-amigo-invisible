@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import { guias } from '../../data/guias';
+
+export const prerender = true;
+
+const listaLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: guias.map((g, i) => ({ '@type': 'ListItem', position: i + 1, name: g.title, url: new URL(`/guias/${g.slug}`, Astro.site).toString() })),
+};
+---
+
+<Layout
+  title="Guías para organizar un amigo invisible | Amigo Invisible"
+  description="Guías prácticas para el amigo invisible: cómo organizarlo, hacerlo a distancia, poner excepciones a las parejas y saber si un sorteo online es seguro."
+  path="/guias"
+  ogImage="/og/guias.png"
+  jsonLd={[listaLd]}
+>
+  <Hero narrow>
+    <h1 class="mb-4 text-4xl text-white sm:text-5xl">Guías del amigo invisible</h1>
+    <p class="text-lg text-[#ffe9d2] sm:text-xl">Consejos prácticos para que el sorteo y el intercambio salgan bien.</p>
+  </Hero>
+  <section class="py-12 sm:py-16">
+    <div class="mx-auto max-w-3xl px-4">
+      <ul class="grid gap-4">
+        {guias.map((g) => (
+          <li class="card border border-base-300 bg-base-100">
+            <div class="card-body">
+              <h2 class="card-title text-2xl"><a class="link link-hover" href={`/guias/${g.slug}`}>{g.h1}</a></h2>
+              <p class="text-tinta-suave">{g.description}</p>
+              <div class="card-actions"><a class="link link-primary py-2 font-bold" href={`/guias/${g.slug}`}>Leer la guía</a></div>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-10 text-center"><a class="btn btn-primary btn-lg w-full sm:w-auto" href="/crear">Crear mi sorteo gratis</a></p>
+    </div>
+  </section>
+</Layout>
