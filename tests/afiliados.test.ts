@@ -27,3 +27,7 @@ test('separa ideas por comas, punto y coma y saltos de línea, sin repetir', () 
   assert.equal(ideasDeLista('a1,b2,c3,d4,e5,f6,g7,h8').length, 6);
   assert.deepEqual(ideasDeLista(''), []);
 });
+
+test('las ideas de búsqueda ignoran los enlaces de la lista', () => {
+  assert.deepEqual(ideasDeLista('libros, https://www.amazon.es/dp/B0123?a=1,2 café'), ['libros', 'café']);
+});

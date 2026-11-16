@@ -4,6 +4,7 @@ import { Icon } from 'astro-icon/components';
 import { leerRegistro } from '../../lib/almacen';
 import AvisoAfiliados from '../../components/AvisoAfiliados.astro';
 import { enlaceAmazon, ideasDeLista, REL_AFILIADO } from '../../lib/afiliados';
+import { analizarLista, MAX_ENLACES, MAX_LISTA } from '../../lib/lista-deseos';
 
 export const prerender = false;
 
@@ -19,6 +20,7 @@ try {
 if (!yo) Astro.response.status = 404;
 const tag = import.meta.env.PUBLIC_AMAZON_TAG;
 const busquedas = (amigo?.w ? ideasDeLista(amigo.w) : []).map((idea) => ({ idea, url: enlaceAmazon(idea, tag) })).filter((b) => b.url);
+const listaAmigo = amigo?.w ? analizarLista(amigo.w) : null;
 const eur = (n: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(n);
 const fecha = (d: string) => new Intl.DateTimeFormat('es-ES', { dateStyle: 'full', timeZone: 'UTC' }).format(new Date(`${d}T00:00:00Z`));
 ---
@@ -43,7 +45,13 @@ const fecha = (d: string) => new Intl.DateTimeFormat('es-ES', { dateStyle: 'full
           <div class="card my-6 border border-base-300 bg-base-100"><div class="card-body">
             <p class="font-bold">Te toca regalar a</p>
             <p class="font-display text-4xl font-extrabold text-primary">{amigo?.n ?? '…'}</p>
-            <p><strong>Sus ideas:</strong> {amigo?.w ? amigo.w : 'todavía no ha añadido ideas. Vuelve a mirar más adelante.'}</p>
+            <p>
+              <strong>Sus ideas:</strong>
+              {!amigo?.w && 'todavía no ha añadido ideas. Vuelve a mirar más adelante.'}
+              {amigo?.w && (listaAmigo?.ok
+                ? listaAmigo.trozos.map((t) => (t.tipo === 'texto' ? t.texto : <a class="link link-primary" href={t.url} target="_blank" rel="nofollow ugc noopener noreferrer" title={t.url}><span class="whitespace-nowrap">{t.dominio}<Icon name="lucide:external-link" class="ms-1 inline-block" aria-hidden="true" /></span><span class="sr-only"> (se abre en una pestaña nueva)</span></a>))
+                : amigo.w)}
+            </p>
             {yo.b && <p><strong>Presupuesto:</strong> {eur(yo.b)}</p>}
             {yo.d && <p><strong>Intercambio:</strong> {fecha(yo.d)}</p>}
             {busquedas.length > 0 && (
@@ -65,8 +73,8 @@ const fecha = (d: string) => new Intl.DateTimeFormat('es-ES', { dateStyle: 'full
             <form id="lista-form" novalidate class="space-y-4">
               <div class="flex flex-col gap-1">
                 <label class="font-bold" for="wishlist">Mis ideas de regalo</label>
-                <textarea class="textarea w-full" id="wishlist" name="wishlist" rows="3" maxlength="200" placeholder="Ej: libros de misterio, café, calcetines">{yo.w}</textarea>
-                <small class="text-sm text-tinta-suave"><span id="contador">{yo.w.length}</span>/200</small>
+                <textarea class="textarea w-full" id="wishlist" name="wishlist" rows="3" maxlength={MAX_LISTA} aria-describedby="ayuda-lista" placeholder="Ej: libros de misterio, café, o el enlace de una tienda">{yo.w}</textarea>
+                <small id="ayuda-lista" class="text-sm text-tinta-suave">Puedes pegar hasta {MAX_ENLACES} enlaces de tienda (empiezan por https://). <span id="contador">{yo.w.length}</span>/{MAX_LISTA}</small>
               </div>
               <button type="submit" class="btn btn-primary w-full sm:w-auto" id="guardar">
                 <Icon name="lucide:save" aria-hidden="true" /> Guardar mi lista

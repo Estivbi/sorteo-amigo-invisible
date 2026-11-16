@@ -1,4 +1,5 @@
 import { emailValido, limpiarTexto, tieneEnlaces } from './texto.ts';
+import { analizarLista, MAX_LISTA } from './lista-deseos.ts';
 
 export const MIN_PARTICIPANTES = 3;
 export const MAX_PARTICIPANTES = 40;
@@ -36,9 +37,9 @@ export class ErrorSorteo extends Error {
   }
 }
 
-/** Los textos que viajan por correo a terceros no pueden llevar enlaces: evita usar la web para mandar phishing. */
+/** Los nombres que viajan por correo a terceros no pueden llevar enlaces: evita usar la web para mandar phishing. Las ideas de regalo tienen sus propias reglas (lista-deseos.ts). */
 export function sinEnlaces(texto: string): void {
-  if (tieneEnlaces(texto)) throw new ErrorSorteo('enlaces_no_permitidos', 'Los nombres y las ideas de regalo no pueden llevar enlaces, correos ni usuarios.');
+  if (tieneEnlaces(texto)) throw new ErrorSorteo('enlaces_no_permitidos', 'Los nombres no pueden llevar enlaces, correos ni usuarios.');
 }
 
 /** Valida y normaliza la carga recibida del cliente. Lanza ErrorSorteo si algo no es válido. */
@@ -78,8 +79,9 @@ export function validarDatos(raw: unknown): DatosSorteo {
     if (!name) throw new ErrorSorteo('nombre_participante', `Falta el nombre del participante ${i + 1}.`);
     sinEnlaces(name);
     if (!emailValido(email)) throw new ErrorSorteo('email_invalido', `El correo de ${name} no es válido.`);
-    const wishlist = limpiarTexto(o.wishlist, 200);
-    sinEnlaces(wishlist);
+    const wishlist = limpiarTexto(o.wishlist, MAX_LISTA);
+    const lista = analizarLista(wishlist);
+    if (!lista.ok) throw new ErrorSorteo('enlaces_no_permitidos', lista.motivo);
     return { id: String(o.id ?? i), name, email, wishlist: wishlist || undefined };
   });
 

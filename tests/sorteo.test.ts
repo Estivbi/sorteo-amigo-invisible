@@ -82,3 +82,19 @@ test('el texto se limpia de caracteres invisibles antes de guardarse', () => {
   p[0].name = 'A​n‮a';
   assert.equal(validarDatos(base({ participants: p })).participants[0].name, 'Ana');
 });
+
+test('las ideas de regalo admiten enlaces https de tiendas, pero los nombres no', () => {
+  const conLista = gente(3);
+  conLista[0].wishlist = 'Un libro https://www.amazon.es/dp/B0123456 y café';
+  const d = validarDatos(base({ participants: conLista }));
+  assert.equal(d.participants[0].wishlist, 'Un libro https://www.amazon.es/dp/B0123456 y café');
+  const conNombre = gente(3);
+  conNombre[0].name = 'Ana https://tienda.example';
+  assert.throws(() => validarDatos(base({ participants: conNombre })), (e) => e instanceof ErrorSorteo && e.codigo === 'enlaces_no_permitidos');
+});
+
+test('una lista con un enlace sospechoso se rechaza con un motivo claro', () => {
+  const p = gente(3);
+  p[0].wishlist = 'mira https://bit.ly/3xYz';
+  assert.throws(() => validarDatos(base({ participants: p })), (e) => e instanceof ErrorSorteo && e.codigo === 'enlaces_no_permitidos' && /acort/i.test(e.message));
+});
