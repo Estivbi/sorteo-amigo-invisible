@@ -32,13 +32,20 @@ test('rechaza menos de 3 y más de 40 participantes', () => {
   assert.throws(() => validarDatos(base({ participants: gente(41) })), /máximo/);
 });
 
-test('rechaza correos inválidos o repetidos', () => {
+test('rechaza correos inválidos', () => {
   const malo = gente(3);
   malo[1].email = 'no-es-correo';
   assert.throws(() => validarDatos(base({ participants: malo })), /no es válido/);
-  const dup = gente(3);
-  dup[2].email = dup[0].email.toUpperCase();
-  assert.throws(() => validarDatos(base({ participants: dup })), /repetido/);
+});
+
+test('permite que varios participantes compartan el mismo correo, sin distinguir mayúsculas', () => {
+  const comparten = gente(4);
+  comparten[2].email = comparten[0].email.toUpperCase();
+  const d = validarDatos(base({ participants: comparten }));
+  assert.equal(d.participants.length, 4);
+  assert.equal(d.participants[2].email, comparten[0].email.toLowerCase());
+  const asignaciones = asignar(d.participants, d.exceptions);
+  assert.equal(asignaciones.length, 4);
 });
 
 test('normaliza el presupuesto vacío y descarta excepciones inválidas', () => {
