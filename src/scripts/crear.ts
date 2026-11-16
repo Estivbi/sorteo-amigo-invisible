@@ -1,3 +1,4 @@
+import { analizarLista, MAX_LISTA } from '../lib/lista-deseos';
 import { expandirExcepciones, leyendaExcepcion, siguienteModo, type FilaExcepcion, type Modo } from '../lib/excepciones';
 
 interface Participante { id: string; name: string; email: string; wishlist: string }
@@ -157,7 +158,7 @@ export function iniciarFormulario() {
             campo(`p-name-${p.id}`, 'Nombre', 'text', p.name, { maxlength: 60, required: true, autocomplete: 'off', 'data-id': p.id, 'data-k': 'name' }, (v) => { p.name = v; actualizarNombresExcepciones(); }),
             campo(`p-email-${p.id}`, 'Correo', 'email', p.email, { maxlength: 120, required: true, autocomplete: 'off', inputmode: 'email', 'data-id': p.id, 'data-k': 'email' }, (v) => { p.email = v; }),
           ),
-          campo(`p-wish-${p.id}`, 'Ideas de regalo (opcional)', 'text', p.wishlist, { maxlength: 200, placeholder: 'Ej: libros de misterio, café, calcetines', autocomplete: 'off' }, (v) => { p.wishlist = v; }),
+          campo(`p-wish-${p.id}`, 'Ideas de regalo (opcional)', 'text', p.wishlist, { maxlength: MAX_LISTA, placeholder: 'Ej: libros de misterio, café o un enlace https://…', autocomplete: 'off' }, (v) => { p.wishlist = v; }),
         );
       }),
     );
@@ -225,6 +226,8 @@ export function iniciarFormulario() {
       const e = document.getElementById(`p-email-${p.id}`) as HTMLInputElement;
       if (!p.name.trim()) { n.setAttribute('aria-invalid', 'true'); n.focus(); return 'Falta algún nombre.'; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(p.email.trim())) { e.setAttribute('aria-invalid', 'true'); e.focus(); return `El correo de ${p.name} no es válido.`; }
+      const lista = analizarLista(p.wishlist.trim());
+      if (!lista.ok) { document.getElementById(`p-wish-${p.id}`)?.setAttribute('aria-invalid', 'true'); document.getElementById(`p-wish-${p.id}`)?.focus(); return `Ideas de ${p.name}: ${lista.motivo}`; }
     }
     return null;
   }

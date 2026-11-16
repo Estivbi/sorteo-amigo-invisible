@@ -1,3 +1,4 @@
+import { resumirParaCorreo } from './lista-deseos.ts';
 import type { Asignacion, DatosSorteo } from './sorteo';
 
 const env = (k: string): string => ((import.meta.env as Record<string, string | undefined>)[k] ?? process.env[k] ?? '').toString();
@@ -47,7 +48,12 @@ export function construirCorreo({ giver, receiver }: Asignacion, juego: DatosSor
 
   if (juego.budget) add(`Presupuesto: ${eur(juego.budget)}`);
   if (juego.eventDate) add(`Fecha del intercambio: ${fechaLarga(juego.eventDate)}`);
-  if (receiver.wishlist) add(`Ideas que ha pedido ${receiver.name}: ${receiver.wishlist}`);
+  if (receiver.wishlist) {
+    // Los enlaces no viajan en el correo: aquí solo se ve el dominio y el enlace completo está en la página privada.
+    const ideas = resumirParaCorreo(receiver.wishlist);
+    add(`Ideas que ha pedido ${receiver.name}: ${ideas}`);
+    if (enlace && ideas !== receiver.wishlist) add('Sus enlaces completos los ves desde tu enlace privado.');
+  }
   const cal = enlaceCalendario(juego);
 
   const text = [

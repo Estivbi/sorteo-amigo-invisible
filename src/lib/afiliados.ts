@@ -8,6 +8,7 @@ export const REL_AFILIADO = 'sponsored nofollow noopener noreferrer';
 export function ideasDeLista(lista: string, max = 6): string[] {
   const vistos = new Set<string>();
   return lista
+    .replace(/https?:\/\/\S+/gi, ' ')
     .split(/[,;\n]+/)
     .map((s) => s.replace(/\s+/g, ' ').trim().slice(0, 60))
     .filter((s) => {
