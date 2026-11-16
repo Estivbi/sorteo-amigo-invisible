@@ -205,15 +205,11 @@ export function iniciarFormulario() {
   function validar(): string | null {
     const nombre = (form!.elements.namedItem('gameName') as HTMLInputElement);
     if (!nombre.value.trim()) { nombre.setAttribute('aria-invalid', 'true'); nombre.focus(); return 'Ponle un nombre al sorteo.'; }
-    const emails = new Set<string>();
     for (const p of participantes) {
       const n = document.getElementById(`p-name-${p.id}`) as HTMLInputElement;
       const e = document.getElementById(`p-email-${p.id}`) as HTMLInputElement;
       if (!p.name.trim()) { n.setAttribute('aria-invalid', 'true'); n.focus(); return 'Falta algún nombre.'; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(p.email.trim())) { e.setAttribute('aria-invalid', 'true'); e.focus(); return `El correo de ${p.name} no es válido.`; }
-      const k = p.email.trim().toLowerCase();
-      if (emails.has(k)) { e.setAttribute('aria-invalid', 'true'); e.focus(); return `El correo de ${p.name} está repetido.`; }
-      emails.add(k);
     }
     return null;
   }
