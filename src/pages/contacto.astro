@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import { CONTACTO, correoLegible } from '../data/contacto';
+
+export const prerender = true;
+---
+
+<Layout
+  title="Contacto | Amigo Invisible"
+  description="Escríbenos si tienes dudas, has encontrado un error, quieres que borremos un sorteo o tienes una sugerencia sobre el amigo invisible online."
+  path="/contacto"
+  ogImage="/og/contacto.png"
+>
+  <Hero narrow>
+    <h1 class="mb-4 text-4xl text-white sm:text-5xl">Contacto</h1>
+    <p class="text-lg text-[#ffe9d2] sm:text-xl">Dudas, errores o ideas: te leemos.</p>
+  </Hero>
+  <section class="py-12 sm:py-16">
+    <div class="prose-navidad mx-auto max-w-3xl px-4">
+      <h2 class="text-3xl">Escríbenos por correo</h2>
+      <p>
+        Esta web la mantiene una sola persona, así que contestamos en cuanto podemos, normalmente en unos días.
+      </p>
+      <p>
+        <span id="contacto-correo" data-usuario={CONTACTO.usuario} data-dominio={CONTACTO.dominio}>{correoLegible()}</span>
+      </p>
+      <noscript><p>Activa JavaScript para ver el enlace de correo, o copia la dirección cambiando «[arroba]» por @.</p></noscript>
+
+      <h2 class="text-3xl">Para qué puedes escribirnos</h2>
+      <ul>
+        <li><strong>Has encontrado un error</strong> o algo no se ve bien en tu móvil u ordenador.</li>
+        <li><strong>No te ha llegado un correo</strong> del sorteo. Mira primero en la carpeta de spam.</li>
+        <li><strong>Quieres que borremos un sorteo</strong> antes de tiempo. Los datos se borran solos, pero si necesitas adelantarlo, cuéntanos el nombre del sorteo y la fecha.</li>
+        <li><strong>Tienes una sugerencia</strong> o una idea para mejorar la web.</li>
+      </ul>
+
+      <h2 class="text-3xl">Antes de escribir</h2>
+      <p>
+        No nos envíes contraseñas ni datos bancarios: nunca los pedimos. Tampoco hace falta que reenvíes el correo con tu amigo invisible; para no estropear la sorpresa, cuéntanos solo el problema.
+      </p>
+      <p>
+        Mira también la <a class="link link-primary" href="/privacidad">política de privacidad</a> y las <a class="link link-primary" href="/guias">guías</a>: puede que ya respondan lo que buscas.
+      </p>
+    </div>
+  </section>
+  <script>
+    // El enlace de correo se monta aquí para que la dirección completa no aparezca en el HTML estático.
+    const el = document.getElementById('contacto-correo');
+    if (el?.dataset.usuario && el.dataset.dominio) {
+      const direccion = `${el.dataset.usuario}@${el.dataset.dominio}`;
+      const a = document.createElement('a');
+      a.className = 'link link-primary font-bold';
+      a.href = `mailto:${direccion}`;
+      a.textContent = direccion;
+      el.replaceChildren(a);
+    }
+  </script>
+</Layout>

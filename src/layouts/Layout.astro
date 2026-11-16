@@ -4,6 +4,7 @@ import '@fontsource-variable/fraunces/opsz.css';
 import '@fontsource-variable/nunito/wght.css';
 import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
 import nunitoLatin from '@fontsource-variable/nunito/files/nunito-latin-wght-normal.woff2?url';
+import Analytics from '@vercel/analytics/astro';
 import { Icon } from 'astro-icon/components';
 import { landings } from '../data/landings';
 import { AVISO_AMAZON } from '../lib/afiliados';
@@ -36,6 +37,7 @@ const site = Astro.site ?? new URL(Astro.url.origin);
 const sinIndexar = noindex || privado;
 const canonical = new URL(path === '/' ? '/' : path.replace(/\/$/, ''), site).toString();
 const ogImageUrl = new URL(ogImage, site).toString();
+const ogAlt = title.split('|')[0].trim();
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 const donateUrl = import.meta.env.PUBLIC_DONATE_URL || '';
 const hayAfiliados = Boolean(import.meta.env.PUBLIC_AMAZON_TAG);
@@ -90,7 +92,7 @@ const links = [
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Amigo Invisible: sorteo online gratis para Navidad" />
+    <meta property="og:image:alt" content={ogAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -157,6 +159,8 @@ const links = [
           <a class="link link-hover" href="/crear">Crear sorteo</a>
           <a class="link link-hover" href="/ideas-regalo">Ideas de regalo</a>
           <a class="link link-hover" href="/reglas">Reglas y consejos</a>
+          <a class="link link-hover" href="/guias">Guías</a>
+          <a class="link link-hover" href="/contacto">Contacto</a>
           <a class="link link-hover" href="/privacidad">Privacidad</a>
           {donateUrl && <a class="link link-hover" href={donateUrl} rel="noopener" target="_blank"><Icon name="lucide:coffee" aria-hidden="true" /> Invítanos a un café</a>}
         </nav>
@@ -166,6 +170,7 @@ const links = [
         <p>&copy; {new Date().getFullYear()} Amigo Invisible. Hecho con cariño para que la Navidad se parezca más a una fiesta.</p>
       </div>
     </footer>
+    {!sinIndexar && <Analytics />}
     <script>
       import '../scripts/nieve';
       import '../scripts/menu';

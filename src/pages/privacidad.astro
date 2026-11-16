@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 export const prerender = true;
 ---
 
-<Layout title="Política de privacidad | Amigo Invisible" description="Qué datos usamos para hacer tu sorteo de amigo invisible, cuánto tiempo se guardan nombres y listas de deseos y por qué nunca guardamos tu correo." path="/privacidad">
+<Layout title="Política de privacidad | Amigo Invisible" description="Qué datos usamos para hacer tu sorteo de amigo invisible, cuánto tiempo se guardan nombres y listas de deseos y por qué nunca guardamos tu correo." path="/privacidad" ogImage="/og/privacidad.png">
   <section class="py-12 sm:py-16">
     <div class="prose-navidad mx-auto max-w-3xl px-4">
       <h1 class="mb-6 text-4xl sm:text-5xl">Política de privacidad</h1>
@@ -18,12 +18,16 @@ export const prerender = true;
       <p>Para que cada participante pueda ver la lista de deseos de su amigo invisible y editar la suya, guardamos de forma temporal el nombre de cada participante, su lista de deseos, el nombre de la persona a quien regala, el nombre del sorteo, el presupuesto y la fecha. Se asocian a un enlace privado y aleatorio que solo recibe cada participante.</p>
       <p>Estos datos se borran automáticamente 7 días después de la fecha del intercambio (o a los 45 días si no indicaste fecha).</p>
       <h2 class="text-2xl">Proveedores</h2>
-      <p>Para enviar los correos usamos un proveedor de email transaccional, para guardar temporalmente las listas un servicio de base de datos en la nube (Upstash Redis) y, para evitar abusos, Cloudflare Turnstile, que comprueba que quien crea el sorteo es una persona y no un robot.</p>
+      <p>Para enviar los correos usamos un proveedor de email transaccional, para guardar temporalmente las listas un servicio de base de datos en la nube (Upstash Redis) y, para evitar abusos, Cloudflare Turnstile, que comprueba que quien crea el sorteo es una persona y no un robot. La web se aloja en Vercel.</p>
       <h2 class="text-2xl">Protección contra abusos y estadísticas</h2>
       <p>Para evitar que la web se use para enviar correos de forma abusiva, contamos cuántos sorteos se crean al día desde cada conexión y cuántos correos recibe cada dirección. Para ello guardamos durante 26 horas una huella cifrada, que no permite recuperar tu IP ni tu correo. No guardamos esos datos en claro.</p>
       <p>También guardamos estadísticas agregadas (número de sorteos, correos y errores por día), sin datos personales, durante 90 días.</p>
+      <h2 class="text-2xl">Estadísticas de visitas</h2>
+      <p>Medimos las visitas con Vercel Web Analytics, una herramienta que no usa cookies ni crea un perfil de cada persona: solo cuenta páginas vistas y de dónde llegan, de forma agregada. No se activa en las páginas privadas de cada participante, para que los enlaces privados no pasen por ninguna herramienta de medición.</p>
       <h2 class="text-2xl">Enlaces de afiliado</h2>
       <p>Algunas páginas (ideas de regalo y la página privada de cada participante) pueden incluir enlaces de afiliado a tiendas como Amazon. Si compras desde ellos, la web recibe una pequeña comisión sin coste extra para ti. Cuando pulsas «Buscar», el término de búsqueda (por ejemplo, una idea de la lista de deseos) se envía a la tienda. Si no pulsas, no se envía nada.</p>
+      <h2 class="text-2xl">Contacto</h2>
+      <p>Si tienes dudas o quieres que borremos un sorteo antes de tiempo, escríbenos desde la <a class="link link-primary" href="/contacto">página de contacto</a>.</p>
       <h2 class="text-2xl">Importante</h2>
       <p>Introduce solo los datos de personas que saben que participan en el sorteo.</p>
     </div>

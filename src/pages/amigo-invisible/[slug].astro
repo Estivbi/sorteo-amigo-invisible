@@ -29,7 +29,7 @@ const crumbsLd = {
 };
 ---
 
-<Layout title={landing.title} description={landing.description} path={`/amigo-invisible/${landing.slug}`} jsonLd={[faqLd, crumbsLd]}>
+<Layout title={landing.title} description={landing.description} path={`/amigo-invisible/${landing.slug}`} ogImage={`/og/${landing.slug}.png`} jsonLd={[faqLd, crumbsLd]}>
   <Hero narrow>
     <nav class="mb-4 text-sm text-[#ffd9bd]" aria-label="Migas de pan"><a class="link link-hover" href="/">Inicio</a> › {landing.nav}</nav>
     <h1 class="mb-4 text-4xl text-white sm:text-5xl">{landing.h1}</h1>

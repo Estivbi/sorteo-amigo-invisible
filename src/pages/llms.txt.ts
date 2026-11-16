@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { landings } from '../data/landings';
+import { guias } from '../data/guias';
 import { generarLlmsTxt } from '../lib/seo';
 
 export const prerender = true;
@@ -11,6 +12,7 @@ export const GET: APIRoute = ({ site }) => {
     ...landings.map((l) => ({ titulo: l.nav, ruta: `/amigo-invisible/${l.slug}`, descripcion: l.resumen })),
     { titulo: 'Ideas de regalo', ruta: '/ideas-regalo', descripcion: 'ideas de regalo para el amigo invisible según el presupuesto: 5, 10, 20 y 30 euros.' },
     { titulo: 'Reglas del amigo invisible', ruta: '/reglas', descripcion: 'cómo funciona el juego y consejos para organizarlo bien.' },
+    ...guias.map((g) => ({ titulo: g.nav, ruta: `/guias/${g.slug}`, descripcion: g.resumen })),
   ];
   return new Response(generarLlmsTxt(base, paginas), { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 };

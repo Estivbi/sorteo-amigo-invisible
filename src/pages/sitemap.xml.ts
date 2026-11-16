@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { landings } from '../data/landings';
+import { guias } from '../data/guias';
 
 export const prerender = true;
 
@@ -9,6 +10,9 @@ const rutas = [
   ...landings.map((l) => ({ path: `/amigo-invisible/${l.slug}`, prioridad: '0.8' })),
   { path: '/ideas-regalo', prioridad: '0.7' },
   { path: '/reglas', prioridad: '0.6' },
+  { path: '/guias', prioridad: '0.7' },
+  ...guias.map((g) => ({ path: `/guias/${g.slug}`, prioridad: '0.7' })),
+  { path: '/contacto', prioridad: '0.3' },
   { path: '/privacidad', prioridad: '0.2' },
 ];
 
