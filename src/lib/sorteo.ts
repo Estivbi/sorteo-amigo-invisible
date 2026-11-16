@@ -71,7 +71,6 @@ export function validarDatos(raw: unknown): DatosSorteo {
     throw new ErrorSorteo('demasiados_participantes', `El máximo es de ${MAX_PARTICIPANTES} participantes.`);
   }
 
-  const vistos = new Set<string>();
   const participants: Participante[] = d.participants.map((p, i) => {
     const o = (p ?? {}) as Record<string, unknown>;
     const name = limpiarTexto(o.name, 60);
@@ -79,8 +78,6 @@ export function validarDatos(raw: unknown): DatosSorteo {
     if (!name) throw new ErrorSorteo('nombre_participante', `Falta el nombre del participante ${i + 1}.`);
     sinEnlaces(name);
     if (!emailValido(email)) throw new ErrorSorteo('email_invalido', `El correo de ${name} no es válido.`);
-    if (vistos.has(email)) throw new ErrorSorteo('email_repetido', `El correo de ${name} está repetido.`);
-    vistos.add(email);
     const wishlist = limpiarTexto(o.wishlist, 200);
     sinEnlaces(wishlist);
     return { id: String(o.id ?? i), name, email, wishlist: wishlist || undefined };

@@ -98,3 +98,25 @@ test('una sola IP no puede gastar el cupo del día con pocos sorteos grandes (to
   // otra IP sí puede
   assert.equal((await reservarCupo({ ...base(c, { ...poca, ip: '198.51.100.9' }), destinatarios: gente(3, 60) })).ok, true);
 });
+
+test('un correo repetido dentro del mismo sorteo cuenta una vez por cada correo enviado y se libera entero', async () => {
+  const c = crearContadoresMemoria();
+  const compartido = [{ nombre: 'Carlos', email: 'familia@ejemplo.com' }, { nombre: 'Laura', email: 'familia@ejemplo.com' }, { nombre: 'Ana', email: 'ana@ejemplo.com' }];
+  const r = await reservarCupo({ ...base(c), destinatarios: compartido });
+  assert.equal(r.ok, true);
+  if (r.ok) {
+    assert.equal(r.usoGlobal, 3);
+    await r.liberar();
+  }
+  const otra = await reservarCupo({ ...base(c, { ip: '9.9.9.9' }), destinatarios: compartido });
+  assert.equal(otra.ok, true);
+  if (otra.ok) assert.equal(otra.usoGlobal, 3, 'tras liberar, el contador global vuelve a empezar');
+});
+
+test('un correo repetido más veces que el límite por destinatario se rechaza y nombra a quien lo supera', async () => {
+  const c = crearContadoresMemoria();
+  const seis = Array.from({ length: 6 }, (_, i) => ({ nombre: `Persona${i}`, email: 'casa@ejemplo.com' }));
+  const r = await reservarCupo({ ...base(c), destinatarios: seis });
+  assert.equal(r.ok, false);
+  if (!r.ok) assert.equal(r.rechazo.tipo, 'destinatario');
+});
