@@ -17,8 +17,8 @@
 
 ## Tuyo ahora (requiere acción fuera del código)
 
-1. **Borrar ramas viejas en GitHub:**
-   - `feature/enlaces-en-lista-de-deseos` y `fix/quitar-borrado-manual` (ya están mergeadas en `master`).
+- [x] **Ramas antiguas borradas en GitHub:**
+  - `feature/enlaces-en-lista-de-deseos` y `fix/quitar-borrado-manual` eliminadas del repositorio remoto.
 2. **Google Search Console & Bing Webmaster Tools:**
    - En Search Console: pedir indexación de `/guias` y `/contacto`, comprobar estado del sitemap.
    - En Bing Webmaster Tools: dar de alta el sitio (importar con 1 clic desde Search Console) y ejecutar `npm run indexnow`.
