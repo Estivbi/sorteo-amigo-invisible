@@ -22,8 +22,8 @@
 2. **Google Search Console & Bing Webmaster Tools:**
    - En Search Console: pedir indexación de `/guias` y `/contacto`, comprobar estado del sitemap.
    - En Bing Webmaster Tools: dar de alta el sitio (importar con 1 clic desde Search Console) y ejecutar `npm run indexnow`.
-3. **Variables de entorno en Vercel:**
-   - `PUBLIC_DONATE_URL`: enlace de Ko-fi, Buy Me a Coffee o PayPal.me.
+- [x] **Enlace de donación configurado:**
+  - `PUBLIC_DONATE_URL`: `https://ko-fi.com/amigoinvisiblestibios` activado como valor por defecto en `src/pages/crear.astro` y en `.env.example`.
 4. **Revisión de guías:**
    - Leer `/guias` en la web y decidir si quieres añadir o retocar texto.
 
