@@ -1,9 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Icon } from 'astro-icon/components';
+import { urlDonacion } from '../lib/donacion';
 
 export const prerender = true;
-const donateUrl = import.meta.env.PUBLIC_DONATE_URL || 'https://ko-fi.com/amigoinvisiblestibios';
+const donateUrl = urlDonacion(import.meta.env.PUBLIC_DONATE_URL);
 ---
 
 <Layout
