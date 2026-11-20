@@ -6,7 +6,7 @@ import { landings } from '../src/data/landings.ts';
 import { guias } from '../src/data/guias.ts';
 
 export const INDEXNOW_KEY = 'e892c906a2cf4e819b91e92d7701dc28';
-export const DEFAULT_HOST = 'sorteo-amigo-invisible.vercel.app';
+export const DEFAULT_HOST = 'amigoinvisible.stibios.com';
 
 export function obtenerRutasIndexNow(): string[] {
   return [
