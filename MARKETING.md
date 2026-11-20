@@ -58,24 +58,31 @@ Guiones de vídeo listos para grabar, textos para comunidades y estrategia de di
 
 ## 2. Textos listos para publicar en Comunidades y Redes
 
-### LinkedIn (Enfoque Oficina y Recursos Humanos)
-> **Público:** People & Culture, Office Managers, Team Leads, compañeros que organizan eventos de equipo.
+### LinkedIn (Historia personal de creadora / Builder)
+> **Público:** Tu red profesional, compañeros de trabajo, People/HR, managers y otros desarrolladores/creadores.
+> **Tono:** Cercano, transparente, de historia real (storytelling de producto).
 
 **Publicación:**
-> «Diciembre está a la vuelta de la esquina y con él la clásica misión de coordinar el amigo invisible de la oficina 🎄
+> Hay cientos de webs para hacer el amigo invisible. Entonces, ¿por qué he decidido publicar la mía?
 >
-> En equipos híbridos o remotos, los papelitos ya no funcionan. Y muchas plataformas existentes exigen registros individuales, llenan la bandeja de entrada de promociones o no permiten filtrar quién regala a quién (imprescindible para que un manager no regale a su reporte o para no repetir con quien ya te tocó el año pasado).
+> Hace unos años me cansé de las plataformas de siempre: llenas de publicidad invasiva, banners por todos lados, obligándote a crear cuentas con contraseña o pidiéndote instalar una app de 100 MB solo para repartir 8 nombres.
 >
-> Diseñamos esta herramienta pensando en la simplicidad y la privacidad:
-> 🔹 Sin registros ni cuentas corporativas obligatorias.
-> 🔹 Excepciones configurables en 1 clic.
-> 🔹 Cada persona recibe su asignación privada por email y puede sugerir ideas de regalo para su presupuesto.
-> 🔹 Cero retención innecesaria de datos.
+> Así que me programé una pequeña herramienta para mí, pensada únicamente para usarla con mi familia y mi grupo de amigos. Funcionaba de maravilla:
+> • Cero registros y cero publicidad.
+> • Garantía matemática de que nadie se toca a sí mismo.
+> • Excepciones con un clic (imprescindible para que las parejas o hermanos no se regalen entre sí).
+> • Y un enlace privado por participante para sugerir ideas de regalo o enlaces sin desvelar el secreto.
 >
-> Si os toca organizarlo este año en el equipo, podéis probarlo gratis aquí:
-> https://amigoinvisible.stibios.com/amigo-invisible/oficina
+> Durante años fue nuestro secreto navideño interno. Pero estas semanas decidí darle una vuelta completa: rediseñarla de cero, profesionalizar la arquitectura, pulir la experiencia de usuario y abrirla para todo el mundo.
 >
-> ¿Cómo lo organizáis habitualmente en vuestros equipos?»
+> Sigue siendo 100% gratuita, sin anuncios y respetando la privacidad (no guardamos correos en bases de datos).
+>
+> Si estos días os toca coordinar el amigo invisible en la oficina o con vuestro equipo, podéis usarla libremente aquí:
+> 👉 https://amigoinvisible.stibios.com/amigo-invisible/oficina
+>
+> (O para la familia y amigos en https://amigoinvisible.stibios.com)
+>
+> ¿Cómo lo soléis organizar vosotros en el trabajo? ¿Seguís con el método tradicional de los papelitos doblados? 👇
 
 ---
 
@@ -107,3 +114,4 @@ Guiones de vídeo listos para grabar, textos para comunidades y estrategia de di
 
 ### Mensaje para grupos de WhatsApp / Telegram (cuando alguien propone hacer sorteo)
 > «Oye, si queréis hacemos el sorteo por aquí en 2 minutos sin lío de papelitos: https://amigoinvisible.stibios.com. Metemos los nombres y correos, ponemos las excepciones para las parejas y a cada uno le llega su amigo invisible al móvil con sitio para poner qué regalos prefiere. ¿Quién se apunta?»
+
