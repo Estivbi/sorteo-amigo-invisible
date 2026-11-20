@@ -56,7 +56,7 @@ Guiones de vídeo listos para grabar, textos para comunidades y estrategia de di
 
 ---
 
-## 2. Textos listos para publicar en Comunidades y Redes
+## 2. Textos listos para publicar en Comunidades y Redes SUBIDO :CHECK 
 
 ### LinkedIn (Historia personal de creadora / Builder)
 > **Público:** Tu red profesional, compañeros de trabajo, People/HR, managers y otros desarrolladores/creadores.

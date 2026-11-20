@@ -70,21 +70,29 @@
   .hero-navidad .container-hero { position: relative; z-index: 1; }
   .nieve { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 
-  .trineo { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
-  .trineo svg {
+  /* Papá Noel con su trineo en la esquina superior derecha del hero (aparición periódica sutil) */
+  .trineo {
     position: absolute;
-    left: 0;
-    top: 15px;
-    width: min(360px, 55vw);
-    height: auto;
+    top: 18px;
+    right: 28px;
+    width: min(340px, 36vw);
+    pointer-events: none;
+    z-index: 1;
     opacity: 0;
-    transform: translate(-120%, 35px);
-    animation: vuelo 32s cubic-bezier(0.35, 0.05, 0.25, 1) 1.5s infinite;
-    filter: drop-shadow(0 4px 12px rgba(233, 180, 76, 0.22));
+    animation: trineo-ciclo 26s ease-in-out infinite;
   }
-  @media (max-width: 640px) {
-    .trineo svg { top: 10px; width: min(260px, 65vw); }
-    .trineo { opacity: 0.75; }
+  .trineo dotlottie-wc, .trineo-lottie {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.35));
+  }
+  @media (max-width: 768px) {
+    .trineo {
+      top: 10px;
+      right: 12px;
+      width: min(170px, 42vw);
+    }
   }
 
   /* Rejilla de contenido con ancho de lectura cómodo. */
@@ -115,30 +123,32 @@
   #menu-movil[open] .menu-panel, #menu-movil.cerrando .menu-panel { animation: none; }
 }
 
-@keyframes vuelo {
+@keyframes trineo-ciclo {
   0% {
     opacity: 0;
-    transform: translate(-120%, 35px) rotate(-3deg);
+    transform: translateY(12px) scale(0.96);
   }
-  3% {
-    opacity: 0.85;
+  4% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
-  14% {
-    transform: translate(25vw, 5px) rotate(1.5deg);
+  16% {
+    transform: translateY(-8px) scale(1) rotate(1deg);
   }
   28% {
-    transform: translate(52vw, 25px) rotate(-2deg);
+    transform: translateY(0) scale(1) rotate(0deg);
   }
-  42% {
-    transform: translate(78vw, 0px) rotate(2deg);
+  36% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1) rotate(-1deg);
   }
-  54% {
-    opacity: 0.85;
-    transform: translate(calc(100vw + 80px), -10px) rotate(-1deg);
-  }
-  55%, 100% {
+  40% {
     opacity: 0;
-    transform: translate(calc(100vw + 80px), -10px);
+    transform: translateY(-16px) scale(0.96);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
   }
 }
 @media (prefers-reduced-motion: reduce) { .trineo { display: none; } }

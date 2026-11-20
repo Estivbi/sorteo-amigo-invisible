@@ -1,93 +1,13 @@
 ---
-/** Silueta estilizada de Papá Noel, su trineo y renos surcando el cielo del hero. */
+/** Animación Lottie oficial de Papá Noel con su trineo y renos en movimiento (por Manav Shakya). */
 ---
 <div class="trineo" aria-hidden="true">
-  <svg viewBox="0 0 560 140" width="560" height="140" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- Estela de estrellas mágicas detrás del trineo -->
-    <g class="estela-magica">
-      <path d="M12 92 Q14 86 16 92 Q22 94 16 96 Q14 102 12 96 Q6 94 12 92 Z" fill="#e9b44c" opacity="0.45"/>
-      <path d="M28 78 Q30 70 32 78 Q40 80 32 82 Q30 90 28 82 Q20 80 28 78 Z" fill="#ffe9d2" opacity="0.75"/>
-      <path d="M46 98 Q47 93 48 98 Q53 99 48 100 Q47 105 46 100 Q41 99 46 98 Z" fill="#e9b44c" opacity="0.6"/>
-      <path d="M62 74 Q63 68 64 74 Q70 75 64 76 Q63 82 62 76 Q56 75 62 74 Z" fill="#ffe9d2" opacity="0.9"/>
-      <circle cx="22" cy="88" r="1.5" fill="#ffe9d2" opacity="0.5"/>
-      <circle cx="38" cy="102" r="1.2" fill="#e9b44c" opacity="0.6"/>
-      <circle cx="52" cy="84" r="1.8" fill="#ffe9d2" opacity="0.8"/>
-      <circle cx="70" cy="94" r="1.2" fill="#e9b44c" opacity="0.7"/>
-    </g>
-
-    <!-- Trineo y Papá Noel -->
-    <g id="trineo-santa">
-      <!-- Patín del trineo (cuchilla curvada dorada) -->
-      <path d="M68 122 C64 122 62 118 66 116 L175 116 C188 116 198 111 204 98 C206 94 203 91 199 93 C195 95 188 104 176 104 L92 104 C74 104 68 112 68 122 Z" fill="#e9b44c"/>
-      <path d="M85 116 L95 104 M125 116 L130 104 M162 116 L164 104" stroke="#e9b44c" stroke-width="2.5" stroke-linecap="round"/>
-
-      <!-- Cuerpo del trineo -->
-      <path d="M78 104 C72 88 84 82 98 82 L168 82 C184 82 195 90 190 104 Z" fill="#e9b44c"/>
-      <!-- Detalle curvo decorativo del trineo -->
-      <path d="M82 92 C95 86 150 86 182 94" stroke="#5e1218" stroke-width="1.8" stroke-linecap="round" opacity="0.4"/>
-
-      <!-- Gran saco de regalos -->
-      <path d="M90 84 C85 64 104 54 122 60 C130 63 134 72 135 84 Z" fill="#ffe9d2"/>
-      <path d="M102 58 C100 52 108 48 114 52 C116 54 114 57 112 59" stroke="#e9b44c" stroke-width="2" fill="none"/>
-
-      <!-- Papá Noel -->
-      <!-- Cuerpo / abrigo -->
-      <path d="M128 84 C126 68 140 62 152 64 C162 66 166 75 168 84 Z" fill="#ffe9d2"/>
-      <!-- Brazo extendido sosteniendo las riendas -->
-      <path d="M148 72 C158 70 172 73 182 78" stroke="#ffe9d2" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="183" cy="78" r="3.5" fill="#e9b44c"/> <!-- Manopla -->
-
-      <!-- Cabeza y barba -->
-      <circle cx="145" cy="58" r="8" fill="#ffe9d2"/>
-      <!-- Barba ondeando hacia atrás -->
-      <path d="M138 60 C130 63 126 70 134 74 C140 76 148 74 151 66 Z" fill="#ffffff"/>
-      <!-- Gorro de Papá Noel ondeando -->
-      <path d="M139 54 C141 46 149 44 153 50 C151 44 142 38 132 40 C125 41 123 46 126 48 Z" fill="#ffffff"/>
-      <!-- Pompón del gorro -->
-      <circle cx="125" cy="48" r="3.2" fill="#ffffff"/>
-      <rect x="139" y="52" width="14" height="4" rx="2" fill="#ffffff"/> <!-- Ribete del gorro -->
-    </g>
-
-    <!-- Riendas doradas -->
-    <path d="M183 78 Q235 86 280 82" stroke="#e9b44c" stroke-width="1.6" stroke-dasharray="2 1" opacity="0.85"/>
-    <path d="M183 78 Q335 92 410 74" stroke="#e9b44c" stroke-width="1.4" opacity="0.75"/>
-
-    <!-- Reno Trasero (salto dinámico en vuelo) -->
-    <g id="reno-2" transform="translate(230, 28)">
-      <!-- Astas estilizadas -->
-      <path d="M72 32 C74 20 82 14 88 10 M82 18 C78 14 78 8 76 6 M85 14 C89 12 92 6 90 4" stroke="#ffe9d2" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-      <!-- Cabeza y cuello -->
-      <path d="M60 48 C62 38 72 34 78 35 C82 36 85 41 82 44 C76 47 68 54 66 60 Z" fill="#ffe9d2"/>
-      <circle cx="83" cy="38" r="1.8" fill="#e9b44c"/> <!-- Nariz -->
-      <!-- Cuerpo arqueado en galope -->
-      <path d="M28 58 C32 50 48 48 64 54 C66 62 58 72 44 70 C34 70 28 65 28 58 Z" fill="#ffe9d2"/>
-      <!-- Patas delanteras estiradas volando -->
-      <path d="M60 58 C68 62 78 68 88 64 M62 57 C72 63 80 74 86 76" stroke="#ffe9d2" stroke-width="3" stroke-linecap="round" fill="none"/>
-      <!-- Patas traseras impulsadas hacia atrás -->
-      <path d="M34 64 C26 68 16 66 8 60 M30 62 C22 69 18 78 10 77" stroke="#ffe9d2" stroke-width="3" stroke-linecap="round" fill="none"/>
-      <!-- Arnés rojo/dorado -->
-      <path d="M54 52 C58 58 60 65 59 70" stroke="#e9b44c" stroke-width="2.2" fill="none"/>
-      <!-- Cola -->
-      <path d="M28 56 C24 54 22 58 26 61 Z" fill="#ffe9d2"/>
-    </g>
-
-    <!-- Reno Delantero (líder, estirado al máximo) -->
-    <g id="reno-1" transform="translate(360, 20)">
-      <!-- Astas majestuosas -->
-      <path d="M74 30 C77 18 86 12 93 8 M86 16 C82 11 81 5 80 3 M89 12 C94 10 98 4 96 2" stroke="#ffe9d2" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-      <!-- Cabeza y cuello esbelto -->
-      <path d="M62 46 C64 36 74 32 80 33 C85 34 88 39 84 42 C78 45 70 52 68 58 Z" fill="#ffe9d2"/>
-      <circle cx="85" cy="36" r="2.2" fill="#e9b44c"/> <!-- Nariz dorada brillante -->
-      <!-- Cuerpo elegante -->
-      <path d="M30 56 C34 48 50 46 66 52 C68 60 60 70 46 68 C36 68 30 63 30 56 Z" fill="#ffe9d2"/>
-      <!-- Patas delanteras en flecha -->
-      <path d="M62 56 C71 60 83 66 94 61 M64 55 C75 61 84 72 92 73" stroke="#ffe9d2" stroke-width="3.2" stroke-linecap="round" fill="none"/>
-      <!-- Patas traseras extendidas -->
-      <path d="M36 62 C28 66 17 64 8 57 M32 60 C23 67 19 76 10 74" stroke="#ffe9d2" stroke-width="3.2" stroke-linecap="round" fill="none"/>
-      <!-- Arnés -->
-      <path d="M56 50 C60 56 62 63 61 68" stroke="#e9b44c" stroke-width="2.4" fill="none"/>
-      <!-- Cola pequeña -->
-      <path d="M30 54 C26 52 23 56 27 59 Z" fill="#ffe9d2"/>
-    </g>
-  </svg>
+  <dotlottie-wc
+    src="/santa-sleigh.lottie"
+    autoplay
+    loop
+    class="trineo-lottie"
+  ></dotlottie-wc>
 </div>
+
+<script is:inline type="module" src="https://unpkg.com/@lottiefiles/dotlottie-wc@latest/dist/dotlottie-wc.js"></script>
