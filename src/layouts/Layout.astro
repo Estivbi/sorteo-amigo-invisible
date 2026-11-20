@@ -8,6 +8,7 @@ import Analytics from '@vercel/analytics/astro';
 import { Icon } from 'astro-icon/components';
 import { landings } from '../data/landings';
 import { AVISO_AMAZON } from '../lib/afiliados';
+import { urlDonacion } from '../lib/donacion';
 
 interface Props {
   title: string;
@@ -39,7 +40,7 @@ const canonical = new URL(path === '/' ? '/' : path.replace(/\/$/, ''), site).to
 const ogImageUrl = new URL(ogImage, site).toString();
 const ogAlt = title.split('|')[0].trim();
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
-const donateUrl = import.meta.env.PUBLIC_DONATE_URL || '';
+const donateUrl = urlDonacion(import.meta.env.PUBLIC_DONATE_URL);
 const hayAfiliados = Boolean(import.meta.env.PUBLIC_AMAZON_TAG);
 
 const base = [
