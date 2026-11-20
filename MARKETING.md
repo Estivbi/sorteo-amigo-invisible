@@ -65,7 +65,7 @@ Guiones de vídeo listos para grabar, textos para comunidades y estrategia de di
 **Publicación:**
 > Hay cientos de webs para hacer el amigo invisible. Entonces, ¿por qué he decidido publicar la mía?
 >
-> Hace unos años me cansé de las plataformas de siempre: llenas de publicidad invasiva, banners por todos lados, obligándote a crear cuentas con contraseña o pidiéndote instalar una app de 100 MB solo para repartir 8 nombres.
+> Hace unos años me cansé de las plataformas de siempre: llenas de publicidad invasiva, banners por todos lados, obligándote a crear cuentas con contraseña o pidiéndote instalar una app de 100 MB solo para repartir 8 nombres. O simplemente que no sabía que pasaba con mi correo y el de los míos.
 >
 > Así que me programé una pequeña herramienta para mí, pensada únicamente para usarla con mi familia y mi grupo de amigos. Funcionaba de maravilla:
 > • Cero registros y cero publicidad.
