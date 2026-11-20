@@ -264,7 +264,7 @@ export function iniciarFormulario() {
       const nombre = (form.elements.namedItem('gameName') as HTMLInputElement).value.trim();
       const ok = document.getElementById('success')!;
       if (data.simulado) document.getElementById('success-msg')!.textContent = 'Modo de pruebas: el sorteo se ha calculado pero no se ha enviado ningún correo.';
-      const texto = `🎁 Ya está hecho el sorteo "${nombre}". Mirad vuestro correo (y el spam) para ver a quién os ha tocado. Hazlo tú también gratis: ${location.origin}`;
+      const texto = `🎁 ¡Ya está hecho el sorteo del amigo invisible "${nombre}"! Mirad vuestro correo (y la carpeta de spam si no lo veis) para descubrir a quién os ha tocado.\n\n¿Quieres organizar otro? Puedes crearlo gratis aquí: ${location.origin}`;
       (document.getElementById('share-wa') as HTMLAnchorElement).href = `https://wa.me/?text=${encodeURIComponent(texto)}`;
       form.hidden = true;
       ok.hidden = false;

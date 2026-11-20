@@ -14,6 +14,21 @@ const capitalizar = (t: string): string => t.charAt(0).toUpperCase() + t.slice(1
 
 export const rutaOg = (archivo: string): string => `/og/${archivo}.png`;
 
+/** Parte el texto en líneas de como mucho `max` caracteres, y añade «…» si sobran más de `maxLineas`. */
+export function partir(texto: string, max: number, maxLineas: number): string[] {
+  const lineas: string[] = [];
+  let actual = '';
+  for (const palabra of texto.split(/\s+/)) {
+    if (actual && (actual + ' ' + palabra).length > max) { lineas.push(actual); actual = palabra; }
+    else actual = actual ? `${actual} ${palabra}` : palabra;
+  }
+  if (actual) lineas.push(actual);
+  if (lineas.length <= maxLineas) return lineas;
+  const recorte = lineas.slice(0, maxLineas);
+  recorte[maxLineas - 1] = recorte[maxLineas - 1].replace(/[\s.,;:]*$/, '') + '…';
+  return recorte;
+}
+
 export function paginasOg(): PaginaOg[] {
   return [
     { archivo: 'crear', etiqueta: 'GRATIS · SIN REGISTRO', titulo: 'Crea tu sorteo de amigo invisible', subtitulo: 'Añade a los participantes y cada uno recibe su regalo secreto por email.' },

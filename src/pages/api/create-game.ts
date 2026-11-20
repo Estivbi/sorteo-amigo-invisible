@@ -122,7 +122,7 @@ async function manejar({ request, clientAddress, url, site }: APIContext, sumar:
       }));
     }
 
-    const correos = asignaciones.map((a) => construirCorreo(a, juego, conEnlaces ? `${base}/amigo/${tokens.get(a.giver.id)}` : undefined));
+    const correos = asignaciones.map((a) => construirCorreo(a, juego, conEnlaces ? `${base}/amigo/${tokens.get(a.giver.id)}` : undefined, base));
     t.marca('preparar');
     const proveedor = await enviarCorreos(correos);
     t.marca('correo');

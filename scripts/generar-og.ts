@@ -5,7 +5,7 @@
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import sharp from 'sharp';
-import { paginasOg, type PaginaOg } from '../src/data/og.ts';
+import { paginasOg, partir, type PaginaOg } from '../src/data/og.ts';
 
 const ANCHO = 1200;
 const ALTO = 630;
@@ -13,21 +13,6 @@ const MARGEN = 90;
 const ANCHO_TEXTO = 700;
 
 const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-/** Parte el texto en líneas de como mucho `max` caracteres, y añade «…» si sobran más de `maxLineas`. */
-export function partir(texto: string, max: number, maxLineas: number): string[] {
-  const lineas: string[] = [];
-  let actual = '';
-  for (const palabra of texto.split(/\s+/)) {
-    if (actual && (actual + ' ' + palabra).length > max) { lineas.push(actual); actual = palabra; }
-    else actual = actual ? `${actual} ${palabra}` : palabra;
-  }
-  if (actual) lineas.push(actual);
-  if (lineas.length <= maxLineas) return lineas;
-  const recorte = lineas.slice(0, maxLineas);
-  recorte[maxLineas - 1] = recorte[maxLineas - 1].replace(/[\s.,;:]*$/, '') + '…';
-  return recorte;
-}
 
 function svgDe(p: PaginaOg): string {
   const tam = p.titulo.length <= 34 ? 84 : p.titulo.length <= 52 ? 68 : 58;

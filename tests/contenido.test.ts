@@ -3,9 +3,8 @@ import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { guias, getGuia } from '../src/data/guias.ts';
 import { landings } from '../src/data/landings.ts';
-import { paginasOg, rutaOg } from '../src/data/og.ts';
+import { paginasOg, partir, rutaOg } from '../src/data/og.ts';
 import { correoContacto, correoLegible } from '../src/data/contacto.ts';
-import { partir } from '../scripts/generar-og.ts';
 
 test('las guías tienen slug único y títulos y descripciones con longitud útil para buscadores', () => {
   const slugs = guias.map((g) => g.slug);

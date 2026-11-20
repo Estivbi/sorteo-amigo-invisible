@@ -80,3 +80,12 @@ test('sin enlace privado, el correo no promete enlaces que no puede dar', () => 
   assert.ok(c.text.includes('[enlace de amazon.es]'));
   assert.ok(!c.text.includes('tu enlace privado'));
 });
+
+test('el correo incluye el pie para organizar otro amigo invisible gratis con enlace a la web', () => {
+  const c = construirCorreo({ giver: ana, receiver: beto }, juego, undefined, 'https://sorteo-ejemplo.com');
+  assert.ok(c.text.includes('¿Organizas otro amigo invisible?'));
+  assert.ok(c.text.includes('https://sorteo-ejemplo.com'));
+  assert.ok(c.html.includes('¿Organizas otro amigo invisible?'));
+  assert.ok(c.html.includes('href="https://sorteo-ejemplo.com"'));
+  assert.ok(c.html.includes('sorteo-ejemplo.com'));
+});

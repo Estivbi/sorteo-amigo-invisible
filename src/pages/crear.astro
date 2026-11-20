@@ -77,8 +77,14 @@ const donateUrl = import.meta.env.PUBLIC_DONATE_URL || '';
             <h2 class="mb-2 text-3xl">¡Sorteo hecho!</h2>
             <p id="success-msg" class="mb-6 text-tinta-suave">Hemos enviado a cada participante su amigo invisible. Si alguien no lo ve, que revise el spam.</p>
             <div class="flex flex-col justify-center gap-3 sm:flex-row">
-              <a id="share-wa" class="btn btn-primary" target="_blank" rel="noopener">Avisar al grupo por WhatsApp</a>
-              <a class="btn btn-outline btn-primary" href="/crear">Hacer otro sorteo</a>
+              <a id="share-wa" class="btn btn-primary inline-flex items-center justify-center gap-2" target="_blank" rel="noopener">
+                <Icon name="lucide:message-circle" class="size-5" aria-hidden="true" />
+                <span>Avisar al grupo por WhatsApp</span>
+              </a>
+              <a class="btn btn-outline btn-primary inline-flex items-center justify-center gap-2" href="/crear">
+                <Icon name="lucide:plus" class="size-5" aria-hidden="true" />
+                <span>Hacer otro sorteo</span>
+              </a>
             </div>
             {donateUrl && (
               <div class="mt-8 rounded-box border border-accent bg-oro-suave p-5">
